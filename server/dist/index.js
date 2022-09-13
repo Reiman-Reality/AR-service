@@ -9,6 +9,9 @@ const port = process.env.PORT ?? 8080;
 console.log(port);
 router.get('/home', async (ctx) => {
 });
+router.get('(.*)', async (ctx) => {
+    ctx.redirect('/home');
+});
 server.use(router.routes());
 server.use(serve('/static/models'));
 server.use(serve('/static/markers'));
