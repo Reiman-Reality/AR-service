@@ -5,11 +5,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const adminRouter = new Router();
-const __dirname = path.dirname('');
+const __dirname = path.dirname(process.cwd());
+console.log(__dirname);
+console.log('hi');
 const body = koaBody({
     multipart: true,
     formidable: {
-        uploadDir: path.join(__dirname + '/public/uploads'),
+        uploadDir: path.join(__dirname + '/server/public/uploads'),
     }
  });
 
@@ -19,7 +21,7 @@ const body = koaBody({
  adminRouter.post('/api/addmarker', body, async (ctx)=>{
     const marker = ctx.request.files.marker;
     try{
-    	await fs.rename(marker.filepath, __dirname + '/static/models/' + marker.originalFilename, (err) => {
+    	await fs.rename(marker.filepath, path.join(__dirname, '/server/static/markers/', marker.originalFilename), (err) => {
         	if (err) throw err;
        		console.log('Rename complete!');
    		});

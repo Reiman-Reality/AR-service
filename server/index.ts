@@ -9,7 +9,6 @@ dotenv.config();
 const server = new Koa();
 const router = new Router();
 const port = process.env.PORT ?? 8080;
-const __dirname = path.dirname('');
 
 router.get('/home', async (ctx) =>{
 });
