@@ -27,14 +27,18 @@ router.get('/home', async (ctx) =>{
  * Note for incoming requests to this endpoitn tehy must be encoded as 'multipart/form-data' otherwise request.files doesn't work.
  */
 router.post('/admin/api/addmarker', async (ctx)=>{
-    const request = ctx.request.files;
-    console.log(request);
-    await fs.rename(request.marker.filepath, __dirname + '/static/markers/' + request.marker.originalFilename, (err)=>{
-        if(err){
-            ctx.status(500);
-            ctx.body("failed to uplaod file");
-        }
-    });
+    const marker = ctx.request.files.marker;
+    try{
+    	await fs.rename(marker.filepath, __dirname + '/static/models/' + marker.originalFilename, (err) => {
+        	if (err) throw err;
+       		console.log('Rename complete!');
+   		});
+    } catch (err:unknown) {
+		console.log(err);
+		ctx.status(500);
+		ctx.body('failed to upload marker please try again');
+		return;
+    }
     ctx.status = 200;
 });
 
@@ -42,7 +46,7 @@ router.post('/admin/api/addmarker', async (ctx)=>{
  * Same as above for this endpoint all data must be submitted as formdata :)
  */
 router.post('/admin/api/addmodel', async (ctx)=>{
-    const model = ctx.request.files.model;
+    const model = ctx.request.files?.model;
     console.log(model);
     try{
     	await fs.rename(model.filepath, __dirname + '/static/models/' + model.originalFilename, (err) => {
@@ -50,7 +54,10 @@ router.post('/admin/api/addmodel', async (ctx)=>{
        		console.log('Rename complete!');
    		});
     } catch (err:unknown) {
+		console.log(err);
 		ctx.status(500);
+		ctx.body('failed ot upload marker please try again');
+		return;
     }
     ctx.status = 200;
 });
