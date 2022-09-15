@@ -29,7 +29,7 @@ router.get('/home', async (ctx) =>{
 router.post('/admin/api/addmarker', async (ctx)=>{
     const request = ctx.request.files;
     console.log(request);
-    await fs.rename(request.marker.filepath, __dirname + '/public/uploads/' + request.marker.originalFilename, (err)=>{
+    await fs.rename(request.marker.filepath, __dirname + '/static/markers/' + request.marker.originalFilename, (err)=>{
         if(err){
             ctx.status(500);
             ctx.body("failed to uplaod file");
@@ -42,7 +42,17 @@ router.post('/admin/api/addmarker', async (ctx)=>{
  * Same as above for this endpoint all data must be submitted as formdata :)
  */
 router.post('/admin/api/addmodel', async (ctx)=>{
-
+    const model = ctx.request.files.model;
+    console.log(model);
+    try{
+    	await fs.rename(model.filepath, __dirname + '/static/models/' + model.originalFilename, (err) => {
+        	if (err) throw err;
+       		console.log('Rename complete!');
+   		});
+    } catch (err:unknown) {
+		ctx.status(500);
+    }
+    ctx.status = 200;
 });
 
 server.use(router.routes());
