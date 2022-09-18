@@ -55,4 +55,8 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
     ctx.status = 200;
 });
 
+adminRouter.get('/login', body, async (ctx) => {
+	const loggedin = ctx.cookies.get('log');
+});
+
 export {adminRouter};

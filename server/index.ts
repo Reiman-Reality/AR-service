@@ -3,7 +3,7 @@ import path from 'path';
 import Router from 'koa-router';
 import serve from 'koa-static';
 import * as dotenv from 'dotenv';
-import { adminRouter } from './adminRoutes.js';
+import { adminRouter } from './src/routers/adminRoutes.js';
 
 dotenv.config();
 const server = new Koa();
