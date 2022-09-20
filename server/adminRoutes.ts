@@ -7,7 +7,6 @@ import { fileURLToPath } from 'url';
 const adminRouter = new Router();
 const __dirname = path.dirname(process.cwd());
 console.log(__dirname);
-console.log('hi');
 const body = koaBody({
     multipart: true,
     formidable: {
