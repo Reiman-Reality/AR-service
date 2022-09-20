@@ -10,6 +10,6 @@ deploy:
     script:
         - chmod og= $ID_RSA
         - apk update && apk add openssh-client
-        - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_CICD_USER@$SERVER_ADDRESS "cd ~/Reiman_Garden; git pull"
+        - ssh -vvv -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_CICD_USER@$SERVER_ADDRESS "cd ~/Reiman_Garden; git pull"
     only:
         - main
