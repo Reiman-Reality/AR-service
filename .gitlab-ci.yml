@@ -3,7 +3,7 @@ stages:
     - deploy
 
 deploy:
-    image: Node:18-alpine3.15
+    image: node:18-alpine3.15
     stage: deploy
     tags:
         - deployment
