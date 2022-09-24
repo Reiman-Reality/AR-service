@@ -21,12 +21,13 @@ const body = koaBody({
  */
  adminRouter.post('/api/addmarker', body, async (ctx)=>{
     const marker = ctx.request.files.marker;
+	console.log(marker);
     try{
-    	await fs.rename(marker.filepath, path.join(__dirname, '/server/static/markers/', marker.originalFilename), (err) => {
-        	if (err) throw err;
-       		console.log('Rename complete!');
-   		});
-    } catch (err:unknown) {
+    	await fs.rename(marker.filepath, path.join(__dirname, '/static/markers/', marker.originalFilename), (err)=>{
+			if (err) console.log(err);
+
+		} );
+    } catch (err:any) {
 		console.log(err);
 		ctx.status(500);
 		ctx.body('failed to upload marker please try again');
@@ -46,7 +47,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
         	if (err) throw err;
        		console.log('Rename complete!');
    		});
-    } catch (err:unknown) {
+    } catch (err:any) {
 		console.log(err);
         fs.unlink(model.filepath, (err) => console.log(err));
 		ctx.status(500);
