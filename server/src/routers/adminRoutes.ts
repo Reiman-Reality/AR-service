@@ -20,6 +20,7 @@ const body = koaBody({
  * Note for incoming requests to this endpoitn tehy must be encoded as 'multipart/form-data' otherwise request.files doesn't work.
  */
  adminRouter.post('/api/addmarker', body, async (ctx)=>{
+	//TODO verification
     const marker = ctx.request.files.marker;
     try{
     	await fs.rename(marker.filepath, path.join(__dirname, '/server/static/markers/', marker.originalFilename), (err) => {
