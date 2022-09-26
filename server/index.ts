@@ -4,14 +4,16 @@ import Router from 'koa-router';
 import serve from 'koa-static';
 import * as dotenv from 'dotenv';
 import { adminRouter } from './src/routers/adminRoutes.js';
-import { connectDatabase } from './src/db/mariadb.js';
+import { connectDatabase, ping } from './src/db/mariadb.js';
 
 dotenv.config();
 const server = new Koa();
 const router = new Router();
 const port = process.env.PORT ?? 8080;
 
-connectDatabase();
+await connectDatabase();
+
+await ping();
 
 router.get('/home', async (ctx) =>{
 });
