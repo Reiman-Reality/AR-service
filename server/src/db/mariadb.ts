@@ -11,6 +11,7 @@ export async function connectDatabase() {
         host: process.env.DBHOST,
         user: process.env.DBUSER,
         password: process.env.DBPASSWORD,
+        database: process.env.DBNAME,
         port: 3306,
         connectionLimit: 10,
         idleTimeout: 5
@@ -31,12 +32,26 @@ export async function ping() {
 export async function getAllEvents() {
     try{
         const connection = await pool.getConnection();
-        await connection.query('SELECT 1 + 1 AS solution');
+        const data = await connection.query( `SELECT * FROM EVENT_TABLE`);
     } catch( exception: unknown) {
         console.log(exception);
     }
 }
 
+export async function getAllMarkers() {
+    try {
+        const connection = await pool.getConnection();
+        const data = await connection.query("SELECT * FROM MARKERS");
+        console.log(data);
+    }
+    catch(exception: unknown) {
+        console.log(exception);
+    }
+}
+
+export async function insertMarker(data: markerType) {
+
+}
 
 /*
 export async function createMarker( data: any) {
