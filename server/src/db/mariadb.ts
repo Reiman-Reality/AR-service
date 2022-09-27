@@ -1,8 +1,7 @@
 import { connect } from 'http2';
 import * as mariadb from 'mariadb';
-import {markerType} from '../types/dbTypes/markerType'
+import {markerData} from '../types/dbTypes/markerType'
 
-console.log('hi');
 var pool: mariadb.Pool;
 
 export async function connectDatabase() {
@@ -23,7 +22,6 @@ export async function ping() {
         // every connection attempt must be preceded by get connection
         const connection = await pool.getConnection();
         const success = await connection.ping();
-        console.log(success);
     } catch (exception :unknown) {
         console.log(exception);
     }
@@ -49,8 +47,14 @@ export async function getAllMarkers() {
     }
 }
 
-export async function insertMarker(data: markerType) {
-
+export async function insertMarker( data: markerData) {
+    try {
+        const connection = await pool.getConnection();
+        const data = await connection.query(`INSERT INTO MARKERS (marker_id, server_path)
+        VALUES (uuid(), "hello")`);
+    } catch( exception: unknown) {
+        console.log(exception);
+    }
 }
 
 /*
