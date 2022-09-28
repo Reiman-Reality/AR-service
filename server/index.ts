@@ -4,7 +4,9 @@ import Router from 'koa-router';
 import serve from 'koa-static';
 import * as dotenv from 'dotenv';
 import { adminRouter } from './src/routers/adminRoutes.js';
-import { connectDatabase, getAllMarkers, insertMarker, ping } from './src/db/mariadb.js';
+import { connectDatabase, getAllMarkers, insertMarker, ping, getAllModels, insertModel, updateModel,deleteModel } from './src/db/mariadb.js';
+
+
 
 dotenv.config();
 const server = new Koa();
@@ -16,6 +18,10 @@ await connectDatabase();
 await ping();
 
 await getAllMarkers();
+
+
+
+
 
 router.get('/home', async (ctx) =>{
 });

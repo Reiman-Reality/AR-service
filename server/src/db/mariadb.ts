@@ -1,6 +1,7 @@
 import { connect } from 'http2';
 import * as mariadb from 'mariadb';
 import {markerData} from '../types/dbTypes/markerType'
+import {modelData} from '../types/dbTypes/modelType'
 
 var pool: mariadb.Pool;
 
@@ -57,40 +58,43 @@ export async function insertMarker( data: markerData) {
     }
 }
 
-/*
-export async function createMarker( data: any) {
-
-    await connection.query(`insert into markertable ${data.markerName}`);
-
+export async function getAllModels() {
+    try {
+        const connection = await pool.getConnection();
+        const data = await connection.query("SELECT * FROM MODELS");
+        console.log(data);
+    }
+    catch(exception: unknown) {
+        console.log(exception);
+    }
 }
 
-//insert model data by passing an object
-export async function insert_model(model: object) {
-    await connection.query('INSERT INTO MODELS (model_id, file_path) VALUES (d.id, d.path) ');
+export async function insertModel(data: modelData) {
+    try {
+        const connection = await pool.getConnection();
+        const data = await connection.query(`INSERT INTO MODELS (model_id, string_path)
+        VALUES (1, "hello")`);
+    } catch( exception: unknown) {
+        console.log(exception);
+    }
+}
+
+export async function updateModel(data: modelData) {
+    try {
+        const connection = await pool.getConnection();
+        const data = await connection.query("UPDATE MODELS SET string_path = 'hehehe' WHERE model_id =1");
+    } catch( exception: unknown) {
+        console.log(exception);
+    }
+}
+
+export async function deleteModel(data: modelData) {
+    try {
+        const connection = await pool.getConnection();
+        const data = await connection.query("DELETE FROM MODELS WHERE model_id =1");
+    } catch( exception: unknown) {
+        console.log(exception);
+    }
 }
 
 
-// selete model data by id
-export async function select_model(id: number) {
-    await connection.query('SELECT * FROM MODELS WHERE id = ${id}');
-}
-
-
-//delete model data
-export async function delete_model(id: number) {
-    await connection.query('DELETE FROM MODELS WHERE id = ${id}');
-}
-
-// update the object
-export async function update_model(id: number) {
-    await connection.query('UPDATE MODELS SET path = ${newpath} WHERE id = ${id}');
-}
-
-/*
-`UPDATE MARKERTABLE 
-SET
-name = ${newname}
-path = ${newpath}
-WHERE
-ID = ${markerID}
-*/
