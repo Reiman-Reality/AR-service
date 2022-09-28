@@ -58,6 +58,15 @@ export async function insertMarker( data: markerData) {
     }
 }
 
+export async function updateMarker( data: modelData) {
+    try {
+        const connection = await pool.getConnection();
+        const success = await connection.query(``);
+    } catch (exception: unknown) {
+        console.log('exception');
+    }
+}
+
 export async function getAllModels() {
     try {
         const connection = await pool.getConnection();
@@ -67,10 +76,6 @@ export async function getAllModels() {
     catch(exception: unknown) {
         console.log(exception);
     }
-}
-
-export async function updateModel( data: modelData) {
-    const connection = await pool.getConnection();
 }
 
 export async function insertModel(data: modelData) {
