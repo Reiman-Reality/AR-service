@@ -1,3 +1,3 @@
-export interface modelType {
-    
+export interface modelData {
+
 }

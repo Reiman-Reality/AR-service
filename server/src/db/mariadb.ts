@@ -69,6 +69,10 @@ export async function getAllModels() {
     }
 }
 
+export async function updateModel( data: modelData) {
+    const connection = await pool.getConnection();
+}
+
 export async function insertModel(data: modelData) {
     try {
         const connection = await pool.getConnection();
