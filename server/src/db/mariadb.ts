@@ -63,7 +63,7 @@ export async function updateMarker( data: markerData) {
         const connection = await pool.getConnection();
         await connection.query(`UPDATE MARKERS
         WHERE marker_id = ${data.markerID}
-        SET `);
+        SET`);
         return true;
     } catch (exception: unknown) {
         console.log('exception');

@@ -4,6 +4,7 @@ import koaBody from 'koa-body';
 import path from 'path';
 import serve from 'koa-static';
 import { fileURLToPath } from 'url';
+import { parseIsolatedEntityName } from 'typescript';
 
 const adminRouter = new Router();
 // Have to do this since with TS and ES 2022 you don't get the __dirname variable :(
@@ -33,6 +34,8 @@ const body = koaBody({
 		ctx.body('failed to upload marker please try again');
 		return;
     }
+
+
     ctx.status = 200;
 });
 
@@ -58,7 +61,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 });
 
 adminRouter.get('/login', body, async (ctx) => {
-	if(!verifyLogin(ctx.cookies.get('log'))){
+	if(verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'html';
 		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/loginPage.html'));
 		return;
