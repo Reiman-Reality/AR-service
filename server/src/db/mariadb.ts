@@ -51,19 +51,23 @@ export async function getAllMarkers() {
 export async function insertMarker( data: markerData) {
     try {
         const connection = await pool.getConnection();
-        const success = await connection.query(`INSERT INTO MARKERS (marker_id, server_path, created_on)
+        await connection.query(`INSERT INTO MARKERS (marker_id, server_path, created_on)
         VALUES (uuid(), ${data.filepath}, ${data.insertedOn})`);
     } catch( exception: unknown) {
         console.log(exception);
     }
 }
 
-export async function updateMarker( data: modelData) {
+export async function updateMarker( data: markerData) {
     try {
         const connection = await pool.getConnection();
-        const success = await connection.query(``);
+        await connection.query(`UPDATE MARKERS
+        WHERE marker_id = ${data.markerID}
+        SET `);
+        return true;
     } catch (exception: unknown) {
         console.log('exception');
+        return false;
     }
 }
 
