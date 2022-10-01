@@ -2,6 +2,7 @@ import Router from 'koa-router';
 import fs from "node:fs";
 import koaBody from 'koa-body';
 import path from 'path';
+import * as database from "../db/mariadb"
 import serve from 'koa-static';
 import { fileURLToPath } from 'url';
 import { parseIsolatedEntityName } from 'typescript';
@@ -23,8 +24,9 @@ const body = koaBody({
  adminRouter.post('/api/addmarker', body, async (ctx)=>{
 	//TODO verification
     const marker = ctx.request.files.marker;
+	const newMarkerPath =  path.join(__dirname, '/server/static/markers/', marker.originalFilename);
     try{
-    	await fs.rename(marker.filepath, path.join(__dirname, '/server/static/markers/', marker.originalFilename), (err) => {
+    	await fs.rename(marker.filepath, newMarkerPath, (err) => {
         	if (err) throw err;
        		console.log('Rename complete!');
    		});
@@ -34,7 +36,7 @@ const body = koaBody({
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-
+	database.insertMarker({ctx.body.markerName, })
 
     ctx.status = 200;
 });

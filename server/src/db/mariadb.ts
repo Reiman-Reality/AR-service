@@ -31,6 +31,7 @@ export async function getAllEvents() {
     try{
         const connection = await pool.getConnection();
         const data = await connection.query( `SELECT * FROM EVENT_TABLE`);
+        console.log(data);
     } catch( exception: unknown) {
         console.log(exception);
     }
@@ -60,10 +61,12 @@ export async function getAllMarkers() {
 export async function insertMarker( data: markerData) {
     try {
         const connection = await pool.getConnection();
-        await connection.query(`INSERT INTO MARKERS (marker_id, server_path, created_on)
+        await connection.query(`INSERT INTO MARKERS (marker_id, file_path, inserted_on)
         VALUES (uuid(), ${data.filepath}, ${data.insertedOn})`);
+        return true;
     } catch( exception: unknown) {
         console.log(exception);
+        return false;
     }
 }
 
