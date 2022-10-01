@@ -1,7 +1,6 @@
 import { connect } from 'http2';
 import * as mariadb from 'mariadb';
-import {markerData} from '../types/dbTypes/markerType'
-import {modelData} from '../types/dbTypes/modelType'
+import {markerData, modelData, eventData} from '../types/dbTypes/databaseTypes'
 
 var pool: mariadb.Pool;
 
@@ -37,6 +36,16 @@ export async function getAllEvents() {
     }
 }
 
+export async function addEvent(event: eventData) {
+    try{
+        const connection = await pool.getConnection();
+        await connection.query(`INSERT INTO MARKERS (event_id, created_on)
+        VALUES (uuid(), ${event.insertedOn})`);
+    } catch( exception:unknown ){
+        console.log(exception);
+    }
+}
+
 export async function getAllMarkers() {
     try {
         const connection = await pool.getConnection();
@@ -63,7 +72,7 @@ export async function updateMarker( data: markerData) {
         const connection = await pool.getConnection();
         await connection.query(`UPDATE MARKERS
         WHERE marker_id = ${data.markerID}
-        SET`);
+        SET server_path = ${data.filepath}`);
         return true;
     } catch (exception: unknown) {
         console.log('exception');

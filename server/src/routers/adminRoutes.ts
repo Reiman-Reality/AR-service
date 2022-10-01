@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import fs from "node:fs";
+import fsPromises from "node:fs/promises";
 import koaBody from 'koa-body';
 import path from 'path';
 import serve from 'koa-static';
@@ -24,7 +24,7 @@ const body = koaBody({
 	//TODO verification
     const marker = ctx.request.files.marker;
     try{
-    	await fs.rename(marker.filepath, path.join(__dirname, '/server/static/markers/', marker.originalFilename), (err) => {
+    	await fsPromises.rename(marker.filepath, path.join(__dirname, '/server/static/markers/', marker.originalFilename), (err) => {
         	if (err) throw err;
        		console.log('Rename complete!');
    		});
