@@ -1,5 +1,6 @@
 import Router from 'koa-router';
-import fs from "node:fs";
+import fs from "node:fs"
+import fsPromise from "node:fs/promises";
 import koaBody from 'koa-body';
 import path from 'path';
 import serve from 'koa-static';
@@ -21,13 +22,12 @@ const body = koaBody({
  */
  adminRouter.post('/api/addmarker', body, async (ctx)=>{
     const marker = ctx.request.files.marker;
+	const newPath =  path.join(__dirname, '/server/static/markers/', marker.originalFilename);
     try{
-    	await fs.rename(marker.filepath, path.join(__dirname, '/server/static/markers/', marker.originalFilename), (err) => {
-        	if (err) throw err;
-       		console.log('Rename complete!');
-   		});
+    	await fsPromise.rename(marker.filepath, newPath);
     } catch (err:unknown) {
 		console.log(err);
+		fs.unlink(marker.filepath, (err) => console.log(err));
 		ctx.status(500);
 		ctx.body('failed to upload marker please try again');
 		return;
@@ -40,12 +40,8 @@ const body = koaBody({
  */
 adminRouter.post('/api/addmodel', body, async (ctx)=>{
     const model = ctx.request.files?.model;
-    console.log(model);
     try{
-    	await fs.rename(model.filepath, __dirname + '/static/models/' + model.originalFilename, (err) => {
-        	if (err) throw err;
-       		console.log('Rename complete!');
-   		});
+    	await fsPromise.rename(model.filepath, __dirname + '/static/models/' + model.originalFilename);
     } catch (err:unknown) {
 		console.log(err);
         fs.unlink(model.filepath, (err) => console.log(err));
