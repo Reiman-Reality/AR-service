@@ -1,7 +1,7 @@
-var selectBox = document.getElementById("left-column");
-var objectsFrame = document.getElementById("nft-objects");
-var modelsFrame = document.getElementById("ar-models");
-var eventsFrame = document.getElementById("events");
+const selectBox: HTMLElement = document.getElementById("left-column");
+const objectsFrame: HTMLElement = document.getElementById("nft-objects");
+const modelsFrame: HTMLElement = document.getElementById("ar-models");
+const eventsFrame: HTMLElement = document.getElementById("events");
 
 function changeFrame(): void {
     switch (this.value) {
