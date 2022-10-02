@@ -38,6 +38,9 @@ const body = koaBody({
 		return;
     }
 	const cleanedData = verifyMarker(ctx.body, newMarkerPath);
+	if(!cleanedData) {
+		ctx.status(400);
+	}
 	database.insertMarker(cleanedData)
 
     ctx.status = 200;
