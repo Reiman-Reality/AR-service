@@ -61,8 +61,8 @@ export async function getAllMarkers() {
 export async function insertMarker( data: markerData) {
     try {
         const connection = await pool.getConnection();
-        await connection.query(`INSERT INTO MARKERS (marker_id, file_path, inserted_on)
-        VALUES (uuid(), ${data.filepath}, ${data.insertedOn})`);
+        await connection.query(`INSERT INTO MARKERS (marker_id, name, file_path, inserted_on)
+        VALUES (uuid(), ${data.name}, ${data.filepath}, ${data.insertedOn})`);
         return true;
     } catch( exception: unknown) {
         console.log(exception);

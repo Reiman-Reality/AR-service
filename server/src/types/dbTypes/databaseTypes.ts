@@ -1,5 +1,6 @@
 export interface markerData {
     insertedOn: Date,
+    name: string,
     markerID: string,
     filepath: string,
 }

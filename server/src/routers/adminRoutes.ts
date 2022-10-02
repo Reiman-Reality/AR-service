@@ -6,6 +6,7 @@ import * as database from "../db/mariadb"
 import serve from 'koa-static';
 import { fileURLToPath } from 'url';
 import { parseIsolatedEntityName } from 'typescript';
+import { markerData } from '../types/dbTypes/databaseTypes';
 
 const adminRouter = new Router();
 // Have to do this since with TS and ES 2022 you don't get the __dirname variable :(
@@ -36,7 +37,8 @@ const body = koaBody({
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	database.insertMarker({ctx.body.markerName, })
+	const cleanedData = verifyMarker(ctx.body, newMarkerPath);
+	database.insertMarker(cleanedData)
 
     ctx.status = 200;
 });
@@ -82,6 +84,20 @@ adminRouter.get('/home',body,async (ctx) =>{
 //TODO
 function verifyLogin(cookie : string):boolean {
 	return true;
+}
+
+function verifyMarker( formData:any, newFilePath:string ){
+	if(! formData.name && formData.name.length > 50 ) {
+		return null;
+	}
+	const cleanedData: markerData = {
+		insertedOn: new Date(),
+		name: formData.body.name,
+		markerID: null,
+		filepath: newFilePath,
+	}
+
+	return cleanedData;
 }
 
 export {adminRouter};
