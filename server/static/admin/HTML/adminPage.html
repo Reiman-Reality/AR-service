@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <head>
-	<script src="static/admin/js/page.js" type="text/js"></script>
+	<script src="static/admin/js/adminPage.js" type="text/js"></script>
+	<style>
+.columnA { float: left; width: auto; }
+.columnB { float: left; width: 100%; }
+.row:after { content: ""; display: table; clear: both; }
+.framed { width: 100%; height: 700px; } /* TODO fix height */
+	</style>
 </head>
 <body>
-	<div class="body">
-		<div id="adminHeader">
+	<div class="row" style="display: flex;">
+		<div class="columnA">
+			<select size="3" id="left-column" style="overflow:auto;">
+				<option value="0" selected="selected">Natural Feature Tracking Objects</option>
+				<option value="1">AR Models</option>
+				<option value="2">Events</option>
+			</select>
 		</div>
-		<div id="adminSidebar">
-		</div>
-		<div id="eventsPage">
-			<div id="eventsHeader">
-			</div>
-			<div id="eventsContent">
-			</div>
-		</div>
-		<div id="markersPage">
-		</div>
-		<div id="modelsPage">
+		<div class="columnB" style="display: flex;">
+			<iframe id="nft-objects" src="./nft-objects.html" class="framed"></iframe> <!-- TODO fix src -->
+			<iframe id="ar-models" src="https://archive.org" class="framed" hidden></iframe> <!-- TODO fix src -->
+			<iframe id="ar-models" src="https://www.wikipedia.org" class="framed" hidden></iframe> <!-- TODO fix src; determine if needed -->
 		</div>
 	</div>
 </body>
