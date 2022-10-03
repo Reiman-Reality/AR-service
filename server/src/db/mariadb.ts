@@ -31,7 +31,7 @@ export async function getAllEvents() {
     try{
         const connection = await pool.getConnection();
         const data = await connection.query( `SELECT * FROM EVENT_TABLE`);
-        console.log(data);
+        console.log(typeof(data));
     } catch( exception: unknown) {
         console.log(exception);
     }
@@ -51,18 +51,31 @@ export async function getAllMarkers() {
     try {
         const connection = await pool.getConnection();
         const data = await connection.query("SELECT * FROM MARKERS");
-        console.log(data);
+        const keys = Object.keys(data);
+        const returnData = [];
+        for( const key of keys ) {
+            if(key === 'meta') {
+                break;
+            }
+
+            returnData.push( data[key] );
+        }
+        return returnData;
     }
     catch(exception: unknown) {
         console.log(exception);
     }
 }
 
+export async function linkMarkerToEvent(markerID:string, eventID:string) {
+    
+}
+
 export async function insertMarker( data: markerData) {
     try {
         const connection = await pool.getConnection();
         await connection.query(`INSERT INTO MARKERS (marker_id, name, file_path, inserted_on)
-        VALUES (uuid(), ${data.name}, ${data.filepath}, ${data.insertedOn})`);
+        VALUES (uuid(), "${data.name}", "${data.filepath}", "${data.insertedOn}")`);
         return true;
     } catch( exception: unknown) {
         console.log(exception);

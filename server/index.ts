@@ -17,7 +17,7 @@ await connectDatabase();
 
 await ping();
 
-await getAllMarkers();
+console.log( await getAllMarkers() );
 
 
 

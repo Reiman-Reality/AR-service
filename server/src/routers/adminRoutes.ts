@@ -26,7 +26,7 @@ const body = koaBody({
  adminRouter.post('/api/addmarker', body, async (ctx)=>{
 	//TODO verification
     const marker = ctx.request.files.marker;
-	const newMarkerPath =  path.join(__dirname, '/server/static/markers/', marker.originalFilename);
+	const newMarkerPath =  path.join(__dirname, '/static/markers/', marker.originalFilename);
     try{
     	await fs.rename(marker.filepath, newMarkerPath, (err) => {
         	if (err) throw err;
@@ -38,11 +38,18 @@ const body = koaBody({
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	const cleanedData = verifyMarker(ctx.body, newMarkerPath);
+	console.log(ctx.request.body);
+	const cleanedData = verifyMarker(ctx.request.body, newMarkerPath);
 	if(!cleanedData) {
-		ctx.status(400);
+		ctx.status=400;
+		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
+		return;
 	}
-	database.insertMarker(cleanedData)
+	if( ! await database.insertMarker(cleanedData) ){
+		ctx.status = 500;
+		ctx.body = {message:"something went wrong on our end please try again later"};
+		return;
+	}
 
     ctx.status = 200;
 });
@@ -96,7 +103,7 @@ function verifyMarker( formData:any, newFilePath:string ){
 	}
 	const cleanedData: markerData = {
 		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
-		name: formData.body.name,
+		name: formData.name,
 		markerID: null,
 		filepath: newFilePath,
 	}
