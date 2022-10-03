@@ -84,8 +84,8 @@ adminRouter.get('/login', body, async (ctx) => {
 	ctx.redirect('/home');
 });
 
-adminRouter.get('/api/getModels', (ctx) => {
-
+adminRouter.get('/api/getModels', async (ctx) => {
+		await database.getAllModels();
 });
 
 adminRouter.get('/home',body,async (ctx) =>{

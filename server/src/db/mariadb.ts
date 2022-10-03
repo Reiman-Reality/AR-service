@@ -100,12 +100,22 @@ export async function getAllModels() {
     try {
         const connection = await pool.getConnection();
         const data = await connection.query("SELECT * FROM MODELS");
-        console.log(data);
+        const keys = Object.keys(data);
+        const returnData = [];
+        for( const key of keys ) {
+            if(key === 'meta') {
+                break;
+            }
+
+            returnData.push( data[key] );
+        }
+        return returnData;
     }
     catch(exception: unknown) {
         console.log(exception);
     }
 }
+
 
 export async function insertModel(data: modelData) {
     try {
