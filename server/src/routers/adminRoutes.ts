@@ -34,7 +34,7 @@ const body = koaBody({
    		});
     } catch (err:unknown) {
 		console.log(err);
-		ctx.status(500);
+		ctx.status=400;
 		ctx.body('failed to upload marker please try again');
 		return;
     }
@@ -61,7 +61,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
     } catch (err:unknown) {
 		console.log(err);
         fs.unlink(model.filepath, (err) => console.log(err));
-		ctx.status(500);
+		ctx.status=400;
 		ctx.body('failed ot upload marker please try again');
 		return;
     }
