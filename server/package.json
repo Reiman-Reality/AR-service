@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/index.js"
+    "start": "npm install && tsc && node dist/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "@types/koa": "^2.13.5",
     "@types/koa__router": "^8.0.11",
     "@types/node": "^18.7.17",
+    "dateformat": "^5.0.3",
     "dotenv": "^16.0.2",
     "koa": "^2.13.4",
     "koa-body": "^5.0.0",

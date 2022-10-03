@@ -1,8 +1,9 @@
 import Router from 'koa-router';
 import fs from "node:fs";
 import koaBody from 'koa-body';
+import dateFormat from 'dateformat';
 import path from 'path';
-import * as database from "../db/mariadb"
+import * as database from "../db/mariadb.js"
 import serve from 'koa-static';
 import { fileURLToPath } from 'url';
 import { parseIsolatedEntityName } from 'typescript';
@@ -90,11 +91,11 @@ function verifyLogin(cookie : string):boolean {
 }
 
 function verifyMarker( formData:any, newFilePath:string ){
-	if(! formData.name && formData.name.length > 50 ) {
+	if( !formData.name || formData.name.length > 50 ) {
 		return null;
 	}
 	const cleanedData: markerData = {
-		insertedOn: new Date(),
+		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
 		name: formData.body.name,
 		markerID: null,
 		filepath: newFilePath,
