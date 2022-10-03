@@ -1,5 +1,6 @@
 import Router from 'koa-router';
 import fs from "node:fs";
+import fsPromise from "node:fs/promises";
 import koaBody from 'koa-body';
 import dateFormat from 'dateformat';
 import path from 'path';
@@ -28,13 +29,11 @@ const body = koaBody({
     const marker = ctx.request.files.marker;
 	const newMarkerPath =  path.join(__dirname, '/static/markers/', marker.originalFilename);
     try{
-    	await fs.rename(marker.filepath, newMarkerPath, (err) => {
-        	if (err) throw err;
-       		console.log('Rename complete!');
-   		});
+    	await fsPromise.rename(marker.filepath, newMarkerPath);
     } catch (err:unknown) {
 		console.log(err);
-		ctx.status=400;
+		fs.unlink(marker.filepath, (err) => console.log(err));
+		ctx.status(500);
 		ctx.body('failed to upload marker please try again');
 		return;
     }
@@ -59,16 +58,12 @@ const body = koaBody({
  */
 adminRouter.post('/api/addmodel', body, async (ctx)=>{
     const model = ctx.request.files?.model;
-    console.log(model);
     try{
-    	await fs.rename(model.filepath, __dirname + '/static/models/' + model.originalFilename, (err) => {
-        	if (err) throw err;
-       		console.log('Rename complete!');
-   		});
+    	await fsPromise.rename(model.filepath, __dirname + '/static/models/' + model.originalFilename);
     } catch (err:unknown) {
 		console.log(err);
         fs.unlink(model.filepath, (err) => console.log(err));
-		ctx.status=400;
+		ctx.status(500);
 		ctx.body('failed ot upload marker please try again');
 		return;
     }
