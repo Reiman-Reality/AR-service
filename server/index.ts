@@ -35,8 +35,8 @@ function getServerRoutes(adminRouter, router) {
 
 server.use(getServerRoutes(adminRouter, router));
 
-server.use(serve('/static/user'));
+server.use(serve('./static/user'));
 
-server.use(serve('/static/markers'));
+server.use(serve('./static/markers'));
 
 server.listen(port);
