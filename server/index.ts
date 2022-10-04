@@ -15,14 +15,6 @@ const port = process.env.PORT ?? 8080;
 
 await connectDatabase();
 
-await ping();
-
-console.log( await getAllMarkers() );
-
-
-
-
-
 router.get('/home', async (ctx) =>{
 });
 

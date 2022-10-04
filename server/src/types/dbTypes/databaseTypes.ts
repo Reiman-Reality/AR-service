@@ -13,4 +13,6 @@ export interface modelData {
 
 export interface eventData {
     insertedOn: Date,
+    eventID: string|null,
+    eventName: string,
 }

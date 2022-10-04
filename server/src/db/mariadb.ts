@@ -40,8 +40,9 @@ export async function getAllEvents() {
 export async function addEvent(event: eventData) {
     try{
         const connection = await pool.getConnection();
-        await connection.query(`INSERT INTO MARKERS (event_id, created_on)
-        VALUES (uuid(), ${event.insertedOn})`);
+        const success = await connection.query(`INSERT INTO EVENTS (event_id, name, created_on)
+        VALUES (uuid(), "${event.eventName}", "${event.insertedOn}")`);
+        console.log(success);
     } catch( exception:unknown ){
         console.log(exception);
     }
