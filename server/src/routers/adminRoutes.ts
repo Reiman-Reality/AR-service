@@ -29,7 +29,15 @@ const body = koaBody({
 		ctx.status = 400;
 		ctx.body = {'message': "failed to verify event data please try again later"}
 	}
-	await database.addEvent(cleanedData)
+	const id = await database.addEvent(cleanedData);
+	console.log(id);
+	if(!id) {
+		ctx.status = 500;
+		ctx.body = {"message" : "there was a error inserting this event into our database please try again later"};
+		return;
+	}
+	//TODO link to speicied marker and models
+	ctx.status = 200;
  });
 
 /**

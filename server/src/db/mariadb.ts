@@ -1,5 +1,6 @@
 import { connect } from 'http2';
 import * as mariadb from 'mariadb';
+import {v4} from 'uuid';
 import {markerData, modelData, eventData} from '../types/dbTypes/databaseTypes'
 
 var pool: mariadb.Pool;
@@ -40,9 +41,10 @@ export async function getAllEvents() {
 export async function addEvent(event: eventData) {
     try{
         const connection = await pool.getConnection();
+        const id = v4();
         const success = await connection.query(`INSERT INTO EVENTS (event_id, name, created_on)
-        VALUES (uuid(), "${event.eventName}", "${event.insertedOn}")`);
-        console.log(success);
+        VALUES ("${id}", "${event.eventName}", "${event.insertedOn}");`);
+        return id;
     } catch( exception:unknown ){
         console.log(exception);
     }
