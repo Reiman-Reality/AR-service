@@ -71,6 +71,16 @@ export async function getAllMarkers() {
 }
 
 export async function linkMarkerToEvent(markerID:string, eventID:string) {
+    try{
+        const connection = await pool.getConnection();
+        await connection.query(`UPDATE MARKERS 
+        WHERE marker_id = ${markerID}
+        SET event_id = ${eventID}`);
+        return true;
+    }catch( exception: unknown) {
+        console.log(exception);
+        return false;
+    }
     
 }
 
