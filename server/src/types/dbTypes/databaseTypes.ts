@@ -6,8 +6,9 @@ export interface markerData {
 }
 
 export interface modelData {
+    name: string,
     insertedOn: Date,
-    markerID: string,
+    modelID: string,
     filepath: string,
 }
 

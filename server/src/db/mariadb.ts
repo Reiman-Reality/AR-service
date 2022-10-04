@@ -133,17 +133,22 @@ export async function getAllModels() {
 export async function insertModel(data: modelData) {
     try {
         const connection = await pool.getConnection();
-        const data = await connection.query(`INSERT INTO MODELS (model_id, string_path)
-        VALUES (1, "hello")`);
+        await connection.query(`INSERT INTO MODELS (model_id, name, file_path, inserted_on)
+        VALUES (uuid(), "${data.name}", "${data.filepath}", "${data.insertedOn}")`);
+        return true;
     } catch( exception: unknown) {
         console.log(exception);
+        return false;
     }
 }
 
 export async function updateModel(data: modelData) {
     try {
         const connection = await pool.getConnection();
-        const data = await connection.query("UPDATE MODELS SET string_path = 'hehehe' WHERE model_id =1");
+        await connection.query(`UPDATE MODELS
+        WHERE model_id = ${data.modelID}
+        SET file_path = ${data.filepath}`);
+        return true;;
     } catch( exception: unknown) {
         console.log(exception);
     }
@@ -152,10 +157,9 @@ export async function updateModel(data: modelData) {
 export async function deleteModel(data: modelData) {
     try {
         const connection = await pool.getConnection();
-        const data = await connection.query("DELETE FROM MODELS WHERE model_id =1");
+        await connection.query(`DELETE FROM MODELS HERE model_id = ${data.modelID}`);;
+        return true;;
     } catch( exception: unknown) {
         console.log(exception);
     }
 }
-
-
