@@ -37,6 +37,7 @@ const body = koaBody({
 		return;
 	}
 	//TODO link to speicied marker and models
+	await database.linkMarkerToEvent( ctx.request.body.markerID as string, id );
 	ctx.status = 200;
  });
 
