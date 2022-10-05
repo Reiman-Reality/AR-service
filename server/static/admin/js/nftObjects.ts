@@ -20,8 +20,8 @@ window.addEventListener("DOMContentLoaded", async ()=>{
         return;
     }
 
-    for (threeDEvent in data) {
-        makeTableEntry(threeDEvent);
+    for (let i = 0; i < data.length; i++) {
+        makeTableEntry(data[i]);
     }
 });
 
@@ -29,9 +29,12 @@ function makeTableEntry(data) : void {
     const tableEntryList = document.getElementById("boxList");
     const tableEntry = document.createElement("li");
     const tableEntryHeader = document.createElement("div");
+    const tableEntryHeaderLink = document.createElement("a");
 
+    tableEntryHeaderLink.setAttribute("href", data.websiteLink);
+    tableEntryHeaderLink.textContent += data.name
+    tableEntryHeader.appendChild(tableEntryHeaderLink);
     tableEntryHeader.setAttribute("class", "boxHeading");
-    tableEntryHeader.innerHTML += "Test Heading"; // TODO possible security vulnerability, probably won't be needed anyways
     tableEntry.appendChild(tableEntryHeader);
 
     tableEntry.innerHTML += "Test Body"; // TODO possible security vulnerability, probably won't be needed anyways
