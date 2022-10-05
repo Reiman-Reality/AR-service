@@ -1,33 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<script
-  src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
-<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
-
-
-<!-- style for the loader -->
-<style>
-  .arjs-loader {
-    height: 50%;
-    width: 50%;
-    position: relative;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    z-index: 9999;
-    display: block;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .arjs-loader div {
-    text-align: center;
-    font-size: 1.25em;
-    color: white;
-  }
-</style>
-
 <head>
   <title>Reiman Reality</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -78,42 +51,11 @@
         <!--Video-->
         <div id="container">
           <center>
-            <div class="arjs-loader">
-              <div>Loading, please wait...</div>
-            </div>
-
             <!-- a-frame scene -->
-            <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
-              arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;">
-              <!-- a-nft is the anchor that defines an Image Tracking entity -->
-              <!-- on 'url' use the path to the Image Descriptors created before. -->
-              <!-- the path should end with the name without the extension e.g. if file is 'pinball.fset' the path should end with 'pinball' -->
-              <a-nft type="nft" url="./FrontEnd/demo/square" smooth="true" smoothCount="10" smoothTolerance=".01"
-                smoothThreshold="5">
-                <!-- as a child of the a-nft entity, you can define the content to show. here's a GLTF model entity -->
-                <a-entity gltf-model="./FrontEnd/demo/magnemite/scene.gltf" scale="10 10 10" position="10 10 0"
-                  animation-mixer='' rotation="-90 0 0">
-                </a-entity>
-              </a-nft>
-              <!-- static camera that moves according to the device movemenents -->
-              <a-entity camera></a-entity>
-            </a-scene>
+            <iframe allowfullscreen="yes" src="./aframescene.html">
+            </iframe>
           </center>
         </div>
-
-        <script>
-          var video = document.querySelector("#videoElement");
-
-          if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
-              .then(function (stream) {
-                video.srcObject = stream;
-              })
-              .catch(function (err0r) {
-                console.log("Something went wrong!");
-              });
-          }
-        </script>
 
         <!--End Video-->
 
