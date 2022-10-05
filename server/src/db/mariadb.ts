@@ -69,13 +69,28 @@ export async function getAllMarkers() {
         console.log(exception);
     }
 }
-
-export async function linkMarkerToEvent(markerID:string, eventID:string) {
+export async function linkMarkerToEvent(markerID:string , eventID:string) {
     try{
         const connection = await pool.getConnection();
         await connection.query(`UPDATE MARKERS 
         WHERE marker_id = ${markerID}
         SET event_id = ${eventID}`);
+        return true;
+    }catch( exception: unknown) {
+        console.log(exception);
+        return false;
+    }
+    
+}
+
+export async function linkModelToEvent(modelID: string[] , eventID:string) {
+    try{
+        const connection = await pool.getConnection();
+        for (let i = 0; i < modelID.length; i ++){
+        await connection.query(`UPDATE MODELS 
+        WHERE model_id = ${modelID[i]}
+        SET event_id = ${eventID}`);
+        }
         return true;
     }catch( exception: unknown) {
         console.log(exception);
