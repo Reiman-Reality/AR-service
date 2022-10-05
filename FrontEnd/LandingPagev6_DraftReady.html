@@ -1,6 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<script
+  src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+
+
+<!-- style for the loader -->
+<style>
+  .arjs-loader {
+    height: 50%;
+    width: 50%;
+    position: relative;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: block;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .arjs-loader div {
+    text-align: center;
+    font-size: 1.25em;
+    color: white;
+  }
+</style>
+
 <head>
   <title>Reiman Reality</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,91 +42,108 @@
 <!-- Start Body -->
 
 <body>
- <div id="page-container">
-   <div id="content-wrap">
-    
-    <!--Header-->
-    <div class="header">
-        
-      <!--Logo-->
-       <a href="https://www.reimangardens.com/" class="logo">
-        <img 
-          src="Images/ReimanGardens_Logo_White.png" 
-          alt="Reiman Gardens: Iowa State University" width="150px" height="auto">
-        </img>
-      </a>
+  <div id="page-container">
+    <div id="content-wrap">
 
-      <!--Header Links-->
-      <div class="header-right">
-        <a href="">Reiman Reality</a>
-        <a href="">Contact</a>
-        <a href="">About</a>
+      <!--Header-->
+      <div class="header">
+
+        <!--Logo-->
+        <a href="https://www.reimangardens.com/" class="logo">
+          <img src="Images/ReimanGardens_Logo_White.png" alt="Reiman Gardens: Iowa State University" width="150px"
+            height="auto">
+          </img>
+        </a>
+
+        <!--Header Links-->
+        <div class="header-right">
+          <a href="">Reiman Reality</a>
+          <a href="">Contact</a>
+          <a href="">About</a>
+        </div>
+
       </div>
-
-    </div>
-    <!--End Header-->
+      <!--End Header-->
 
 
-    <!--AR.js API-->
-    <!--<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js">-->
+      <!--AR.js API-->
+      <!--<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js">-->
 
 
-    <!--Intro-->
-    <div style="padding-left:20px">
-      <h1 style="font-family: Times New Roman;" class="intro">Reiman Reality</h1>
+      <!--Intro-->
+      <div style="padding-left:20px">
+        <h1 style="font-family: Times New Roman;" class="intro">Reiman Reality</h1>
         <p class="intro">Utilize your camera to experience the garden in a way you <i>never</i> have before.</p>
 
-    <!--Video-->
-    <div id="container">
-      <center>
-        <video autoplay="true" id="videoElement" width="auto" height="auto">
-          Your browser does not support video.
-        </video>
-      </center>
-    </div>
+        <!--Video-->
+        <div id="container">
+          <center>
+            <div class="arjs-loader">
+              <div>Loading, please wait...</div>
+            </div>
 
-      <script>
-      var video = document.querySelector("#videoElement");
-
-      if (navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true })
-          .then(function (stream) {
-            video.srcObject = stream;
-          })
-          .catch(function (err0r) {
-            console.log("Something went wrong!");
-          });
-      }
-      </script>
-
-    <!--End Video-->
-
-<!--Button-->
-      <center><button>Loading...</button></center>
-<!--End Button-->
-
-    </div>
-   </div>
-
-   <!-- Start Footer-->
-   
-   <footer id="footer">
-     <div class="container">
-            <ul class="social-icons">
-              <li><a class="facebook" href="https://www.facebook.com/ReimanGardens/"><i class="fa fa-facebook"></i></a></li>
-              
-              <li><a class="twitter" href="https://twitter.com/ReimanGardensIA"><i class="fa fa-twitter"></i></a></li>
-              
-              <li><a class="rss" href="https://www.reimangardens.com/feed/"><i class="fa fa-rss"></i></a></li>  
-
-              <li><a class="youtube" href="https://www.youtube.com/user/ReimanGardens"><i class="fa fa-youtube"></i></a></li>
-            </ul>
-
+            <!-- a-frame scene -->
+            <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
+              arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;">
+              <!-- a-nft is the anchor that defines an Image Tracking entity -->
+              <!-- on 'url' use the path to the Image Descriptors created before. -->
+              <!-- the path should end with the name without the extension e.g. if file is 'pinball.fset' the path should end with 'pinball' -->
+              <a-nft type="nft" url="./FrontEnd/demo/square" smooth="true" smoothCount="10" smoothTolerance=".01"
+                smoothThreshold="5">
+                <!-- as a child of the a-nft entity, you can define the content to show. here's a GLTF model entity -->
+                <a-entity gltf-model="./FrontEnd/demo/magnemite/scene.gltf" scale="10 10 10" position="10 10 0"
+                  animation-mixer='' rotation="-90 0 0">
+                </a-entity>
+              </a-nft>
+              <!-- static camera that moves according to the device movemenents -->
+              <a-entity camera></a-entity>
+            </a-scene>
+          </center>
         </div>
-      </div>
-   </footer>
 
- </div>
+        <script>
+          var video = document.querySelector("#videoElement");
+
+          if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+              .then(function (stream) {
+                video.srcObject = stream;
+              })
+              .catch(function (err0r) {
+                console.log("Something went wrong!");
+              });
+          }
+        </script>
+
+        <!--End Video-->
+
+        <!--Button-->
+        <center><button>Loading...</button></center>
+        <!--End Button-->
+
+      </div>
+    </div>
+
+    <!-- Start Footer-->
+
+    <footer id="footer">
+      <div class="container">
+        <ul class="social-icons">
+          <li><a class="facebook" href="https://www.facebook.com/ReimanGardens/"><i class="fa fa-facebook"></i></a></li>
+
+          <li><a class="twitter" href="https://twitter.com/ReimanGardensIA"><i class="fa fa-twitter"></i></a></li>
+
+          <li><a class="rss" href="https://www.reimangardens.com/feed/"><i class="fa fa-rss"></i></a></li>
+
+          <li><a class="youtube" href="https://www.youtube.com/user/ReimanGardens"><i class="fa fa-youtube"></i></a>
+          </li>
+        </ul>
+
+      </div>
+  </div>
+  </footer>
+
+  </div>
 </body>
 
 </html>
