@@ -128,13 +128,13 @@ adminRouter.get('/api/getModels', async (ctx) => {
 		ctx.body = await database.getAllModels();
 });
 
-adminRouter.post('/api/getmodelsbymarker', async (ctx) => {
+adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
 	//TODO Verification
 	console.log(ctx.request);
 	const markers = await database.getModelsByMarkerID(ctx.request.body.marker_id);
 	if( !markers ){
 		ctx.status=400;
-		ctx.body({'message': "Server error please try again later"});
+		ctx.body = {'message': "Server error please try again later"};
 		return;
 	}
 	ctx.status=200;
