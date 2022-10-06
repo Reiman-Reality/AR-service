@@ -38,17 +38,40 @@ export async function getAllEvents() {
     }
 }
 
+
+export async function getModelsByMarkerID(input: string) {
+    try {
+        const connection = await pool.getConnection();
+        const data = await connection.query(`SELECT * FROM MODELS inner join EVENTS on MODELS.model_id = EVENTS.model_id where EVENTS.marker_id = ${input}`);
+        const keys = Object.keys(data);
+        const returnData = [];
+        for( const key of keys ) {
+            if(key === 'meta') {
+                break;
+            }
+
+            returnData.push( data[key] );
+        }
+        return returnData;
+    }
+    catch(exception: unknown) {
+        console.log(exception);
+    }
+}
+
 export async function addEvent(event: eventData) {
     try{
         const connection = await pool.getConnection();
         const id = v4();
-        const success = await connection.query(`INSERT INTO EVENTS (event_id, name, created_on)
-        VALUES ("${id}", "${event.eventName}", "${event.insertedOn}");`);
+        const success = await connection.query(`INSERT INTO EVENTS (event_id, name, created_on, marker_id, model_id)
+        VALUES ("${id}", "${event.eventName}", "${event.insertedOn}", "${event.marker_id}", "${event.model_id}");`);
         return id;
     } catch( exception:unknown ){
         console.log(exception);
     }
 }
+
+
 
 export async function getAllMarkers() {
     try {
@@ -99,6 +122,8 @@ export async function linkModelToEvent(modelID: string[] , eventID:string) {
     
 }
 
+
+
 export async function insertMarker( data: markerData) {
     try {
         const connection = await pool.getConnection();
@@ -142,6 +167,27 @@ export async function getAllModels() {
     catch(exception: unknown) {
         console.log(exception);
     }
+}
+
+export async function getModelsByEvent(eventID: string) {
+    try{
+        const connection = await pool.getConnection();
+       const models = await connection.query(`SELECT * FROM MODELS WHERE event_id = ${eventID}`);
+       const keys = Object.keys(models);
+       const returnData = [];
+       for( const key of keys ) {
+        if(key === 'meta') {
+            break;
+        }
+        returnData.push( models[key] );
+    }
+       return returnData;
+    
+    }catch( exception: unknown) {
+        console.log(exception);
+        return null;
+    }
+    
 }
 
 

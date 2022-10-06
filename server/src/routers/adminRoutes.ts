@@ -24,7 +24,7 @@ const body = koaBody({
 
  adminRouter.post('/api/addEvent',body, async(ctx) =>{
 	//TODO Verification
-	const cleanedData = verifyEventData( ctx.request.body );
+	const cleanedData = verifyEventData(ctx.request.body );
 	if(!cleanedData) {
 		ctx.status = 400;
 		ctx.body = {'message': "failed to verify event data please try again later"}
@@ -36,8 +36,7 @@ const body = koaBody({
 		ctx.body = {"message" : "there was a error inserting this event into our database please try again later"};
 		return;
 	}
-	//TODO link to speicied marker and models
-	await database.linkMarkerToEvent( ctx.request.body.markerID as string, id );
+
 	ctx.status = 200;
  });
 
@@ -129,6 +128,19 @@ adminRouter.get('/api/getModels', async (ctx) => {
 		ctx.body = await database.getAllModels();
 });
 
+adminRouter.post('/api/getmodelsbymarker', async (ctx) => {
+	//TODO Verification
+	console.log(ctx.request);
+	const markers = await database.getModelsByMarkerID(ctx.request.body.marker_id);
+	if( !markers ){
+		ctx.status=400;
+		ctx.body({'message': "Server error please try again later"});
+		return;
+	}
+	ctx.status=200;
+	ctx.body = markers;
+});
+
 adminRouter.get('/home',body,async (ctx) =>{
 
 });
@@ -151,13 +163,15 @@ function verifyMarkerData( formData:any, newFilePath:string ){
 }
 
 function verifyEventData( data:any ) {
-	if( !data.name || data.name.length > 50) {
+	if( !data.name || data.name.length > 50 || data.marker_id == null || data.model_id == null) {
 		return null;
 	}
 
 	return {
 		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
 		eventName: data.name,
+		marker_id: data.marker_id,
+		model_id: data.model_id
 	} as eventData;
 
 }

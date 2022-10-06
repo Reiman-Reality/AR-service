@@ -16,4 +16,6 @@ export interface eventData {
     insertedOn: Date,
     eventID: string|null,
     eventName: string,
+    marker_id: string,
+    model_id: string,
 }
