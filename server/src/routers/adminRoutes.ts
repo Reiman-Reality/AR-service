@@ -130,7 +130,6 @@ adminRouter.get('/api/getModels', async (ctx) => {
 
 adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
 	//TODO Verification
-	console.log(ctx.request);
 	const markers = await database.getModelsByMarkerID(ctx.request.body.marker_id);
 	if( !markers ){
 		ctx.status=400;
