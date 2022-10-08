@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 
 const adminRouter = new Router();
 // Have to do this since with TS and ES 2022 you don't get the __dirname variable :(
-const __dirname = path.dirname(process.cwd())+'/server';
+const __dirname = process.cwd();
 console.log(__dirname);
 const body = koaBody({
     multipart: true,
@@ -22,7 +22,7 @@ const body = koaBody({
  */
  adminRouter.post('/api/addmarker', body, async (ctx)=>{
     const marker = ctx.request.files.marker;
-	const newPath =  path.join(__dirname, '/server/static/markers/', marker.originalFilename);
+	const newPath =  path.join(__dirname, '/static/markers/', marker.originalFilename);
     try{
     	await fsPromise.rename(marker.filepath, newPath);
     } catch (err:unknown) {
