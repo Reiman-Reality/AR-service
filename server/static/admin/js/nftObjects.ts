@@ -26,10 +26,10 @@ window.addEventListener("DOMContentLoaded", async ()=>{
 });
 
 function makeTableEntry(data) : void {
-    const tableEntryList = document.getElementById("boxList");
-    const tableEntry = document.createElement("li");
-    const tableEntryHeader = document.createElement("div");
-    const tableEntryHeaderLink = document.createElement("a");
+    const tableEntryList : HTMLElement = document.getElementById("boxList");
+    const tableEntry : HTMLElement = document.createElement("li");
+    const tableEntryHeader : HTMLElement = document.createElement("div");
+    const tableEntryHeaderLink : HTMLElement = document.createElement("a");
 
     tableEntryHeaderLink.setAttribute("href", data.websiteLink);
     tableEntryHeaderLink.textContent += data.name
