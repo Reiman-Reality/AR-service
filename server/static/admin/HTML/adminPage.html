@@ -11,16 +11,14 @@
 <body>
 	<div class="row" style="display: flex;">
 		<div class="columnA">
-			<select size="3" id="left-column" style="overflow:auto;">
+			<select size="2" id="left-column" style="overflow:auto;">
 				<option value="0" selected="selected">Natural Feature Tracking Objects</option>
 				<option value="1">AR Models</option>
-				<option value="2">Events</option>
 			</select>
 		</div>
 		<div class="columnB" style="display: flex;">
-			<iframe id="nft-objects" src="static/admin/HTML/nftObjects.html" class="framed"></iframe> <!-- TODO fix src -->
+			<iframe id="nft-objects" src="static/admin/HTML/nftObjects.html" class="framed"></iframe>
 			<iframe id="ar-models" src="https://archive.org" class="framed" hidden></iframe> <!-- TODO fix src -->
-			<iframe id="ar-models" src="https://www.wikipedia.org" class="framed" hidden></iframe> <!-- TODO fix src; determine if needed -->
 		</div>
 	</div>
 </body>
