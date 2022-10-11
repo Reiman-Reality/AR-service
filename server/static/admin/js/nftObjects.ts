@@ -1,7 +1,7 @@
 // TODO Make this TypeScript
 
 window.addEventListener("DOMContentLoaded", async ()=>{
-    const response = await fetch(""); // TODO put API URL here
+    const response = await fetch("admin/api/getMarkers");
     
     if (!response.ok) {
         alert("The server was unable to load the event list. Please refresh the page."); // TODO Put this on the document itself
@@ -30,13 +30,15 @@ function makeTableEntry(data) : void {
     const tableEntry : HTMLElement = document.createElement("li");
     const tableEntryHeader : HTMLElement = document.createElement("div");
     const tableEntryHeaderLink : HTMLElement = document.createElement("a");
+    const tableEntryThumbnail : HTMLElement = document.createElement("img");
 
-    tableEntryHeaderLink.setAttribute("href", data.websiteLink);
+    // tableEntryHeaderLink.setAttribute("href", data.websiteLink); // TODO Get edit link
     tableEntryHeaderLink.textContent += data.name
     tableEntryHeader.appendChild(tableEntryHeaderLink);
     tableEntryHeader.setAttribute("class", "boxHeading");
     tableEntry.appendChild(tableEntryHeader);
 
-    tableEntry.innerHTML += "Test Body"; // TODO possible security vulnerability, probably won't be needed anyways
+    tableEntryThumbnail.setAttribute("src", data.file_path);
+    tableEntry.appendChild(tableEntryThumbnail);
     tableEntryList.appendChild(tableEntry);
 }
