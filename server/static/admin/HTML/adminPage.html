@@ -5,7 +5,7 @@
 .columnA { float: left; width: auto; }
 .columnB { float: left; width: 100%; }
 .row:after { content: ""; display: table; clear: both; }
-.framed { width: 100%; height: 700px; } /* TODO fix height */
+.framed { width: 100%; height: 100%; }
 	</style>
 </head>
 <body>
@@ -16,7 +16,7 @@
 				<option value="1">AR Models</option>
 			</select>
 		</div>
-		<div class="columnB" style="display: flex;">
+		<div class="columnB" style="display: flex; height: 90vh">
 			<iframe id="nft-objects" src="static/admin/HTML/nftObjects.html" class="framed"></iframe>
 			<iframe id="ar-models" src="https://archive.org" class="framed" hidden></iframe> <!-- TODO fix src -->
 		</div>
