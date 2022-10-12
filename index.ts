@@ -17,8 +17,6 @@ const server = new Koa();
 const router = new Router();
 const port = process.env.PORT ?? 8080;
 
-await connectDatabase();
-
 router.get('/home', async (ctx) =>{
 });
 

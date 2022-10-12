@@ -8,7 +8,7 @@ import * as database from "../db/mariadb.js"
 import serve from 'koa-static';
 import { fileURLToPath } from 'url';
 import { parseIsolatedEntityName } from 'typescript';
-import { eventData, markerData, modelData } from '../types/dbTypes/databaseTypes';
+import { eventData, markerData, modelData } from '../types/databaseTypes';
 
 const adminRouter = new Router();
 // Have to do this since with TS and ES 2022 you don't get the __dirname variable :(

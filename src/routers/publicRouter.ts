@@ -10,8 +10,9 @@ const __dirname = process.cwd();
 const publicRouter = new Router();
 
 publicRouter.get('/home', async (ctx) =>{
+	console.log('hi');
 	ctx.type = 'html';
-	ctx.body = fs.createReadStream(path.join(__dirname,'FrontEnd/LandingPage.html'));
+	ctx.body = fs.createReadStream(path.join(__dirname,'/FrontEnd/LandingPage.html'));
 });
 
 export {publicRouter};
