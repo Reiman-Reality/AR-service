@@ -4,19 +4,19 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     const response = await fetch("admin/api/getMarkers");
     
     if (!response.ok) {
-        alert("The server was unable to load the event list. Please refresh the page."); // TODO Put this on the document itself
+        document.body.textContent += "The server was unable to load the event list. Please refresh the page.";
         return;
     }
 
     const data = await response.json();
 
     if (!data) {
-        alert("The event list may be malformed. Please refresh the page."); // TODO Put this on the document itself
+        document.body.textContent += "The event list may be malformed. Please refresh the page.";
         return;
     }
 
     if (data.length < 1) {
-        alert("The event list is empty. Please add a new event."); // TODO Put this on the document itself
+        document.body.textContent += "The event list is empty. Please add a new event.";
         return;
     }
 
