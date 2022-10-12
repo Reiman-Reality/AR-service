@@ -4,6 +4,7 @@ import Router from 'koa-router';
 import serve from 'koa-static';
 import * as dotenv from 'dotenv';
 import { adminRouter } from './src/routers/adminRoutes.js';
+import process from 'node:process';
 import { connectDatabase, getAllMarkers, insertMarker, ping, getAllModels, insertModel, updateModel,deleteModel } from './src/db/mariadb.js';
 
 
