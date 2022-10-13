@@ -5,6 +5,7 @@ import serve from 'koa-static';
 import * as dotenv from 'dotenv';
 import { adminRouter } from './src/routers/adminRoutes.js';
 import process from 'node:process';
+import cors from 'cors'
 import { connectDatabase, getAllMarkers, insertMarker, ping, getAllModels, insertModel, updateModel,deleteModel } from './src/db/mariadb.js';
 
 
@@ -31,5 +32,7 @@ server.use(getServerRoutes(adminRouter, router));
 server.use(serve('./static/user'));
 
 server.use(serve('./static/markers'));
+
+server.use(cors());
 
 server.listen(port);
