@@ -9,19 +9,20 @@
 <body>
     <div id="myData"></div>
     
-    <script>
-        console.log("hoi");
-        fetch('http://localhost:8080/admin/api/getModels')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                appendData(data);
-            })
-            .catch(function (err) {
-                console.log('error: ' + err);
-            });
-        function appendData(data) {
+</body>
+</html>
+
+<script>
+  
+    function makeRequest(){
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", "http://localhost:8080/admin/api/getModels", false);
+        xmlHttp.send(null);
+        appendData(xmlHttp.response);
+
+    }
+
+    function appendData(data) {
             var mainContainer = document.getElementById("myData");
             for (var i = 0; i < data.length; i++) {
                 var div = document.createElement("div");
@@ -29,6 +30,5 @@
                 mainContainer.appendChild(div);
             }
         }
-    </script>
-</body>
-</html>
+    makeRequest();
+</script>
