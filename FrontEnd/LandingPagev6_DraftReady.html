@@ -17,14 +17,14 @@
 <body>
  <div id="page-container">
    <div id="content-wrap">
-    
+
     <!--Header-->
     <div class="header">
-        
+
       <!--Logo-->
        <a href="https://www.reimangardens.com/" class="logo">
-        <img 
-          src="Images/ReimanGardens_Logo_White.png" 
+        <img
+          src="Images/ReimanGardens_Logo_White.png"
           alt="Reiman Gardens: Iowa State University" width="150px" height="auto">
         </img>
       </a>
@@ -49,7 +49,7 @@
       <h1 style="font-family: Times New Roman;" class="intro">Reiman Reality</h1>
         <p class="intro">Utilize your camera to experience the garden in a way you <i>never</i> have before.</p>
 
-    <!--Video-->
+    <!--Video--><!--
     <div id="container">
       <center>
         <video autoplay="true" id="videoElement" width="auto" height="auto">
@@ -71,26 +71,131 @@
           });
       }
       </script>
-
+    -->
     <!--End Video-->
 
-<!--Button-->
-      <center><button>Loading...</button></center>
-<!--End Button-->
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
 
+
+    <!-- style for the loader -->
+    <style>
+      .arjs-loader {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .arjs-loader div {
+        text-align: center;
+        font-size: 1.25em;
+        color: white;
+      }
+    </style>
+
+    <body style="margin : 0px; overflow: hidden;">
+      <!-- minimal loader shown until image descriptors are loaded. Loading may take a while according to the device computational power -->
+      <div class="arjs-loader">
+        <div>Loading, please wait...</div>
+      </div>
+
+      <!-- a-frame scene -->
+      <a-scene
+        vr-mode-ui="enabled: false;"
+        renderer="logarithmicDepthBuffer: true;"
+        embedded
+        arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: true;"
+      >
+        <!-- a-nft is the anchor that defines an Image Tracking entity -->
+        <!-- on 'url' use the path to the Image Descriptors created before. -->
+        <!-- the path should end with the name without the extension e.g. if file is 'pinball.fset' the path should end with 'pinball' -->
+        <a-nft
+          type="nft"
+          url="./FrontEnd/square"
+          smooth="true"
+          smoothCount="10"
+          smoothTolerance=".01"
+          smoothThreshold="5"
+        >
+          <!-- as a child of the a-nft entity, you can define the content to show. here's a GLTF model entity -->
+          <a-entity
+            gltf-model="./FrontEnd/magnemite/scene.gltf"
+            scale="10 10 10"
+            position="10 10 0"
+            animation-mixer=''
+            rotation="-90 0 0"
+          >
+          </a-entity>
+        </a-nft>
+        <!-- static camera that moves according to the device movemenents -->
+        <a-entity camera></a-entity>
+      </a-scene>
+
+
+
+<!--Button-->
+      <center><button onclick = "loadMain()">Loading...</button></center>
+
+
+<!-- Simulate a smartphone / tablet -->
+<div class="mobile-container">
+
+<!-- Top Navigation Menu -->
+<div class="topnav">
+  <a href="#home" class="active">Logo</a>
+  <div id="myLinks">
+    <a href="#news">News</a>
+    <a href="#contact">Contact</a>
+    <a href="#about">About</a>
+  </div>
+  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+    <i class="fa fa-bars"></i>
+  </a>
+</div>
+
+<div style="padding-left:16px">
+  <h3>Vertical Mobile Navbar</h3>
+  <p>This example demonstrates how a navigation menu on a mobile/smart phone could look like.</p>
+  <p>Click on the hamburger menu (three bars) in the top right corner, to toggle the menu.</p>
+</div>
+
+<!-- End smartphone / tablet look -->
+</div>
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myLinks");
+  if (x.style.display === "block") {
+    x.style.display = "none";
+  } else {
+    x.style.display = "block";
+  }
+}
+</script>
+
+
+<!--End Button-->
+<div> <p> </p> </div>
     </div>
    </div>
 
    <!-- Start Footer-->
-   
+
    <footer id="footer">
      <div class="container">
             <ul class="social-icons">
               <li><a class="facebook" href="https://www.facebook.com/ReimanGardens/"><i class="fa fa-facebook"></i></a></li>
-              
+
               <li><a class="twitter" href="https://twitter.com/ReimanGardensIA"><i class="fa fa-twitter"></i></a></li>
-              
-              <li><a class="rss" href="https://www.reimangardens.com/feed/"><i class="fa fa-rss"></i></a></li>  
+
+              <li><a class="rss" href="https://www.reimangardens.com/feed/"><i class="fa fa-rss"></i></a></li>
 
               <li><a class="youtube" href="https://www.youtube.com/user/ReimanGardens"><i class="fa fa-youtube"></i></a></li>
             </ul>
