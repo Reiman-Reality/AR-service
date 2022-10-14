@@ -139,7 +139,7 @@ video{
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
-
+/*
 .mobile-container {
   max-width: 480px;
   margin: auto;
@@ -147,7 +147,7 @@ body {
   height: 500px;
   color: white;
   border-radius: 10px;
-}
+} */
 
 .topnav {
   overflow: hidden;
