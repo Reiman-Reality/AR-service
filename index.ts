@@ -6,11 +6,9 @@ import * as dotenv from 'dotenv';
 import { adminRouter } from './src/routers/adminRoutes.js';
 import process from 'node:process';
 import {publicRouter } from './src/routers/publicRouter.js';
+import cors from '@koa/cors'
 
 const __dirname = process.cwd();
-
-
-
 dotenv.config();
 const server = new Koa();
 const router = new Router();
@@ -35,5 +33,7 @@ server.use(serve(__dirname + '/FrontEnd/'));
 server.use(serve(__dirname + '/FrontEnd/Images'))
 
 server.use(serve(__dirname + '/static/markers'));
+
+server.use(cors());
 
 server.listen(port);
