@@ -7,19 +7,15 @@ import {markerData, modelData, eventData} from '../types/databaseTypes'
 var pool: mariadb.Pool = await connectDatabase();
 
 export async function connectDatabase() {
-    console.log('hi');
     const dbpool = await mariadb.createPool({
         host: process.env.DBHOST,
         user: process.env.DBUSER,
         password: process.env.DBPASSWORD,
         database: process.env.DBNAME,
         port: 3306,
-        connectionLimit: 10,
-        connectTimeout: 10000,
+        connectionLimit: 100,
         idleTimeout: 0,
-        acquireTimeout: 15000,
     });
-    console.log(dbpool);
     return dbpool;
 }
 
