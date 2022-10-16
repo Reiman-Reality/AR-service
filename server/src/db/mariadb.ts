@@ -211,7 +211,7 @@ export async function updateModel(data: modelData) {
         const connection = await pool.getConnection();
         await connection.query(`UPDATE MODELS
         WHERE model_id = ${data.modelID}
-        SET file_path = ${data.filepath}`);
+        SET file_path = ${data.filepath}, name = ${data.name}`);
         return true;;
     } catch( exception: unknown) {
         console.log(exception);

@@ -118,6 +118,16 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
     ctx.status = 200;
 });
 
+adminRouter.post('/api/updatemodel', body, async (ctx)=>{
+    //TODO verification
+    const model = ctx.request.files.model; // get the model;
+	
+	
+
+	
+    ctx.status = 200;
+});
+
 adminRouter.get('/login', body, async (ctx) => {
 	if(verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'html';
