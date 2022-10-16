@@ -28,6 +28,7 @@ const body = koaBody({
 	if(!cleanedData) {
 		ctx.status = 400;
 		ctx.body = {'message': "failed to verify event data please try again later"}
+		return;
 	}
 	const id = await database.addEvent(cleanedData);
 	console.log(id);
