@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     }
 
     if (data.length < 1) {
-        document.body.textContent += "The model list is empty. Please add a new event.";
+        document.body.textContent += "The model list is empty. Please add a new model.";
         return;
     }
 
