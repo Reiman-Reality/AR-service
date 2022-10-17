@@ -1,22 +1,20 @@
-// TODO Make this TypeScript
-
 window.addEventListener("DOMContentLoaded", async ()=>{
     const response = await fetch("admin/api/getMarkers");
     
     if (!response.ok) {
-        document.body.textContent += "The server was unable to load the event list. Please refresh the page.";
+        document.body.textContent += "The server was unable to load the object list. Please refresh the page.";
         return;
     }
 
     const data = await response.json();
 
     if (!data) {
-        document.body.textContent += "The event list may be malformed. Please refresh the page.";
+        document.body.textContent += "The object list may be malformed. Please refresh the page.";
         return;
     }
 
     if (data.length < 1) {
-        document.body.textContent += "The event list is empty. Please add a new event.";
+        document.body.textContent += "The object list is empty. Please add a new object.";
         return;
     }
 
