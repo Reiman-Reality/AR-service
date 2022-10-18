@@ -15,6 +15,15 @@ ul.no-bullets
   text-align: center;
 }
 
+.hide{
+  display: none;
+}
+
+.fullscreen{
+  width: 100vw;
+  height: 100vh;
+}
+
 .center {
   margin: 0;
   position: absolute;

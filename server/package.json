@@ -12,11 +12,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@koa/cors": "^4.0.0",
     "@types/koa": "^2.13.5",
     "@types/koa__router": "^8.0.11",
     "@types/node": "^18.7.17",
     "dateformat": "^5.0.3",
     "dotenv": "^16.0.2",
+    "jquery": "^3.6.1",
     "koa": "^2.13.4",
     "koa-body": "^5.0.0",
     "koa-router": "^12.0.0",

@@ -43,7 +43,7 @@ export async function getAllEvents() {
 export async function getModelsByMarkerID(input: string) {
     try {
         const connection = await pool.getConnection();
-        const data = await connection.query(`select MODELS.model_id, MODELS.file_path, MODELS.inserted_on, MODELS.name from MODELS inner join EVENTS on MODELS.model_id = EVENTS.model_id_one where EVENTS.marker_id = "${input}";`);
+        const data = await connection.query(`select MODELS.model_id, MODELS.file_path, MODELS.inserted_on, MODELS.name from MODELS inner join EVENTS on MODELS.model_id = EVENTS.model_id where EVENTS.marker_id = "${input}";`);
         const keys = Object.keys(data);
         const returnData = [];
         for( const key of keys ) {
@@ -65,8 +65,8 @@ export async function addEvent(event: eventData) {
     try{
         const connection = await pool.getConnection();
         const id = v4();
-        const success = await connection.query(`INSERT INTO EVENTS (event_id, name, created_on, marker_id, model_id)
-        VALUES ("${id}", "${event.eventName}", "${event.insertedOn}", "${event.marker_id}", "${event.model_id}");`);
+        const success = await connection.query(`INSERT INTO EVENTS (marker_id, model_id)
+        VALUES ( "${event.marker_id}", "${event.model_id}");`);
         return id;
     } catch( exception:unknown ){
         console.log(exception);
@@ -209,9 +209,10 @@ export async function insertModel(data: modelData) {
 export async function updateModel(data: modelData) {
     try {
         const connection = await pool.getConnection();
-        await connection.query(`UPDATE MODELS
-        WHERE model_id = ${data.modelID}
-        SET file_path = ${data.filepath}`);
+        await connection.query(`UPDATE MODELS 
+        SET file_path = "${data.filepath}", 
+        name = "${data.name}" 
+        WHERE model_id = "${data.modelID}"`);
         return true;;
     } catch( exception: unknown) {
         console.log(exception);
