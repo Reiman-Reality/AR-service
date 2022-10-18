@@ -209,9 +209,6 @@ export async function insertModel(data: modelData) {
 export async function updateModel(data: modelData) {
     try {
         const connection = await pool.getConnection();
-        console.log(data.filepath);
-        console.log(data.name);
-        console.log(data.modelID);
         await connection.query(`UPDATE MODELS 
         SET file_path = "${data.filepath}", 
         name = "${data.name}" 
