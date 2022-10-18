@@ -19,11 +19,11 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     }
 
     for (let i = 0; i < data.length; i++) {
-        makeTableEntry(data[i]);
+        makeObjectTableEntry(data[i]);
     }
 });
 
-function makeTableEntry(data) : void {
+function makeObjectTableEntry(data) : void {
     const tableEntryList : HTMLElement = document.getElementById("boxList");
     const tableEntry : HTMLElement = document.createElement("li");
     const tableEntryHeader : HTMLElement = document.createElement("div");
