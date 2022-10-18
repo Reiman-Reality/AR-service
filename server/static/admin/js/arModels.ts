@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", async ()=>{
-    const response = await fetch("admin/api/getModels"); // TODO is this the correct route?
+    const response = await fetch("admin/api/getModels");
     
     if (!response.ok) {
         document.body.textContent += "The server was unable to load the model list. Please refresh the page.";
