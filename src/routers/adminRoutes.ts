@@ -146,7 +146,7 @@ adminRouter.post('/api/updatemodel', body, async (ctx)=>{
  */
 adminRouter.post('/api/addmodel', body, async (ctx)=>{
     //TODO verification
-    const model = ctx.request.files.model; // get the model;
+    const model = ctx.request.files?.model; // get the model;
 	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
 	
     try{
