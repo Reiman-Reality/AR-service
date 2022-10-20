@@ -8,11 +8,11 @@ import * as database from "../db/mariadb.js"
 import serve from 'koa-static';
 import { fileURLToPath } from 'url';
 import { parseIsolatedEntityName } from 'typescript';
-import { eventData, markerData, modelData } from '../types/dbTypes/databaseTypes';
+import { eventData, markerData, modelData } from '../types/databaseTypes';
 
 const adminRouter = new Router();
 // Have to do this since with TS and ES 2022 you don't get the __dirname variable :(
-const __dirname = path.dirname(process.cwd())+'/server';
+const __dirname = process.cwd();
 console.log(__dirname);
 //All new routes that parse data will need to have body in their .post() declaration as a middleware arg
 const body = koaBody({
@@ -28,6 +28,7 @@ const body = koaBody({
 	if(!cleanedData) {
 		ctx.status = 400;
 		ctx.body = {'message': "failed to verify event data please try again later"}
+		return;
 	}
 	const id = await database.addEvent(cleanedData);
 	console.log(id);
@@ -145,7 +146,7 @@ adminRouter.post('/api/updatemodel', body, async (ctx)=>{
  */
 adminRouter.post('/api/addmodel', body, async (ctx)=>{
     //TODO verification
-    const model = ctx.request.files.model; // get the model;
+    const model = ctx.request.files?.model; // get the model;
 	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
 	
     try{

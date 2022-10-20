@@ -2,21 +2,21 @@ import { connect } from 'http2';
 import * as mariadb from 'mariadb';
 import {v4} from 'uuid';
 import process from 'node:process';
-import {markerData, modelData, eventData} from '../types/dbTypes/databaseTypes'
+import {markerData, modelData, eventData} from '../types/databaseTypes'
 
-var pool: mariadb.Pool;
+var pool: mariadb.Pool = await connectDatabase();
 
 export async function connectDatabase() {
-    console.log(process.env.DBHOST);
-    pool = await mariadb.createPool({
+    const dbpool = await mariadb.createPool({
         host: process.env.DBHOST,
         user: process.env.DBUSER,
         password: process.env.DBPASSWORD,
         database: process.env.DBNAME,
         port: 3306,
-        connectionLimit: 10,
-        idleTimeout: 5
+        connectionLimit: 100,
+        idleTimeout: 0,
     });
+    return dbpool;
 }
 
 export async function ping() {
