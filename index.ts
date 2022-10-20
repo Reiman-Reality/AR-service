@@ -7,6 +7,8 @@ import { adminRouter } from './src/routers/adminRoutes.js';
 import process from 'node:process';
 import {publicRouter } from './src/routers/publicRouter.js';
 import cors from '@koa/cors'
+import * as https from 'https';
+import * as http from 'http';
 
 const __dirname = process.cwd();
 dotenv.config();
@@ -36,4 +38,5 @@ server.use(serve(__dirname + '/static/markers'));
 
 server.use(cors());
 
-server.listen(port);
+http.createServer(server.callback()).listen(8080);
+https.createServer(server.callback()).listen(443);
