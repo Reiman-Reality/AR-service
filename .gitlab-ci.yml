@@ -11,9 +11,7 @@ deploy:
         # - chmod og= $ID_RSA
         # - apk update && apk add openssh-client && apk add sshpass
         # - sshpass -p $CICD_PASSWORD ssh -o StrictHostKeyChecking=no $SERVER_CICD_USER@$SERVER_ADDRESS " sudo systemctl stop arserver.service && cd ~/Reiman_Garden/server && git pull https://$GIT_PULL_USERNAME:$GIT_PULL_PASSWORD@git.las.iastate.edu/SeniorDesignComS/2022fall/Reiman_Garden && npm run build && sudo systemctl start arserver.service "
-        - whoami
         - sudo systemctl stop arserver.service
-        - cd server
         - npm run build
         - sudo systemctl start arserver.service
         #- ssh -vvv -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_CICD_USER@$SERVER_ADDRESS "cd ~/Reiman_Garden; git pull"
