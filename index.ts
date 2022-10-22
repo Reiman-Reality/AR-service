@@ -1,5 +1,5 @@
 import Koa from 'koa';
-import path from 'path';
+import path, { dirname } from 'path';
 import Router from 'koa-router';
 import serve from 'koa-static';
 import * as dotenv from 'dotenv';
@@ -41,6 +41,6 @@ server.use(cors());
 
 http.createServer(server.callback()).listen(8080);
 https.createServer( {
-    key: fs.readFileSync(path.resolve(process.cwd(), 'certs/privkey.pem'), 'utf8').toString(),
-    cert: fs.readFileSync(path.resolve(process.cwd(), 'certs/fullchain.pem'), 'utf8').toString(),
+    key: fs.readFileSync(__dirname + process.env.CERTKEY),
+    cert: fs.readFileSync(__dirname + process.env.CERT)
 },server.callback()).listen(443);
