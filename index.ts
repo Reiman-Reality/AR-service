@@ -7,6 +7,7 @@ import { adminRouter } from './src/routers/adminRoutes.js';
 import process from 'node:process';
 import {publicRouter } from './src/routers/publicRouter.js';
 import cors from '@koa/cors'
+import fs from "node:fs";
 import * as https from 'https';
 import * as http from 'http';
 
@@ -39,4 +40,7 @@ server.use(serve(__dirname + '/static/markers'));
 server.use(cors());
 
 http.createServer(server.callback()).listen(8080);
-https.createServer(server.callback()).listen(443);
+https.createServer( {
+    key: fs.readFileSync(path.resolve(process.cwd(), 'certs/privkey.pem'), 'utf8').toString(),
+    cert: fs.readFileSync(path.resolve(process.cwd(), 'certs/fullchain.pem'), 'utf8').toString(),
+},server.callback()).listen(443);
