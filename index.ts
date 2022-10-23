@@ -30,7 +30,11 @@ server.use(serve(__dirname + '/static/user'));
 
 server.use(serve(__dirname + '/FrontEnd/'));
 
-server.use(serve(__dirname + '/FrontEnd/Images'))
+server.use(serve(__dirname + '/FrontEnd/Images'));
+
+server.use(serve(__dirname + '/textures'));
+server.use(serve(__dirname + '/models'));
+server.use(serve(__dirname + '/markers'));
 
 server.use(serve(__dirname + '/static/markers'));
 
