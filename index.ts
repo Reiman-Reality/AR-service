@@ -41,6 +41,6 @@ server.use(cors());
 
 http.createServer(server.callback()).listen(8080);
 https.createServer( {
-    key: fs.readFileSync(__dirname + process.env.CERTKEY),
-    cert: fs.readFileSync(__dirname + process.env.CERT)
+    key: fs.readFileSync(__dirname + "/certs/self-signed.key"),
+    cert: fs.readFileSync(__dirname + "/certs/self-signed.crt")
 },server.callback()).listen(443);
