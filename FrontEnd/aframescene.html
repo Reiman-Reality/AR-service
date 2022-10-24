@@ -34,18 +34,6 @@
     <!-- minimal loader shown until image descriptors are loaded. Loading may take a while according to the device computational power -->
     <div class="arjs-loader">
         <div>Loading, please wait...</div>
-        <script>
-            if (navigator.mediaDevices.getUserMedia) {
-              navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function (stream) {
-                  video.srcObject = stream;
-                })
-                .catch(function (err) {
-                  console.log("Something went wrong!");
-                  console.log(err);
-                });
-            }
-            </script>
     </div>
 
     <!-- a-frame scene -->
