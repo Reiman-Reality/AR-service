@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", async ()=>{
-    const response = await fetch("admin/api/getMarkers");
+    const response = await fetch("./admin/api/getMarkers");
     
     if (!response.ok) {
         document.body.textContent += "The server was unable to load the object list. Please refresh the page.";

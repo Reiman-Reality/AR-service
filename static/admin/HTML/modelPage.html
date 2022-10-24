@@ -50,8 +50,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
 <h2>Models</h2>
 <div id="myData"></div>
 
-
-
 <!-- The Modal -->
 <div id="myModal" class="modal">
   <!-- INFORMATION Modal content -->
@@ -67,24 +65,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
   </div>
 </div>
 
-<div id="editModel" class="modal">
-    <!-- EDIT Modal content -->
-    <div id = edit-content class="modal-content">
-      <span class="close">&times;</span>
-      <h1>Model Information</h1>
-      <form action="http://coms-402-sd-37.class.las.iastate.edu:8080/admin/api/updatemodel" method="POST" enctype="multipart/form-data">
-		<h3>Model Name</h3>
-		<input type="text" id="edit_name" name="edit_name">
-		<h3> Model File</h3>
-		<input type="file" id="model_file_path" name="model_file_path">
-        <h3><p id="edit_insert_date"></p></h3>
-        <input type="hidden" name="edit_model_id" id="edit_model_id">
-		<input type="submit">
-	</form>
-
-    
-    </div>
-  </div>
 
 
 <script>

@@ -6,6 +6,46 @@
 .columnB { float: left; width: 100%; }
 .row:after { content: ""; display: table; clear: both; }
 .framed { width: 100%; height: 100%; }
+
+/* The Modal (background) */
+.modal{
+  display: none; 
+  position: fixed; 
+  z-index: 1;
+  padding-top: 100px; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+/* Modal Content */
+.modal-content,.modal-content-edit {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 	</style>
 </head>
 <body>
@@ -15,9 +55,10 @@
 				<option value="0" selected="selected">Natural Feature Tracking Objects</option>
 				<option value="1">AR Models</option>
 			</select>
+			
 		</div>
 		<div class="columnB" style="display: flex; height: 90vh">
-			<iframe id="nft-objects" src="./markers" class="framed"></iframe>
+			<iframe id="nft-objects" src="./markersPage" class="framed"></iframe>
 			<iframe id="ar-models" src="./models" class="framed" hidden></iframe>
 		</div>
 	</div>
