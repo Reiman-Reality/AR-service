@@ -1,8 +1,11 @@
 import { connect } from 'http2';
 import * as mariadb from 'mariadb';
 import {v4} from 'uuid';
+import * as dotenv from 'dotenv';
 import process from 'node:process';
 import {markerData, modelData, eventData} from '../types/databaseTypes'
+
+dotenv.config();
 
 var pool: mariadb.Pool = await connectDatabase();
 
