@@ -8,13 +8,54 @@
 .boxes ul li .boxHeading { width: 100%; height: 50px; line-height: 50px; text-align: center; font-size: 20px; border-bottom: 2px solid #454545; }
 @media screen and (max-width:1250px) { .boxes ul li { width: 40%; margin-left: 40px; } }
     </style>
+    <style>
+        .modal{
+        display: none; 
+        position: fixed; 
+        z-index: 1;
+        padding-top: 100px; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; 
+        background-color: rgb(0,0,0); 
+        background-color: rgba(0,0,0,0.4); 
+    }
+
+    /* Modal Content */
+    .modal-content{
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .show {
+        display: block;
+    }
+    </style>
 </head>
+
 <body>
     <div class="boxes">
         <ul id="boxList">
             <!-- Dynamically loaded content goes here -->
         </ul>
     </div>
-    <div id="modal">
+    <div id="marker-modal" class="modal">
+        <div class="modal-content">
+            <form id="">
+                <h2> Name </h2>
+                <input type="text" id="markerName" name="name">
+                <h2> Marker Files</h2>
+                <input type="file" id="marker1" name="marker1">
+                <input type ="file" id="marker2" name="marker2">
+                <input type = "file" id="marker3" name="marker3">
+                <input type="hidden" id="markerID" name="markerID">
+                <input type ="submit" id="markerSubmit">
+            </form>
+        </div>
     </div>
 </body>

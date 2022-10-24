@@ -38,5 +38,16 @@ function makeObjectTableEntry(data) : void {
 
     tableEntryThumbnail.setAttribute("src", data.file_path);
     tableEntry.appendChild(tableEntryThumbnail);
+    tableEntry.addEventListener('click', () =>{
+        (document.querySelector("marker-modal").classList.add("show"));
+        (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
+        (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
+    })
     tableEntryList.appendChild(tableEntry);
 }
+
+
+document.querySelector("#markerSubmit").addEventListener("click", (event)=>{
+    event.preventDefault();
+    event.stopPropagation();
+})
