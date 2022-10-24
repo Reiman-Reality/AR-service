@@ -2,8 +2,24 @@ const arjsScene = document.getElementById("arjsScene")
 
 let modelsPresent = false;
 
+function beforeEntity(markerUrl) {
+    return `<a-nft type=\"nft\" url=\"${markerUrl}\" smooth=\"true\" smoothCount=\"10\" smoothTolerance=\".01\" smoothThreshold=\"5\">`
+}
+
+function objEntity(objName){
+    return `<a-entity obj-model="url(./models/${objName}.obj); mtl: url(./textures/${objName}.mtl)"></a-entity>`
+}
+
+function afterEntity() {
+    return "</a-nft>"
+}
+
+function addCamera(){
+    return "<a-entity camera></a-entity>";
+}
+
 function addModelFunction() {
-    if(modelsPresent){
+    if (modelsPresent) {
         return;
     }
     modelsPresent = true;
@@ -16,14 +32,14 @@ function addModelFunction() {
      * Connect to db
      */
 
-    /**
-     * Get current aframe element
-     */
+    // arjsScene.innerHTML = ""
 
-    /**
-     * Loop through all active models
-     *      
-     *      For each model, add it to the aframe element
-     */
-    console.log("hello")
+    // for active in [ActiveList]:
+    //      let markerUrl = active.markerUrl
+    //      let objName = active.objName
+    //      arjsScene.innerHtml += beforeEntity(markerUrl) + objEntity(objName) + afterEntity();
+    //
+    // arjsScene.innerHtml += addCamera()
+
+    console.log(beforeEntity("test"))
 }
