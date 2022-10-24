@@ -207,7 +207,16 @@ adminRouter.get( '/models', async(ctx)=>{
 	}
 });
 
-adminRouter.get('/markers', async(ctx)=>{
+adminRouter.get('/home',body,async (ctx) =>{
+	try{
+		ctx.type = 'html';
+		ctx.body=fs.createReadStream(path.join(__dirname,'static/admin/HTML/adminPage.html'));
+	} catch(err: unknown) {
+		console.log(err)
+	}
+});
+
+adminRouter.get('/markersPage', async(ctx)=>{
 	try{
 		ctx.type = 'html';
 		ctx.body=fs.createReadStream(path.join(__dirname,'static/admin/HTML/nftObjects.html'));
@@ -216,10 +225,10 @@ adminRouter.get('/markers', async(ctx)=>{
 	}
 });
 
-adminRouter.get('/home',body,async (ctx) =>{
+adminRouter.get('/modelsPage', async(ctx)=>{
 	try{
 		ctx.type = 'html';
-		ctx.body=fs.createReadStream(path.join(__dirname,'static/admin/HTML/adminPage.html'));
+		ctx.body=fs.createReadStream(path.join(__dirname,'static/admin/HTML/arModels.html'));
 	} catch(err: unknown) {
 		console.log(err)
 	}
@@ -238,6 +247,15 @@ adminRouter.get('/adminPageScripts', async(ctx)=>{
 	try{
 		ctx.type = 'text/javascript';
 		ctx.body=fs.createReadStream(path.join(__dirname,'/dist/static/admin/js/adminPage.js'));
+	} catch(err: unknown) {
+		console.log(err)
+	}
+});
+
+adminRouter.get('/modelScripts', async(ctx)=>{
+	try{
+		ctx.type = 'text/javascript';
+		ctx.body=fs.createReadStream(path.join(__dirname,'/dist/static/admin/js/arModels.js'));
 	} catch(err: unknown) {
 		console.log(err)
 	}
