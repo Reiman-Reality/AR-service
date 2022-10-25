@@ -1,6 +1,3 @@
-
-var editModal = document.getElementById("editModel");
-
 window.addEventListener("DOMContentLoaded", async ()=>{
     const response = await fetch("./api/getModels");
     
@@ -40,7 +37,8 @@ function makeModelTableEntry(data) : void {
 
     tableEntryThumbnail.setAttribute("src", "null");
     tableEntry.appendChild(tableEntryThumbnail);
-    tableEntry.addEventListener('click', async (event) => {        
+    tableEntry.addEventListener('click', async (event) => {       
+        const editModal = document.getElementById("editModel"); 
         var id = document.getElementById("edit_model_id");
         const idInput = document.getElementById("")
         var date = document.getElementById("edit_insert_date");
