@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", async ()=>{
-    const response = await fetch("./admin/api/getMarkers");
+    const response = await fetch("./api/getMarkers");
     
     if (!response.ok) {
         document.body.textContent += "The server was unable to load the object list. Please refresh the page.";
@@ -21,6 +21,28 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     for (let i = 0; i < data.length; i++) {
         makeObjectTableEntry(data[i]);
     }
+
+    document.querySelector("#markerForm").addEventListener("submit", async (event)=>{
+        event.preventDefault();
+        event.stopPropagation();
+        console.log(event.target);
+        const data = new FormData(event.target as HTMLFormElement);
+        for (const [key, value] of data) {
+            console.log( `${key}: ${value}\n`);
+          }
+
+        const request = new XMLHttpRequest();
+
+        request.addEventListener("load", (event)=>{
+            alert("updated succesfully");
+        });
+        request.addEventListener("error", (event)=>{
+            alert("failed to update try again later");
+        });
+
+        request.open("POST", "./api/updateMarker");
+        request.send(data);
+    })
 });
 
 function makeObjectTableEntry(data) : void {
@@ -39,15 +61,9 @@ function makeObjectTableEntry(data) : void {
     tableEntryThumbnail.setAttribute("src", data.file_path);
     tableEntry.appendChild(tableEntryThumbnail);
     tableEntry.addEventListener('click', () =>{
-        (document.querySelector("marker-modal").classList.add("show"));
+        document.querySelector("#marker-modal").classList.add("show");
         (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
         (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
-    })
+    });
     tableEntryList.appendChild(tableEntry);
 }
-
-
-document.querySelector("#markerSubmit").addEventListener("click", (event)=>{
-    event.preventDefault();
-    event.stopPropagation();
-})

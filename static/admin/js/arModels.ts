@@ -2,7 +2,7 @@
 var editModal = document.getElementById("editModel");
 
 window.addEventListener("DOMContentLoaded", async ()=>{
-    const response = await fetch("./admin/api/getModels");
+    const response = await fetch("./api/getModels");
     
     if (!response.ok) {
         document.body.textContent += "The server was unable to load the model list. Please refresh the page.";

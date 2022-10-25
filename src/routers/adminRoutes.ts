@@ -87,6 +87,10 @@ adminRouter.get("/api/getMarkers", async (ctx) =>{
 	ctx.body = markers;
 });
 
+adminRouter.post('/api/updateMarker', body, async (ctx)=>{
+	console.log(ctx.request.files);
+});
+
 /**
  * Same as above for this endpoint all data must be submitted as formdata :)
  */
