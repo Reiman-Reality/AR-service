@@ -1,9 +1,17 @@
-const selectBox: HTMLElement|null = document.getElementById("left-column");
-const objectsFrame: HTMLElement|null = document.getElementById("nft-objects");
-const modelsFrame: HTMLElement|null = document.getElementById("ar-models");
+var selectBox: HTMLElement|null = document.getElementById("left-column");
+var objectsFrame: HTMLElement|null = document.getElementById("nft-objects");
+var modelsFrame: HTMLElement|null = document.getElementById("ar-models");
+
+document.addEventListener("DOMContentLoaded", ()=>{
+    selectBox = document.getElementById("left-column");
+    objectsFrame = document.getElementById("nft-objects");
+    modelsFrame = document.getElementById("ar-models");
+    selectBox?.addEventListener("change", changeFrame);
+})
 
 function changeFrame(): void {
-    switch (this.value) {
+    console.log("hi");
+    switch ((selectBox as HTMLInputElement).value) {
         case "0":
             objectsFrame?.removeAttribute("hidden");
             modelsFrame?.setAttribute("hidden", "hidden");
@@ -14,5 +22,3 @@ function changeFrame(): void {
             break;
     }
 }
-
-selectBox?.addEventListener("change", changeFrame);

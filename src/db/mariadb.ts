@@ -1,8 +1,11 @@
 import { connect } from 'http2';
 import * as mariadb from 'mariadb';
 import {v4} from 'uuid';
+import * as dotenv from 'dotenv';
 import process from 'node:process';
 import {markerData, modelData, eventData} from '../types/databaseTypes'
+
+dotenv.config();
 
 var pool: mariadb.Pool = await connectDatabase();
 
@@ -24,6 +27,7 @@ export async function ping() {
         // every connection attempt must be preceded by get connection
         const connection = await pool.getConnection();
         const success = await connection.ping();
+        connection.end();
     } catch (exception :unknown) {
         console.log(exception);
     }
@@ -34,6 +38,7 @@ export async function getAllEvents() {
         const connection = await pool.getConnection();
         const data = await connection.query( `SELECT * FROM EVENT_TABLE`);
         console.log(typeof(data));
+        connection.end();
     } catch( exception: unknown) {
         console.log(exception);
     }
@@ -53,6 +58,7 @@ export async function getModelsByMarkerID(input: string) {
 
             returnData.push( data[key] );
         }
+        connection.end();
         return returnData;
     }
     catch(exception: unknown) {
@@ -67,6 +73,7 @@ export async function addEvent(event: eventData) {
         const id = v4();
         const success = await connection.query(`INSERT INTO EVENTS (marker_id, model_id)
         VALUES ( "${event.marker_id}", "${event.model_id}");`);
+        connection.end();
         return id;
     } catch( exception:unknown ){
         console.log(exception);
@@ -88,6 +95,7 @@ export async function getAllMarkers() {
 
             returnData.push( data[key] );
         }
+        connection.end();
         return returnData;
     }
     catch(exception: unknown) {
@@ -100,6 +108,7 @@ export async function linkMarkerToEvent(markerID:string , eventID:string) {
         await connection.query(`UPDATE MARKERS 
         WHERE marker_id = ${markerID}
         SET event_id = ${eventID}`);
+        connection.end();
         return true;
     }catch( exception: unknown) {
         console.log(exception);
@@ -116,6 +125,7 @@ export async function linkModelToEvent(modelID: string[] , eventID:string) {
         WHERE model_id = ${modelID[i]}
         SET event_id = ${eventID}`);
         }
+        connection.end();
         return true;
     }catch( exception: unknown) {
         console.log(exception);
@@ -128,10 +138,11 @@ export async function insertMarker( data: markerData) {
     try {
         const connection = await pool.getConnection();
         const id = v4();
-        await connection.query(`INSERT INTO MARKERS (marker_id, name, file_path, inserted_on)
-        VALUES ("${id}", "${data.name}", "${data.filepath}", "${data.insertedOn}")`);
+        await connection.query(`INSERT INTO MARKERS (marker_id, name, file_path_one, file_path_two, file_path_three, inserted_on)
+        VALUES ("${id}", "${data.name}", "${data.filepathOne}","${data.filepathTwo}","${data.filepathThree}", "${data.insertedOn}")`);
         await connection.query(`INSERT INTO EVENTS (marker_id)
         VALUES ("${id}")`);
+        connection.end();
         return true;
     } catch( exception: unknown) {
         console.log(exception);
@@ -144,7 +155,8 @@ export async function updateMarker( data: markerData) {
         const connection = await pool.getConnection();
         await connection.query(`UPDATE MARKERS
         WHERE marker_id = ${data.markerID}
-        SET server_path = ${data.filepath}`);
+        SET file_path_one = ${data.filepathOne}`);
+        connection.end();
         return true;
     } catch (exception: unknown) {
         console.log('exception');
@@ -165,6 +177,7 @@ export async function getAllModels() {
 
             returnData.push( data[key] );
         }
+        connection.end();
         return returnData;
     }
     catch(exception: unknown) {
@@ -182,10 +195,10 @@ export async function getModelsByEvent(eventID: string) {
         if(key === 'meta') {
             break;
         }
-        returnData.push( models[key] );
-    }
-       return returnData;
-    
+            returnData.push( models[key] );
+        }
+        connection.end();
+        return returnData;
     }catch( exception: unknown) {
         console.log(exception);
         return null;
@@ -199,6 +212,7 @@ export async function insertModel(data: modelData) {
         const connection = await pool.getConnection();
         await connection.query(`INSERT INTO MODELS (model_id, name, file_path, inserted_on)
         VALUES (uuid(), "${data.name}", "${data.filepath}", "${data.insertedOn}")`);
+        connection.end();
         return true;
     } catch( exception: unknown) {
         console.log(exception);
@@ -213,7 +227,8 @@ export async function updateModel(data: modelData) {
         SET file_path = "${data.filepath}", 
         name = "${data.name}" 
         WHERE model_id = "${data.modelID}"`);
-        return true;;
+        connection.end();
+        return true;
     } catch( exception: unknown) {
         console.log(exception);
     }
@@ -222,8 +237,9 @@ export async function updateModel(data: modelData) {
 export async function deleteModel(data: modelData) {
     try {
         const connection = await pool.getConnection();
-        await connection.query(`DELETE FROM MODELS HERE model_id = ${data.modelID}`);;
-        return true;;
+        await connection.query(`DELETE FROM MODELS HERE model_id = ${data.modelID}`);
+        connection.end();
+        return true;
     } catch( exception: unknown) {
         console.log(exception);
     }

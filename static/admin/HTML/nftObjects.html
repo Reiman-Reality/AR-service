@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <script src="static/admin/js/nftObjects.js" type="text/javascript"></script>
+    <script src="./markerScripts" type="text/javascript"></script>
     <style>
 .boxes { width: 90%; margin: auto; overflow: hidden; margin-top: 20px; }
 .boxes ul { padding: 0px; margin: 0px; }
@@ -8,11 +8,85 @@
 .boxes ul li .boxHeading { width: 100%; height: 50px; line-height: 50px; text-align: center; font-size: 20px; border-bottom: 2px solid #454545; }
 @media screen and (max-width:1250px) { .boxes ul li { width: 40%; margin-left: 40px; } }
     </style>
+    <style>
+        .modal{
+        display: none; 
+        position: fixed; 
+        z-index: 1;
+        padding-top: 100px; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; 
+        background-color: rgb(0,0,0); 
+        background-color: rgba(0,0,0,0.4); 
+    }
+
+    /* Modal Content */
+    .modal-content{
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .show {
+        display: block;
+    }
+
+    .hide{
+        display: none;
+    }
+
+    #addMarkerButton{
+        outline: solid black;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        align-items: center;
+        vertical-align: middle;
+        bottom: 5px;
+        right: 5px;
+        border-radius: 10rem;
+        position: absolute;
+    }
+    </style>
 </head>
+
 <body>
     <div class="boxes">
         <ul id="boxList">
             <!-- Dynamically loaded content goes here -->
         </ul>
+    </div>
+    <div id="marker-modal" class="modal">
+        <div class="modal-content">
+            <form id="markerForm" class="hide">
+                <h2> Name </h2>
+                <input type="text" id="markerName" name="name">
+                <h2> Marker Files</h2>
+                <input type="file" id="marker1" name="marker1">
+                <input type ="file" id="marker2" name="marker2">
+                <input type = "file" id="marker3" name="marker3">
+                <input type="hidden" id="markerID" name="markerID">
+                <input type ="submit" id="markerSubmit">
+            </form>
+            <form id="newMarkerForm" class="hide">
+                <h2> Name </h2>
+                <input type="text" id="markerName" name="name">
+                <h2> Marker Files</h2>
+                <input type="file" id="marker1" name="marker1">
+                <input type ="file" id="marker2" name="marker2">
+                <input type = "file" id="marker3" name="marker3">
+                <input type ="submit" id="markerSubmit">
+            </form>
+        </div>
+    </div>
+    <div id="addMarkerButton">
+        <div>
+            +
+        <div>
     </div>
 </body>
