@@ -46,18 +46,26 @@ const body = koaBody({
  */
  adminRouter.post('/api/addMarker', body, async (ctx)=>{
 	//TODO verification
-    const marker = ctx.request.files.marker;
-	const newMarkerPath =  path.join(__dirname, '/static/markers/', marker.originalFilename);
+    const marker1 = ctx.request.files.marker1;
+	const marker2 = ctx.request.files.marker2;
+	const marker3 = ctx.request.files.marker3;
+	const newMarkerPath1 =  path.join(__dirname, '/static/markers/', marker1.originalFilename);
+	const newMarkerPath2 =  path.join(__dirname, '/static/markers/', marker2.originalFilename);
+	const newMarkerPath3 =  path.join(__dirname, '/static/markers/', marker3.originalFilename);
     try{
-    	await fsPromise.rename(marker.filepath, newMarkerPath);
+    	await fsPromise.rename(marker1.filepath, newMarkerPath1);
+		await fsPromise.rename(marker2.filepath, newMarkerPath2);
+		await fsPromise.rename(marker3.filepath, newMarkerPath3);
     } catch (err:unknown) {
 		console.log(err);
-		fs.unlink(marker.filepath, (err) => console.log(err));
+		fs.unlink(marker1.filepath, (err) => console.log(err));
+		fs.unlink(marker2.filepath, (err) => console.log(err));
+		fs.unlink(marker3.filepath, (err) => console.log(err));
 		ctx.status(500);
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	const cleanedData = verifyMarkerData(ctx.request.body, newMarkerPath);
+	const cleanedData = verifyMarkerData(ctx.request.body, newMarkerPath1, newMarkerPath2, newMarkerPath3);
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
@@ -270,7 +278,7 @@ function verifyLogin(cookie : string):boolean {
 	return true;
 }
 
-function verifyMarkerData( formData:any, newFilePath:string ){
+function verifyMarkerData( formData:any, newFilePath:string, two: string, three: string ){
 	if( !formData.name || formData.name.length > 50 ) {
 		return null;
 	}
@@ -278,7 +286,9 @@ function verifyMarkerData( formData:any, newFilePath:string ){
 		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
 		name: formData.name,
 		markerID: null,
-		filepath: newFilePath,
+		filepathOne: newFilePath,
+		filepathTwo: two,
+		filepathThree: three,
 	} as markerData;
 }
 

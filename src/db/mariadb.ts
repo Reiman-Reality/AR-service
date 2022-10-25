@@ -131,8 +131,8 @@ export async function insertMarker( data: markerData) {
     try {
         const connection = await pool.getConnection();
         const id = v4();
-        await connection.query(`INSERT INTO MARKERS (marker_id, name, file_path, inserted_on)
-        VALUES ("${id}", "${data.name}", "${data.filepath}", "${data.insertedOn}")`);
+        await connection.query(`INSERT INTO MARKERS (marker_id, name, file_path_one, file_path_two, file_path_three, inserted_on)
+        VALUES ("${id}", "${data.name}", "${data.filepathOne}","${data.filepathTwo}","${data.filepathThree}", "${data.insertedOn}")`);
         await connection.query(`INSERT INTO EVENTS (marker_id)
         VALUES ("${id}")`);
         return true;
@@ -147,7 +147,7 @@ export async function updateMarker( data: markerData) {
         const connection = await pool.getConnection();
         await connection.query(`UPDATE MARKERS
         WHERE marker_id = ${data.markerID}
-        SET server_path = ${data.filepath}`);
+        SET file_path_one = ${data.filepathOne}`);
         return true;
     } catch (exception: unknown) {
         console.log('exception');
