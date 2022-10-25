@@ -60,7 +60,7 @@ function makeModelTableEntry(data) : void {
 var span_1 = document.getElementsByClassName("close")[0];
 
 // When the user clicks on <span> (x), close the modal
-span_1.addEventListener('click', ()=>   editModal.style.display = "none"); 
+span_1.addEventListener('click', ()=>   document.getElementById("editModel").style.display = "none"); 
 
 
 
