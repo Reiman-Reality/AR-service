@@ -38,10 +38,9 @@ function makeModelTableEntry(data) : void {
     tableEntryHeader.setAttribute("class", "boxHeading");
     tableEntry.appendChild(tableEntryHeader);
 
-    tableEntryThumbnail.setAttribute("src", data.file_path);
+    tableEntryThumbnail.setAttribute("src", "null");
     tableEntry.appendChild(tableEntryThumbnail);
-    tableEntry.addEventListener('click', async () => {        
-        data.preventDefault();
+    tableEntry.addEventListener('click', async (event) => {        
         var id = document.getElementById("edit_model_id");
         const idInput = document.getElementById("")
         var date = document.getElementById("edit_insert_date");
@@ -58,13 +57,6 @@ function makeModelTableEntry(data) : void {
     });
     tableEntryList.appendChild(tableEntry);
 }
-
-// Get the modal
-
-
-
-
-
 
 // Get the <span> element that closes the modal
 var span_1 = document.getElementsByClassName("close")[0];

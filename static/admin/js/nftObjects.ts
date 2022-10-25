@@ -88,7 +88,7 @@ function makeObjectTableEntry(data) : void {
     tableEntryHeader.setAttribute("class", "boxHeading");
     tableEntry.appendChild(tableEntryHeader);
 
-    tableEntryThumbnail.setAttribute("src", data.file_path);
+    //tableEntryThumbnail.setAttribute("src", data.file_path);
     tableEntry.appendChild(tableEntryThumbnail);
     tableEntry.addEventListener('click', () =>{
         document.querySelector("#marker-modal").classList.add("show");

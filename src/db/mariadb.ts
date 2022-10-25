@@ -195,7 +195,7 @@ export async function getModelsByEvent(eventID: string) {
         if(key === 'meta') {
             break;
         }
-        returnData.push( models[key] );
+            returnData.push( models[key] );
         }
         connection.end();
         return returnData;

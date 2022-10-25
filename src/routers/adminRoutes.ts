@@ -210,15 +210,6 @@ adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
 	ctx.body = markers;
 });
 
-adminRouter.get( '/models', async(ctx)=>{
-	try{
-		ctx.type = 'html';
-		ctx.body=fs.createReadStream(path.join(__dirname,'static/admin/HTML/modelPage.html'));
-	} catch(err: unknown) {
-		console.log(err)
-	}
-});
-
 adminRouter.get('/home',body,async (ctx) =>{
 	try{
 		ctx.type = 'html';
