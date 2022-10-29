@@ -19,11 +19,11 @@ publicRouter.get('/filenames', async (ctx) => {
 	const data = await getModelAndMarkerNames();
 	const cleanedData = [];
 	for(const event of data) {
+		console.log(event);
 		const names = {
 			markerName: path.basename(event.file_path_one),
 			modelFile: path.basename(event.file_path || '')
 		}
-		console.log(names);
 		cleanedData.push(names);
 	}
 	ctx.type = 'json';

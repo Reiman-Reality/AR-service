@@ -65,7 +65,7 @@ const body = koaBody({
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	const cleanedData = verifyMarkerData(ctx.request.body, newMarkerPath1, newMarkerPath2, newMarkerPath3);
+	const cleanedData = verifyMarkerData(ctx.request.body,  marker1.originalFilename, marker2.originalFilename, marker3.originalFilename);
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
@@ -269,7 +269,7 @@ function verifyLogin(cookie : string):boolean {
 	return true;
 }
 
-function verifyMarkerData( formData:any, newFilePath:string, two: string, three: string ){
+function verifyMarkerData( formData:any, name:string, two: string, three: string ){
 	if( !formData.name || formData.name.length > 50 ) {
 		return null;
 	}
@@ -277,7 +277,7 @@ function verifyMarkerData( formData:any, newFilePath:string, two: string, three:
 		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
 		name: formData.name,
 		markerID: null,
-		filepathOne: newFilePath,
+		filepathOne: name,
 		filepathTwo: two,
 		filepathThree: three,
 	} as markerData;

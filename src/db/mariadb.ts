@@ -77,7 +77,7 @@ export async function getModelAndMarkerNames() {
             if(key === 'meta') {
                 break;
             }
-
+            console.log(data[key]);
             returnData.push( data[key] );
         }
         connection.end();
