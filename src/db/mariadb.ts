@@ -16,7 +16,7 @@ export async function connectDatabase() {
         password: process.env.DBPASSWORD,
         database: process.env.DBNAME,
         port: 3306,
-        connectionLimit: 100,
+        connectionLimit: 10,
         idleTimeout: 0,
     });
     return dbpool;
