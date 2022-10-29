@@ -67,6 +67,28 @@ export async function getModelsByMarkerID(input: string) {
     }
 }
 
+export async function getModelAndMarkerNames() {
+    try {
+        const connection = await pool.getConnection();
+        const data = await connection.query("select MARKERS.file_path_one, MODELS.file_path FROM EVENTS LEFT JOIN MARKERS ON MARKERS.marker_id = EVENTS.marker_id LEFT JOIN MODELS ON MODELS.model_id = EVENTS.model_id;");
+        const keys = Object.keys(data);
+        const returnData = [];
+        for( const key of keys ) {
+            if(key === 'meta') {
+                break;
+            }
+
+            returnData.push( data[key] );
+        }
+        connection.end();
+        return returnData;
+    }
+    catch(exception: unknown) {
+        console.log(exception);
+        return [];
+    }
+}
+
 export async function addEvent(event: eventData) {
     try{
         const connection = await pool.getConnection();
