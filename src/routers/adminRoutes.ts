@@ -104,7 +104,8 @@ adminRouter.post('/api/updateMarker', body, async (ctx)=>{
  */
 adminRouter.post('/api/addmodel', body, async (ctx)=>{
     //TODO verification
-    const model = ctx.request.files.model; // get the model;
+    const model = ctx.request.files.model; // get the model
+	//const texture = ctx.request.files?.texture; // get the texture
 	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
 	
     try{
@@ -116,7 +117,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	const cleanedData = verifyModelData(ctx.request.body, newModelPath);
+	const cleanedData = verifyModelData(ctx.request.body, model.originalFilename);
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
