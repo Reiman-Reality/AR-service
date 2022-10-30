@@ -21,3 +21,10 @@ export interface eventData {
     marker_id: string,
     model_id: string,
 }
+
+export interface login {
+    username:string,
+    password:string
+    role:string
+}
+

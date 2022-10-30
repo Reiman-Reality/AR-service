@@ -185,13 +185,26 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
     ctx.status = 200;
 });
 
-adminRouter.get('/login', body, async (ctx) => {
+adminRouter.post('/login', body, async (ctx) => {
 	if(verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'html';
 		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/loginPage.html'));
-		return;
+		
+		const password =ctx.request.body.password;
+		const loginPassword = await database.getPasswordByUsername(ctx.request.body.username,ctx.request.body.password);
+		//console.log(loginPassword);
+		//console.log(password);
+		
+		if(loginPassword === password){
+			ctx.body = {message:"ok"};
+		}
+		else{
+		ctx.status = 500;
+		ctx.body = {message:"something went wrong on our end please try again later"};
+		}	
 	}
-	ctx.redirect('/home');
+	
+	
 });
 
 adminRouter.get('/api/getModels', async (ctx) => {
@@ -209,6 +222,8 @@ adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
 	ctx.status=200;
 	ctx.body = markers;
 });
+
+
 
 adminRouter.get('/home',body,async (ctx) =>{
 	try{
@@ -269,6 +284,14 @@ function verifyLogin(cookie : string):boolean {
 	return true;
 }
 
+function verifyUsernamePasword(login:any):boolean {
+	if (!login.username || !login.password ){
+		return false;
+	}
+	return true;
+}
+
+
 function verifyMarkerData( formData:any, newFilePath:string, two: string, three: string ){
 	if( !formData.name || formData.name.length > 50 ) {
 		return null;
@@ -282,6 +305,8 @@ function verifyMarkerData( formData:any, newFilePath:string, two: string, three:
 		filepathThree: three,
 	} as markerData;
 }
+
+
 
 function verifyEventData( data:any ) {
 	if( !data.name || data.name.length > 50 || data.marker_id == null || data.model_id == null) {

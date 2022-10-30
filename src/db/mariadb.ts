@@ -3,7 +3,7 @@ import * as mariadb from 'mariadb';
 import {v4} from 'uuid';
 import * as dotenv from 'dotenv';
 import process from 'node:process';
-import {markerData, modelData, eventData} from '../types/databaseTypes'
+import {markerData, modelData, eventData,login} from '../types/databaseTypes'
 
 dotenv.config();
 
@@ -43,6 +43,20 @@ export async function getAllEvents() {
         console.log(exception);
     }
 }
+
+export async function getPasswordByUsername(username: string, password:string) {
+    try{
+        const connection = await pool.getConnection();
+        const data = await connection.query( `SELECT password FROM USER where username ="${username}";`);
+        console.log(data);
+        connection.end();
+        return data[0].password;
+    } catch( exception: unknown) {
+        console.log(exception);
+        return null;
+    }
+}
+
 
 
 export async function getModelsByMarkerID(input: string) {
