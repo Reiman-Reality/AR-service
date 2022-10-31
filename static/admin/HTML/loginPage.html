@@ -1,16 +1,26 @@
 <!DOCTYPE html>
+<!--<script src="static/admin/js/login.js" type="text/js"></script>-->
 <head>
-	<script src="static/admin/js/login.js" type="text/js"></script>
+	<script >
+		
+
+	</script>
+	><style>
+		
+	</style>
 </head>
 <body>
 	<div>
 	</div>
 
 	<div>
-		<form id="adminLogin">
+		<form id="adminLogin" action="http://localhost:8080/admin/verifyLogin" method="POST" enctype="multipart/form-data">
+			<h1>username</h1>
 			<input type="text" name="username">
+			<h1>password</h1>
 			<input type="text" name="password">
-
+			<!-- <p id="error">username or password is incorrect</p> -->
+			<input type="submit">
 		</form>
 	<div>
 </body>

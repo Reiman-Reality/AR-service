@@ -185,7 +185,19 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
     ctx.status = 200;
 });
 
-adminRouter.post('/login', body, async (ctx) => {
+
+adminRouter.get('/login', body, async (ctx) => {
+	if(verifyLogin(ctx.cookies.get('log'))){
+		ctx.type = 'html';
+		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/loginPage.html'));
+		return;
+	}
+	ctx.redirect('/home');
+});
+
+
+
+adminRouter.post('/verifyLogin', body, async (ctx) => {
 	if(verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'html';
 		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/loginPage.html'));
@@ -193,14 +205,16 @@ adminRouter.post('/login', body, async (ctx) => {
 		const password =ctx.request.body.password;
 		const loginPassword = await database.getPasswordByUsername(ctx.request.body.username,ctx.request.body.password);
 		//console.log(loginPassword);
-		//console.log(password);
+		console.log(password);
 		
 		if(loginPassword === password){
-			ctx.body = {message:"ok"};
+			ctx.redirect('http://coms-402-sd-37.class.las.iastate.edu:8080/admin/home');	
+			return true;
 		}
 		else{
-		ctx.status = 500;
-		ctx.body = {message:"something went wrong on our end please try again later"};
+			ctx.status = 500;
+			ctx.body = {message:"something went wrong on our end please try again later"};
+			return false;
 		}	
 	}
 	
