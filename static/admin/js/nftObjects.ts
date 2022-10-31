@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", async ()=>{
-    const response = await fetch("admin/api/getMarkers");
+    const response = await fetch("./api/getMarkers");
     
     if (!response.ok) {
         document.body.textContent += "The server was unable to load the object list. Please refresh the page.";
@@ -21,6 +21,58 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     for (let i = 0; i < data.length; i++) {
         makeObjectTableEntry(data[i]);
     }
+
+    document.querySelector("#markerForm").addEventListener("submit", async (event)=>{
+        event.preventDefault();
+        event.stopPropagation();
+        console.log(event.target);
+        const data = new FormData(event.target as HTMLFormElement);
+        for (const [key, value] of data) {
+            console.log( `${key}: ${value}\n`);
+          }
+
+        const request = new XMLHttpRequest();
+
+        request.addEventListener("load", (event)=>{
+            alert("updated succesfully");
+        });
+        request.addEventListener("error", (event)=>{
+            alert("failed to update try again later");
+        });
+
+        request.open("POST", "./api/updateMarker");
+        request.send(data);
+    });
+
+    document.querySelector("#addMarkerButton").addEventListener("click", ()=>{
+        document.querySelector("#marker-modal").classList.add("show");
+        document.querySelector("#newMarkerForm").classList.remove("hide");
+        document.querySelector("#markerForm").classList.add("hide");
+        (document.querySelector('#markerName') as HTMLInputElement).value = "";
+        (document.querySelector('#markerID') as HTMLInputElement).value = "";
+    })
+
+    document.querySelector("#newMarkerForm").addEventListener("submit", async (event)=>{
+        event.preventDefault();
+        event.stopPropagation();
+        console.log(event.target);
+        const data = new FormData(event.target as HTMLFormElement);
+        for (const [key, value] of data) {
+            console.log( `${key}: ${value}\n`);
+          }
+
+        const request = new XMLHttpRequest();
+
+        request.addEventListener("load", (event)=>{
+            alert("created succesfully");
+        });
+        request.addEventListener("error", (event)=>{
+            alert("failed to create marker try again later");
+        });
+
+        request.open("POST", "./api/addMarker");
+        request.send(data);
+    })
 });
 
 function makeObjectTableEntry(data) : void {
@@ -36,7 +88,14 @@ function makeObjectTableEntry(data) : void {
     tableEntryHeader.setAttribute("class", "boxHeading");
     tableEntry.appendChild(tableEntryHeader);
 
-    tableEntryThumbnail.setAttribute("src", data.file_path);
+    //tableEntryThumbnail.setAttribute("src", data.file_path);
     tableEntry.appendChild(tableEntryThumbnail);
+    tableEntry.addEventListener('click', () =>{
+        document.querySelector("#marker-modal").classList.add("show");
+        document.querySelector("#newMarkerForm").classList.add("hide");
+        document.querySelector("#markerForm").classList.remove("hide");
+        (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
+        (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
+    });
     tableEntryList.appendChild(tableEntry);
 }

@@ -1,12 +1,53 @@
 <!DOCTYPE html>
 <head>
-    <script src="static/admin/js/arModels.js" type="text/javascript"></script>
+    <script src="./modelScripts" type="text/javascript"></script>
     <style>
 .boxes { width: 90%; margin: auto; overflow: hidden; margin-top: 20px; }
 .boxes ul { padding: 0px; margin: 0px; }
 .boxes ul li { float: left; list-style: none; width: 20%; height: 300px; margin: 20px 0px 20px 55px; border: 2px solid #454545; box-sizing: border-box; }
 .boxes ul li .boxHeading { width: 100%; height: 50px; line-height: 50px; text-align: center; font-size: 20px; border-bottom: 2px solid #454545; }
 @media screen and (max-width:1250px) { .boxes ul li { width: 40%; margin-left: 40px; } }
+
+
+/* The Modal (background) */
+.modal{
+  display: none; 
+  position: fixed; 
+  z-index: 1;
+  padding-top: 100px; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgb(0,0,0); 
+  background-color: rgba(0,0,0,0.4); 
+}
+
+/* Modal Content */
+.modal-content,.modal-content-edit {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
     </style>
 </head>
 <body>
@@ -15,4 +56,21 @@
             <!-- Dynamically loaded content goes here -->
         </ul>
     </div>
+    <div id="editModel" class="modal">
+        <!-- EDIT Modal content -->
+        <div id = edit-content class="modal-content">
+          <span class="close">&times;</span>
+          <h1>Model Information</h1>
+          <form action="http://coms-402-sd-37.class.las.iastate.edu:8080/admin/api/updatemodel" method="POST" enctype="multipart/form-data">
+            <h3>Model Name</h3>
+            <input type="text" id="edit_name" name="edit_name">
+            <h3> Model File</h3>
+            <input type="file" id="model_file_path" name="model_file_path">
+            <h3><p id="edit_insert_date"></p></h3>
+            <input type="hidden" name="edit_model_id" id="edit_model_id">
+            <input type="submit">
+        </form>
+        </div>
+      </div>
+    
 </body>
