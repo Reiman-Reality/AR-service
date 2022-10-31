@@ -49,9 +49,9 @@ const body = koaBody({
     const marker1 = ctx.request.files.marker1;
 	const marker2 = ctx.request.files.marker2;
 	const marker3 = ctx.request.files.marker3;
-	const newMarkerPath1 =  path.join(__dirname, '/static/markers/', marker1.originalFilename);
-	const newMarkerPath2 =  path.join(__dirname, '/static/markers/', marker2.originalFilename);
-	const newMarkerPath3 =  path.join(__dirname, '/static/markers/', marker3.originalFilename);
+	const newMarkerPath1 =  path.join(__dirname, '/markers/', marker1.originalFilename);
+	const newMarkerPath2 =  path.join(__dirname, '/markers/', marker2.originalFilename);
+	const newMarkerPath3 =  path.join(__dirname, '/markers/', marker3.originalFilename);
     try{
     	await fsPromise.rename(marker1.filepath, newMarkerPath1);
 		await fsPromise.rename(marker2.filepath, newMarkerPath2);
