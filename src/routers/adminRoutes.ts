@@ -137,7 +137,7 @@ adminRouter.post('/api/updatemodel', body, async (ctx)=>{
 	const model = ctx.request.files.model_file_path;
 	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
     
-	const cleanedData = verifyEDITModelData(ctx.request.body, newModelPath);
+	const cleanedData = verifyEDITModelData(ctx.request.body, model.originalFilename);
 	
 	
 	if(!cleanedData) {
