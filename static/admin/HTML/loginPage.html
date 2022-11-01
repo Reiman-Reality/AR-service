@@ -81,8 +81,6 @@ span.psw {
     <button id="loginButton">Login</button>
   </div>
   <script>
-
-    
     const submit = document.getElementById('loginButton');
     console.log(username);
     async function makeRequest(username){
@@ -105,16 +103,13 @@ span.psw {
           else{
             location.replace("http://coms-402-sd-37.class.las.iastate.edu:8080/admin/home");
           }
-         }
-         
-         
+         }  
     }
     submit.onclick = function(){
       const username = document.getElementById('username').value;
       makeRequest(username);
     }
-    
-    </script>
+  </script>
 
 </body>
 </html>

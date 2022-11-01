@@ -208,7 +208,7 @@ adminRouter.get('/addUser', body, async (ctx) => {
 		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/addingUser.html'));
 		return;
 	}
-	ctx.redirect('/home');
+	//ctx.redirect('/home');
 });
 
 adminRouter.post('/createUser', body, async (ctx)=>{
