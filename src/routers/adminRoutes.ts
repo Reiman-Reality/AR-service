@@ -199,7 +199,13 @@ adminRouter.get('/login', body, async (ctx) => {
 
 adminRouter.post('/getAccount', body, async (ctx) => {
 		console.log(ctx.request.body);
-		ctx.body = await database.getAccountByUsername(ctx.request.body.username);
+		const veryfiy = await database.getAccountByUsername(ctx.request.body.username, ctx.request.body.password);
+		if(veryfiy){
+			ctx.status = 200;
+		}
+		else{
+			ctx.status = 401;
+		}
 });
 
 adminRouter.get('/addUser', body, async (ctx) => {

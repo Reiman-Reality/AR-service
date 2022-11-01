@@ -44,11 +44,12 @@ export async function getAllEvents() {
     }
 }
 
-export async function getAccountByUsername(username: string) {
+export async function getAccountByUsername(username: string, password: string) {
     try{
         const connection = await pool.getConnection();
-        const data = await connection.query( `SELECT*FROM USER where username ="${username}";`);
+        const data = await connection.query( `SELECT*FROM USER where username ="${username}" and password="${password}";`);
         connection.end();
+        console.log(data);
         return data;
     } catch( exception: unknown) {
         console.log(exception);

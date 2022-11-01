@@ -83,31 +83,26 @@ span.psw {
   <script>
     const submit = document.getElementById('loginButton');
     console.log(username);
-    async function makeRequest(username){
+    async function makeRequest(username,password){
         const  res = await fetch("http://localhost:8080/admin/getAccount",{
           method:"POST",
           headers:{"content-type": 'application/json'},
-          body:JSON.stringify({username})
+          body:JSON.stringify({username, password})
         });
-         const accounts = await res.json();
-         console.log(accounts);
-         if(accounts.length == 0){
-          window.alert("username or password is incorrect");
+         const sucess = await res.status;
+         console.log(sucess);
+         if(sucess != 200){
+            alert("username or password is incorrect");
          }
-         else{
-          const loginPassword = document.getElementById('password').value;
-          const password = accounts[0].password;
-          if(loginPassword !== password){
-            window.alert("username or password is incorrect");
-          }
           else{
             location.replace("http://coms-402-sd-37.class.las.iastate.edu:8080/admin/home");
           }
-         }  
+         
     }
     submit.onclick = function(){
       const username = document.getElementById('username').value;
-      makeRequest(username);
+      const password = document.getElementById('password').value;
+      makeRequest(username, password);
     }
   </script>
 
