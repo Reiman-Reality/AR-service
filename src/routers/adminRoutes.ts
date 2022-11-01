@@ -202,8 +202,16 @@ adminRouter.post('/getAccount', body, async (ctx) => {
 		ctx.body = await database.getAccountByUsername(ctx.request.body.username);
 });
 
+adminRouter.get('/addUser', body, async (ctx) => {
+	if(verifyLogin(ctx.cookies.get('log'))){
+		ctx.type = 'html';
+		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/addingUser.html'));
+		return;
+	}
+	ctx.redirect('/home');
+});
+
 adminRouter.post('/createUser', body, async (ctx)=>{
-    
 	const cleanedData = verifyAccount(ctx.request.body);
 	if(!cleanedData) {
 		ctx.status=400;
@@ -215,7 +223,6 @@ adminRouter.post('/createUser', body, async (ctx)=>{
 		ctx.body = {message:"something went wrong on our end please try again later"};
 		return;
 	}
-
     ctx.status = 200;
 });
 
