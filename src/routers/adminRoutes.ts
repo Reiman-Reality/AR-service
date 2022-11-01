@@ -49,9 +49,9 @@ const body = koaBody({
     const marker1 = ctx.request.files.marker1;
 	const marker2 = ctx.request.files.marker2;
 	const marker3 = ctx.request.files.marker3;
-	const newMarkerPath1 =  path.join(__dirname, '/static/markers/', marker1.originalFilename);
-	const newMarkerPath2 =  path.join(__dirname, '/static/markers/', marker2.originalFilename);
-	const newMarkerPath3 =  path.join(__dirname, '/static/markers/', marker3.originalFilename);
+	const newMarkerPath1 =  path.join(__dirname, '/markers/', marker1.originalFilename);
+	const newMarkerPath2 =  path.join(__dirname, '/markers/', marker2.originalFilename);
+	const newMarkerPath3 =  path.join(__dirname, '/markers/', marker3.originalFilename);
     try{
     	await fsPromise.rename(marker1.filepath, newMarkerPath1);
 		await fsPromise.rename(marker2.filepath, newMarkerPath2);
@@ -65,7 +65,7 @@ const body = koaBody({
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	const cleanedData = verifyMarkerData(ctx.request.body, newMarkerPath1, newMarkerPath2, newMarkerPath3);
+	const cleanedData = verifyMarkerData(ctx.request.body,  marker1.originalFilename, marker2.originalFilename, marker3.originalFilename);
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
@@ -104,11 +104,14 @@ adminRouter.post('/api/updateMarker', body, async (ctx)=>{
  */
 adminRouter.post('/api/addmodel', body, async (ctx)=>{
     //TODO verification
-    const model = ctx.request.files.model; // get the model;
-	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
+    const model = ctx.request.files.model; // get the model
+	const texture = ctx.request.files?.texture; // get the texture
+	const newModelPath =  path.join(__dirname, '/models/', model.originalFilename);
+	const newTexturePath =  path.join(__dirname, '/textures/', texture.originalFilename);
 	
     try{
     	await fsPromise.rename(model.filepath, newModelPath);
+		await fsPromise.rename(texture.filepath, newTexturePath);
     } catch (err:unknown) {
 		console.log(err);
 		fs.unlink(model.filepath, (err) => console.log(err));
@@ -116,7 +119,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	const cleanedData = verifyModelData(ctx.request.body, newModelPath);
+	const cleanedData = verifyModelData(ctx.request.body, model.originalFilename, texture.originalFilename);
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
@@ -136,7 +139,7 @@ adminRouter.post('/api/updatemodel', body, async (ctx)=>{
 	const model = ctx.request.files.model_file_path;
 	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
     
-	const cleanedData = verifyEDITModelData(ctx.request.body, newModelPath);
+	const cleanedData = verifyEDITModelData(ctx.request.body, model.originalFilename);
 	
 	
 	if(!cleanedData) {
@@ -170,7 +173,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	const cleanedData = verifyModelData(ctx.request.body, newModelPath);
+	const cleanedData = verifyModelData(ctx.request.body, newModelPath, '');
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
@@ -269,7 +272,7 @@ function verifyLogin(cookie : string):boolean {
 	return true;
 }
 
-function verifyMarkerData( formData:any, newFilePath:string, two: string, three: string ){
+function verifyMarkerData( formData:any, name:string, two: string, three: string ){
 	if( !formData.name || formData.name.length > 50 ) {
 		return null;
 	}
@@ -277,7 +280,7 @@ function verifyMarkerData( formData:any, newFilePath:string, two: string, three:
 		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
 		name: formData.name,
 		markerID: null,
-		filepathOne: newFilePath,
+		filepathOne: name,
 		filepathTwo: two,
 		filepathThree: three,
 	} as markerData;
@@ -313,7 +316,7 @@ function verifyEDITModelData( formModel:any, newFilePath:string ){
 }
 	
 
-function verifyModelData( formModel:any, newFilePath:string ){
+function verifyModelData( formModel:any, newFilePath:string, textureName: string){
 	
 	if( !formModel.name || formModel.name.length > 50 ) {
 		return null;
@@ -324,6 +327,7 @@ function verifyModelData( formModel:any, newFilePath:string ){
 		name: formModel.name,
 		modelID: null,
 		filepath: newFilePath,
+		texture: textureName
 	} as modelData;
 }
 

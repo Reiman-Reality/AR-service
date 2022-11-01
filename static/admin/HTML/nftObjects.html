@@ -52,6 +52,13 @@
         border-radius: 10rem;
         position: absolute;
     }
+
+    #modal-exit{
+        cursor: pointer; 
+        width: 100%;
+        text-align: right;
+        height: 0;
+    }
     </style>
 </head>
 
@@ -63,6 +70,7 @@
     </div>
     <div id="marker-modal" class="modal">
         <div class="modal-content">
+            <div id="modal-exit">X</div>
             <form id="markerForm" class="hide">
                 <h2> Name </h2>
                 <input type="text" id="markerName" name="name">

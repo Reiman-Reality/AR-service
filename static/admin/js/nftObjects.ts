@@ -72,12 +72,18 @@ window.addEventListener("DOMContentLoaded", async ()=>{
 
         request.open("POST", "./api/addMarker");
         request.send(data);
+    });
+
+    document.querySelector("#modal-exit").addEventListener("click", ()=>{
+        document.querySelector("#marker-modal").classList.remove("show");
     })
+
 });
 
 function makeObjectTableEntry(data) : void {
     const tableEntryList : HTMLElement = document.getElementById("boxList");
     const tableEntry : HTMLElement = document.createElement("li");
+    tableEntry.classList.add("nft");
     const tableEntryHeader : HTMLElement = document.createElement("div");
     const tableEntryHeaderLink : HTMLElement = document.createElement("a");
     const tableEntryThumbnail : HTMLElement = document.createElement("img");
