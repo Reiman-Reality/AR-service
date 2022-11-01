@@ -232,8 +232,8 @@ export async function getModelsByEvent(eventID: string) {
 export async function insertModel(data: modelData) {
     try {
         const connection = await pool.getConnection();
-        await connection.query(`INSERT INTO MODELS (model_id, name, file_path, inserted_on)
-        VALUES (uuid(), "${data.name}", "${data.filepath}", "${data.insertedOn}")`);
+        await connection.query(`INSERT INTO MODELS (model_id, name, file_path,texture_name, inserted_on)
+        VALUES (uuid(), "${data.name}", "${data.filepath}", "${data.texture}", "${data.insertedOn}")`);
         connection.end();
         return true;
     } catch( exception: unknown) {

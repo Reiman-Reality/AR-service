@@ -106,10 +106,12 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
     //TODO verification
     const model = ctx.request.files.model; // get the model
 	const texture = ctx.request.files?.texture; // get the texture
-	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
+	const newModelPath =  path.join(__dirname, '/models/', model.originalFilename);
+	const newTexturePath =  path.join(__dirname, '/textures/', texture.originalFilename);
 	
     try{
     	await fsPromise.rename(model.filepath, newModelPath);
+		await fsPromise.rename(texture.filepath, newTexturePath);
     } catch (err:unknown) {
 		console.log(err);
 		fs.unlink(model.filepath, (err) => console.log(err));
@@ -117,7 +119,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	const cleanedData = verifyModelData(ctx.request.body, model.originalFilename);
+	const cleanedData = verifyModelData(ctx.request.body, model.originalFilename, texture.originalFilename);
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
@@ -171,7 +173,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	const cleanedData = verifyModelData(ctx.request.body, newModelPath);
+	const cleanedData = verifyModelData(ctx.request.body, newModelPath, '');
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
@@ -314,7 +316,7 @@ function verifyEDITModelData( formModel:any, newFilePath:string ){
 }
 	
 
-function verifyModelData( formModel:any, newFilePath:string ){
+function verifyModelData( formModel:any, newFilePath:string, textureName: string){
 	
 	if( !formModel.name || formModel.name.length > 50 ) {
 		return null;
@@ -325,6 +327,7 @@ function verifyModelData( formModel:any, newFilePath:string ){
 		name: formModel.name,
 		modelID: null,
 		filepath: newFilePath,
+		texture: textureName
 	} as modelData;
 }
 
