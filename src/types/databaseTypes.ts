@@ -12,6 +12,7 @@ export interface modelData {
     insertedOn: Date,
     modelID: string,
     filepath: string,
+    texture: string,
 }
 
 export interface eventData {
