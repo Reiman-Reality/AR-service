@@ -1,5 +1,3 @@
-const arjsScene = document.getElementById("arjsScene")
-
 let modelsPresent = false;
 
 function beforeEntity(markerUrl) {
@@ -18,28 +16,34 @@ function addCamera(){
     return "<a-entity camera></a-entity>";
 }
 
+function httpGet(theUrl) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false );
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
 function addModelFunction() {
+    let arjsScene = document.getElementById("arjsScene")
+
     if (modelsPresent) {
         return;
     }
     modelsPresent = true;
 
-    /**
-     * Load models below
-     */
+    let modelJSON = httpGet("https://coms-402-sd-37.class.las.iastate.edu/filenames");
 
-    /**
-     * Connect to db
-     */
+    for(let i = 0; i < modelJSON.length; i++) {
+        let obj = modelJSON[i];
 
-    // arjsScene.innerHTML = ""
+        let markerUrl = obj["markerName"];
+        let modelUrl = obj["modelFile"];
 
-    // for active in [ActiveList]:
-    //      let markerUrl = active.markerUrl
-    //      let objName = active.objName
-    //      arjsScene.innerHtml += beforeEntity(markerUrl) + objEntity(objName) + afterEntity();
-    //
-    // arjsScene.innerHtml += addCamera()
+        arjsScene.innerHTML += beforeEntity(markerUrl) + objEntity(modelUrl) + afterEntity();
+        console.log("Added: " + markerUrl + " " + modelUrl)
+    }
+
+    // arjsScene.innerHtml = arjsScene.innerHTML + addCamera();
 
     console.log(beforeEntity("test"))
 }
