@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+form {border: 3px solid #f1f1f1;}
+
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<h2>Add User</h2>
+  <div class="container">
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" id="username" required>
+
+    <label for="password"><b>Password</b></label>
+    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+	<label for="password"><b>Confirm Password</b></label>
+    <input type="password" placeholder="Enter Password" name="confirm-password" id="confirm-password" required>
+	<label for="cars">Role:</label>
+	<select id="role" name="rolelist" form="roleform">
+	<option value="NONE">     </option>	
+	<option value="STAFF">STAFF</option>
+	</select>
+    <button id="addUserBotton">Add User</button>
+  </div>
+	<script>
+     const addButton = document.getElementById('addUserBotton');
+    console.log(username);
+    async function makeRequest(username,password,role){
+        const  res = await fetch("http://localhost:8080/admin/createUser",{
+          method:"POST",
+          headers:{"content-type": 'application/json'},
+          body:JSON.stringify({username,password,role})
+        });
+		const success = await res.status;
+        if(success != 200){
+			alert("Username already exist");
+		}
+		else{
+			alert("succesfully");
+		}
+    }
+         
+         
+
+	addButton.onclick = function(){
+      	const username = document.getElementById('username').value;
+	  	const password= document.getElementById('password').value;
+	  	const confirmPassword= document.getElementById('confirm-password').value;
+	  	const role= document.getElementById('role').value;
+		console.log(role);
+		if(password!== confirmPassword){
+			alert("Please make sure your password match");
+		}
+		else if(role =="NONE"){
+			alert("Please select a role");
+		}
+		else{
+		makeRequest(username,password,role);
+    }
+}
+    
+    </script>
+	</script>
+
+</body>
+</html>
