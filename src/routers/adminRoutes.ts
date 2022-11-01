@@ -200,7 +200,7 @@ adminRouter.get('/login', body, async (ctx) => {
 adminRouter.post('/getAccount', body, async (ctx) => {
 		console.log(ctx.request.body);
 		const veryfiy = await database.getAccountByUsername(ctx.request.body.username, ctx.request.body.password);
-		if(veryfiy){
+		if(veryfiy.length >= 1){
 			ctx.status = 200;
 		}
 		else{

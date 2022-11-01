@@ -49,6 +49,8 @@ export async function getAccountByUsername(username: string, password: string) {
         const connection = await pool.getConnection();
         const data = await connection.query( `SELECT*FROM USER where username ="${username}" and password="${password}";`);
         connection.end();
+        console.log(typeof( data ));
+        delete data['meta'];
         console.log(data);
         return data;
     } catch( exception: unknown) {
