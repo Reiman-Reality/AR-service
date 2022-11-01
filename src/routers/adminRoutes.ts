@@ -8,7 +8,7 @@ import * as database from "../db/mariadb.js"
 import serve from 'koa-static';
 import { fileURLToPath } from 'url';
 import { parseIsolatedEntityName } from 'typescript';
-import { eventData, markerData, modelData } from '../types/databaseTypes';
+import { eventData, login, markerData, modelData } from '../types/databaseTypes';
 
 const adminRouter = new Router();
 // Have to do this since with TS and ES 2022 you don't get the __dirname variable :(
@@ -197,28 +197,26 @@ adminRouter.get('/login', body, async (ctx) => {
 
 
 
-adminRouter.post('/verifyLogin', body, async (ctx) => {
-	if(verifyLogin(ctx.cookies.get('log'))){
-		ctx.type = 'html';
-		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/loginPage.html'));
-		
-		const password =ctx.request.body.password;
-		const loginPassword = await database.getPasswordByUsername(ctx.request.body.username,ctx.request.body.password);
-		//console.log(loginPassword);
-		console.log(password);
-		
-		if(loginPassword === password){
-			ctx.redirect('http://coms-402-sd-37.class.las.iastate.edu:8080/admin/home');	
-			return true;
-		}
-		else{
-			ctx.status = 500;
-			ctx.body = {message:"something went wrong on our end please try again later"};
-			return false;
-		}	
+adminRouter.post('/getAccount', body, async (ctx) => {
+		console.log(ctx.request.body);
+		ctx.body = await database.getAccountByUsername(ctx.request.body.username);
+});
+
+adminRouter.post('/createUser', body, async (ctx)=>{
+    
+	const cleanedData = verifyAccount(ctx.request.body);
+	if(!cleanedData) {
+		ctx.status=400;
+		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
+		return;
 	}
-	
-	
+	if( ! await database.addUser(cleanedData) ){
+		ctx.status = 500;
+		ctx.body = {message:"something went wrong on our end please try again later"};
+		return;
+	}
+
+    ctx.status = 200;
 });
 
 adminRouter.get('/api/getModels', async (ctx) => {
@@ -348,6 +346,20 @@ function verifyEDITModelData( formModel:any, newFilePath:string ){
 			modelID: formModel.edit_model_id,
 			filepath: newFilePath
 		} as modelData
+	
+}
+
+function verifyAccount( account:any){
+	
+	if( !account.username|| !account.password ) {
+		return null;
+	}
+
+		return{
+			username:account.username,
+			password:account.password,
+			role: account.role
+		} as login
 	
 }
 	

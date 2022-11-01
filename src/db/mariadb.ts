@@ -44,16 +44,27 @@ export async function getAllEvents() {
     }
 }
 
-export async function getPasswordByUsername(username: string, password:string) {
+export async function getAccountByUsername(username: string) {
     try{
         const connection = await pool.getConnection();
-        const data = await connection.query( `SELECT password FROM USER where username ="${username}";`);
-        console.log(data[0].password);
+        const data = await connection.query( `SELECT*FROM USER where username ="${username}";`);
         connection.end();
-        return data[0].password;
+        return data;
     } catch( exception: unknown) {
         console.log(exception);
         return null;
+    }
+}
+
+export async function addUser(account: login) {
+    try{
+        const connection = await pool.getConnection();
+        const data = await connection.query( `INSERT INTO USER (username, password, role) values("${account.username}","${account.password}","${account.role}");`);
+        connection.end();
+        return true
+    } catch( exception: unknown) {
+        console.log(exception);
+        return false
     }
 }
 
