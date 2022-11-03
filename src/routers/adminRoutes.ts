@@ -349,11 +349,19 @@ adminRouter.get('/modelScripts', async(ctx)=>{
 	}
 });
 
-//TODO
-async function verifyLogin(cookie : string){
+function verifyLogin(cookie : string){
 	return loggedInUsers[cookie];
 }
 
+function verifyAdmin( cookie: string) {
+	const user = loggedInUsers[cookie];
+
+	if(!user) {
+		return false;
+	}
+
+	return user.role === 'ADMIN';
+}
 
 function verifyMarkerData( formData:any, newFilePath:string, two: string, three: string ){
 	if( !formData.name || formData.name.length > 50 ) {
