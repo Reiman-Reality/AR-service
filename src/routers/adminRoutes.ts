@@ -9,6 +9,7 @@ import serve from 'koa-static';
 import { fileURLToPath } from 'url';
 import { parseIsolatedEntityName } from 'typescript';
 import { eventData, login, markerData, modelData } from '../types/databaseTypes';
+import { verify } from 'node:crypto';
 
 const adminRouter = new Router();
 // Have to do this since with TS and ES 2022 you don't get the __dirname variable :(
@@ -187,21 +188,22 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 
 
 adminRouter.get('/login', body, async (ctx) => {
-	if(verifyLogin(ctx.cookies.get('log'))){
+	if( ! await verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'html';
 		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/loginPage.html'));
 		return;
 	}
-	ctx.redirect('/home');
+	ctx.redirect('/admin/home');
 });
 
 
 
 adminRouter.post('/getAccount', body, async (ctx) => {
 		console.log(ctx.request.body);
-		const veryfiy = await database.getAccountByUsername(ctx.request.body.username, ctx.request.body.password);
-		if(veryfiy.length >= 1){
+		const verify = await database.getAccountByUsername(ctx.request.body.username, ctx.request.body.password);
+		if(verify.length >= 1){
 			ctx.status = 200;
+			ctx.cookies.set("log", (Buffer.from(verify[0].username + ":" + verify[0].password)).toString('base64'), {httpOnly: false});
 		}
 		else{
 			ctx.status = 401;
@@ -209,7 +211,7 @@ adminRouter.post('/getAccount', body, async (ctx) => {
 });
 
 adminRouter.get('/addUser', body, async (ctx) => {
-	if(verifyLogin(ctx.cookies.get('log'))){
+	if(! await verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'html';
 		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/addingUser.html'));
 		return;
@@ -305,8 +307,16 @@ adminRouter.get('/modelScripts', async(ctx)=>{
 });
 
 //TODO
-function verifyLogin(cookie : string):boolean {
-	return true;
+async function verifyLogin(cookie : string):Promise<boolean> {
+	const buffer = Buffer.from(cookie, 'base64');
+	const string = buffer.toString("ascii");
+	const username = string.split(":")[0];
+	const password = string.split(":")[1];
+	const user = await database.getAccountByUsername(username,password);
+	if( user.length >= 1) {
+		return true;
+	}
+	return false;
 }
 
 function verifyUsernamePasword(login:any):boolean {
