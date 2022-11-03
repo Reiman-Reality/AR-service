@@ -354,13 +354,6 @@ async function verifyLogin(cookie : string){
 	return loggedInUsers[cookie];
 }
 
-function verifyUsernamePasword(login:any):boolean {
-	if (!login.username || !login.password ){
-		return false;
-	}
-	return true;
-}
-
 
 function verifyMarkerData( formData:any, newFilePath:string, two: string, three: string ){
 	if( !formData.name || formData.name.length > 50 ) {
@@ -423,6 +416,9 @@ function verifyAccount( account:any){
 function createCookie( user ) {
 	const loggedIn = v4();
 	loggedInUsers[loggedIn] = user;
+	setTimeout(  ()=>{
+		delete loggedInUsers[loggedIn];
+	}, 3600)
 	return loggedIn;
 }
 	
