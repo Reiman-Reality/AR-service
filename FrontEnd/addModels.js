@@ -16,13 +16,6 @@ function addCamera(){
     return "<a-entity camera></a-entity>";
 }
 
-function httpGet(theUrl) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false );
-    xmlHttp.send( null );
-    return xmlHttp.responseText;
-}
-
 function addModelFunction() {
     let arjsScene = document.getElementById("arjsScene")
 
@@ -31,19 +24,19 @@ function addModelFunction() {
     }
     modelsPresent = true;
 
-    let modelJSON = httpGet("./filenames");
-
-    for(let i = 0; i < modelJSON.length; i++) {
-        let obj = modelJSON[i];
-
-        let markerUrl = obj["markerName"];
-        let modelUrl = obj["modelFile"];
-
-        arjsScene.innerHTML += beforeEntity(markerUrl) + objEntity(modelUrl) + afterEntity();
-        console.log("Added: " + markerUrl + " " + modelUrl)
-    }
+    fetch('./filenames')
+        .then((response) => response.json())
+        .then((data) => {
+            for(let i = 0; i < data.length; i++) {
+                let obj = data[i];
+        
+                let markerUrl = obj["markerName"];
+                let modelUrl = obj["modelFile"];
+        
+                arjsScene.innerHTML += beforeEntity(markerUrl) + objEntity(modelUrl) + afterEntity();
+                console.log("Added: " + markerUrl + " " + modelUrl)
+            }
+        });
 
     // arjsScene.innerHtml = arjsScene.innerHTML + addCamera();
-
-    console.log(beforeEntity("test"))
 }
