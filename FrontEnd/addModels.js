@@ -31,7 +31,7 @@ function addModelFunction() {
     }
     modelsPresent = true;
 
-    let modelJSON = httpGet("https://coms-402-sd-37.class.las.iastate.edu/filenames");
+    let modelJSON = httpGet("./filenames");
 
     for(let i = 0; i < modelJSON.length; i++) {
         let obj = modelJSON[i];
