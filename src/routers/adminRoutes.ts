@@ -9,7 +9,10 @@ import serve from 'koa-static';
 import { fileURLToPath } from 'url';
 import { parseIsolatedEntityName } from 'typescript';
 import { eventData, login, markerData, modelData } from '../types/databaseTypes';
-import { verify } from 'node:crypto';
+import {v4} from 'uuid'
+
+
+const loggedInUsers = {};
 
 const adminRouter = new Router();
 // Have to do this since with TS and ES 2022 you don't get the __dirname variable :(
@@ -46,6 +49,10 @@ const body = koaBody({
  * Note for incoming requests to this endpoitn tehy must be encoded as 'multipart/form-data' otherwise request.files doesn't work.
  */
  adminRouter.post('/api/addMarker', body, async (ctx)=>{
+	if( ! await verifyLogin(ctx.cookies.get('log'))){
+		ctx.status= 500;
+		return;
+	}
 	//TODO verification
     const marker1 = ctx.request.files.marker1;
 	const marker2 = ctx.request.files.marker2;
@@ -62,7 +69,7 @@ const body = koaBody({
 		fs.unlink(marker1.filepath, (err) => console.log(err));
 		fs.unlink(marker2.filepath, (err) => console.log(err));
 		fs.unlink(marker3.filepath, (err) => console.log(err));
-		ctx.status(500);
+		ctx.status = 500;
 		ctx.body('failed to upload marker please try again');
 		return;
     }
@@ -82,7 +89,11 @@ const body = koaBody({
 });
 
 adminRouter.get("/api/getMarkers", async (ctx) =>{
-	//TODO Verification
+	if( ! await verifyLogin(ctx.cookies.get('log'))){
+		ctx.status= 500;
+		return;
+	}
+
 	const markers = await database.getAllMarkers();
 	if( !markers ){
 		ctx.status=400;
@@ -104,7 +115,11 @@ adminRouter.post('/api/updateMarker', body, async (ctx)=>{
  * Same as above for this endpoint all data must be submitted as formdata :)
  */
 adminRouter.post('/api/addmodel', body, async (ctx)=>{
-    //TODO verification
+	if( ! await verifyLogin(ctx.cookies.get('log'))){
+		ctx.status= 500;
+		return;
+	}
+
     const model = ctx.request.files.model; // get the model;
 	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
 	
@@ -132,7 +147,14 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
     ctx.status = 200;
 });
 
+/**
+ * updating models
+ */
 adminRouter.post('/api/updatemodel', body, async (ctx)=>{
+	if( ! await verifyLogin(ctx.cookies.get('log'))){
+		ctx.status= 500;
+		return;
+	}
 
 	const model = ctx.request.files.model_file_path;
 	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
@@ -158,7 +180,11 @@ adminRouter.post('/api/updatemodel', body, async (ctx)=>{
  * Same as above for this endpoint all data must be submitted as formdata :)
  */
 adminRouter.post('/api/addmodel', body, async (ctx)=>{
-    //TODO verification
+	if( ! await verifyLogin(ctx.cookies.get('log'))){
+		ctx.status= 500;
+		return;
+	}
+
     const model = ctx.request.files?.model; // get the model;
 	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
 	
@@ -196,14 +222,13 @@ adminRouter.get('/login', body, async (ctx) => {
 	ctx.redirect('/admin/home');
 });
 
-
-
 adminRouter.post('/getAccount', body, async (ctx) => {
 		console.log(ctx.request.body);
 		const verify = await database.getAccountByUsername(ctx.request.body.username, ctx.request.body.password);
 		if(verify.length >= 1){
 			ctx.status = 200;
-			ctx.cookies.set("log", (Buffer.from(verify[0].username + ":" + verify[0].password)).toString('base64'), {httpOnly: false});
+			createCookie(verify[0]);
+			ctx.cookies.set("log", createCookie(verify[0]), {httpOnly: false});
 		}
 		else{
 			ctx.status = 401;
@@ -211,6 +236,11 @@ adminRouter.post('/getAccount', body, async (ctx) => {
 });
 
 adminRouter.get('/addUser', body, async (ctx) => {
+	if( ! await verifyLogin(ctx.cookies.get('log'))){
+		ctx.status= 500;
+		return;
+	}
+
 	if(! await verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'html';
 		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/addingUser.html'));
@@ -253,6 +283,11 @@ adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
 
 
 adminRouter.get('/home',body,async (ctx) =>{
+	if( ! await verifyLogin(ctx.cookies.get('log'))){
+		ctx.redirect('/admin/login');
+		return;
+	}
+
 	try{
 		ctx.type = 'html';
 		ctx.body=fs.createReadStream(path.join(__dirname,'static/admin/HTML/adminPage.html'));
@@ -262,6 +297,10 @@ adminRouter.get('/home',body,async (ctx) =>{
 });
 
 adminRouter.get('/markersPage', async(ctx)=>{
+	if( ! await verifyLogin(ctx.cookies.get('log'))){
+		ctx.redirect('/admin/login');
+		return;
+	}
 	try{
 		ctx.type = 'html';
 		ctx.body=fs.createReadStream(path.join(__dirname,'static/admin/HTML/nftObjects.html'));
@@ -271,6 +310,10 @@ adminRouter.get('/markersPage', async(ctx)=>{
 });
 
 adminRouter.get('/modelsPage', async(ctx)=>{
+	if( ! await verifyLogin(ctx.cookies.get('log'))){
+		ctx.redirect('/admin/login');
+		return;
+	}
 	try{
 		ctx.type = 'html';
 		ctx.body=fs.createReadStream(path.join(__dirname,'static/admin/HTML/arModels.html'));
@@ -307,16 +350,8 @@ adminRouter.get('/modelScripts', async(ctx)=>{
 });
 
 //TODO
-async function verifyLogin(cookie : string):Promise<boolean> {
-	const buffer = Buffer.from(cookie, 'base64');
-	const string = buffer.toString("ascii");
-	const username = string.split(":")[0];
-	const password = string.split(":")[1];
-	const user = await database.getAccountByUsername(username,password);
-	if( user.length >= 1) {
-		return true;
-	}
-	return false;
+async function verifyLogin(cookie : string){
+	return loggedInUsers[cookie];
 }
 
 function verifyUsernamePasword(login:any):boolean {
@@ -373,7 +408,6 @@ function verifyEDITModelData( formModel:any, newFilePath:string ){
 }
 
 function verifyAccount( account:any){
-	
 	if( !account.username|| !account.password ) {
 		return null;
 	}
@@ -384,6 +418,12 @@ function verifyAccount( account:any){
 			role: account.role
 		} as login
 	
+}
+
+function createCookie( user ) {
+	const loggedIn = v4();
+	loggedInUsers[loggedIn] = user;
+	return loggedIn;
 }
 	
 
