@@ -57,9 +57,9 @@ const body = koaBody({
     const marker1 = ctx.request.files.marker1;
 	const marker2 = ctx.request.files.marker2;
 	const marker3 = ctx.request.files.marker3;
-	const newMarkerPath1 =  path.join(__dirname, '/static/markers/', marker1.originalFilename);
-	const newMarkerPath2 =  path.join(__dirname, '/static/markers/', marker2.originalFilename);
-	const newMarkerPath3 =  path.join(__dirname, '/static/markers/', marker3.originalFilename);
+	const newMarkerPath1 =  path.join(__dirname, '/markers/', marker1.originalFilename);
+	const newMarkerPath2 =  path.join(__dirname, '/markers/', marker2.originalFilename);
+	const newMarkerPath3 =  path.join(__dirname, '/markers/', marker3.originalFilename);
     try{
     	await fsPromise.rename(marker1.filepath, newMarkerPath1);
 		await fsPromise.rename(marker2.filepath, newMarkerPath2);
@@ -121,7 +121,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 	}
 
     const model = ctx.request.files.model; // get the model;
-	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
+	const newModelPath =  path.join(__dirname, '/models/', model.originalFilename);
 	
     try{
     	await fsPromise.rename(model.filepath, newModelPath);
@@ -250,6 +250,12 @@ adminRouter.get('/addUser', body, async (ctx) => {
 });
 
 adminRouter.post('/createUser', body, async (ctx)=>{
+	const user = verifyLogin( ctx.cookies.get('log') );
+	if( !user || user.role != "ADMIN" ) {
+		ctx.status = 400;
+		ctx.body = "Failed to verify you account access please try again"
+		return;
+	}
 	const cleanedData = verifyAccount(ctx.request.body);
 	if(!cleanedData) {
 		ctx.status=400;
