@@ -27,7 +27,10 @@ const body = koaBody({
  });
 
  adminRouter.post('/api/addEvent',body, async(ctx) =>{
-	//TODO Verification
+	if( ! verifyLogin(ctx.cookies.get('log'))){
+		ctx.status= 500;
+		return;
+	}
 	const cleanedData = verifyEventData(ctx.request.body );
 	if(!cleanedData) {
 		ctx.status = 400;
@@ -49,7 +52,7 @@ const body = koaBody({
  * Note for incoming requests to this endpoitn tehy must be encoded as 'multipart/form-data' otherwise request.files doesn't work.
  */
  adminRouter.post('/api/addMarker', body, async (ctx)=>{
-	if( ! await verifyLogin(ctx.cookies.get('log'))){
+	if( ! verifyLogin(ctx.cookies.get('log'))){
 		ctx.status= 500;
 		return;
 	}
@@ -256,6 +259,7 @@ adminRouter.post('/createUser', body, async (ctx)=>{
 		ctx.body = "Failed to verify you account access please try again"
 		return;
 	}
+
 	const cleanedData = verifyAccount(ctx.request.body);
 	if(!cleanedData) {
 		ctx.status=400;
@@ -271,11 +275,20 @@ adminRouter.post('/createUser', body, async (ctx)=>{
 });
 
 adminRouter.get('/api/getModels', async (ctx) => {
-		ctx.body = await database.getAllModels();
+	if( ! verifyLogin(ctx.cookies.get('log'))){
+		ctx.status= 500;
+		return;
+	}
+
+	ctx.body = await database.getAllModels();
 });
 
 adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
-	//TODO Verification
+	if( ! verifyLogin(ctx.cookies.get('log'))){
+		ctx.status= 500;
+		return;
+	}
+
 	const markers = await database.getModelsByMarkerID(ctx.request.body.marker_id);
 	if( !markers ){
 		ctx.status=400;
@@ -307,6 +320,7 @@ adminRouter.get('/markersPage', async(ctx)=>{
 		ctx.redirect('/admin/login');
 		return;
 	}
+
 	try{
 		ctx.type = 'html';
 		ctx.body=fs.createReadStream(path.join(__dirname,'static/admin/HTML/nftObjects.html'));
@@ -357,16 +371,6 @@ adminRouter.get('/modelScripts', async(ctx)=>{
 
 function verifyLogin(cookie : string){
 	return loggedInUsers[cookie];
-}
-
-function verifyAdmin( cookie: string) {
-	const user = loggedInUsers[cookie];
-
-	if(!user) {
-		return false;
-	}
-
-	return user.role === 'ADMIN';
 }
 
 function verifyMarkerData( formData:any, newFilePath:string, two: string, three: string ){
