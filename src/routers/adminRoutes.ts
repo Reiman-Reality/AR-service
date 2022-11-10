@@ -130,7 +130,6 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 		ctx.body = {message:"something went wrong on our end please try again later"};
 		return;
 	}
-
     ctx.status = 200;
 });
 
@@ -295,7 +294,10 @@ function verifyEventData( data:any ) {
 		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
 		eventName: data.name,
 		marker_id: data.marker_id,
-		model_id: data.model_id
+		model_id: data.model_id,
+		x_pos:data.x_pos,
+		y_pos:data.y_pos,
+		z_pos:data.z_pos
 	} as eventData;
 
 }

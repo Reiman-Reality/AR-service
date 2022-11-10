@@ -93,8 +93,8 @@ export async function addEvent(event: eventData) {
     try{
         const connection = await pool.getConnection();
         const id = v4();
-        const success = await connection.query(`INSERT INTO EVENTS (marker_id, model_id)
-        VALUES ( "${event.marker_id}", "${event.model_id}");`);
+        const success = await connection.query(`INSERT INTO EVENTS (marker_id, model_id, x_pos, y_pos,z_pos)
+        VALUES ( "${event.marker_id}", "${event.model_id}", "${event.x_pos}", "${event.y_pos}", "${event.z_pos}");`);
         connection.end();
         return id;
     } catch( exception:unknown ){
