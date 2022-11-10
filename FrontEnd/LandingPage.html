@@ -31,8 +31,8 @@
 
         <!--Header Links-->
         <div class="header-right">
-          <a href="">Reiman Reality</a>
-          <a href="">Contact</a>
+          <a href="">Map</a>
+          <!--<a href="">Contact</a>-->
           <a href="">About</a>
         </div>
 
@@ -53,8 +53,27 @@
         <div id="container">
           <center>
             <!-- a-frame scene -->
+
+                  <!-- Simulate a smartphone / tablet -->
+                  <div class="mobile-container">
+
+                  <!-- Top Navigation Menu -->
+                  <div class="topnav">
+                    <a href="#home" class="active">Logo</a>
+                    <div id="myLinks">
+                      <center><Button>Season</Button></center>
+                    </div>
+                    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                      <i class="fa fa-bars"></i>
+                    </a>
+                  </div>
+
+
+            <!-- End smartphone / tablet look -->
             <iframe allowfullscreen="yes" src="./aframescene.html" id="arIframe">
+
             </iframe>
+
           </center>
         </div>
 
@@ -94,22 +113,6 @@
       <center><button onclick = "loadMain()">Loading...</button></center>
 
 
-<!-- Simulate a smartphone / tablet -->
-<div class="mobile-container">
-
-<!-- Top Navigation Menu -->
-<div class="topnav">
-  <a href="#home" class="active">Logo</a>
-  <div id="myLinks">
-    <center><Button>Season</Button></center>
-  </div>
-  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-    <i class="fa fa-bars"></i>
-  </a>
-</div>
-
-
-<!-- End smartphone / tablet look -->
 </div>
 
 <script>
