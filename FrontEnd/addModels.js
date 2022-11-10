@@ -32,6 +32,9 @@ function addModelFunction() {
         
                 let markerUrl = obj["markerName"];
                 let modelUrl = obj["modelFile"];
+
+                markerUrl = markerUrl.split(".")[0]
+                modelUrl = modelUrl.split(".")[0]
         
                 arjsScene.innerHTML += beforeEntity(markerUrl) + objEntity(modelUrl) + afterEntity();
                 console.log("Added: " + markerUrl + " " + modelUrl)
