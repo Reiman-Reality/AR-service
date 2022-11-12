@@ -99,6 +99,38 @@ adminRouter.post('/api/updateMarker', body, async (ctx)=>{
 	console.log(ctx.request.files);
 });
 
+adminRouter.get('/map', body, async (ctx) => {
+	if(verifyLogin(ctx.cookies.get('log'))){
+		ctx.type = 'html';
+		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/addMap.html'));
+		return;
+	}
+	ctx.redirect('/home');
+});
+
+
+adminRouter.post('/api/addMap', body, async (ctx)=>{
+    //TODO verification
+    const map = ctx.request.files.map; // get the map;
+	console.log(map.originalFilename);
+	const newMapName =  path.join(__dirname, '/', "map.jpg");
+	console.log(newMapName);
+	//await fsPromise.unlink(newMapName);
+	
+    try{
+    	await fsPromise.rename(map.filepath, newMapName);
+    } catch (err:unknown) {
+		console.log(err);
+		fs.unlink(map.filepath, (err) => console.log(err));
+		ctx.status =500;
+		ctx.body('failed to upload marker please try again');
+		return;
+    }
+    ctx.status = 200;
+});
+
+
+
 /**
  * Same as above for this endpoint all data must be submitted as formdata :)
  */
