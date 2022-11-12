@@ -99,6 +99,17 @@ adminRouter.post('/api/updateMarker', body, async (ctx)=>{
 	console.log(ctx.request.files);
 });
 
+adminRouter.post("/api/deleteMarker", body, async (ctx) => {
+	const ID = ctx.request.body.markerID;
+	if( ! ID ) {
+		ctx.status = 400;
+	}
+	//Delete all DB events with this marker as a member
+	await database.deleteEventByMarkerID( ID );
+	await database.deleteMarker( ID );
+	ctx.status = 200;
+});
+
 /**
  * Same as above for this endpoint all data must be submitted as formdata :)
  */
@@ -167,6 +178,16 @@ adminRouter.get('/login', body, async (ctx) => {
 
 adminRouter.get('/api/getModels', async (ctx) => {
 		ctx.body = await database.getAllModels();
+});
+
+adminRouter.post('/api/deleteModel', body, async (ctx) => {
+	const ID = ctx.request.body.modelID;
+	if( ! ID ) {
+		ctx.status = 400;
+	}
+	//Delete all DB events with this model as a member
+	database.deleteEventByMarkerID( ID );
+	database.deleteMarker( ID );
 });
 
 adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {

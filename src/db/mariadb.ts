@@ -102,6 +102,26 @@ export async function addEvent(event: eventData) {
     }
 }
 
+export async function deleteEventByModelID( modelID ) {
+    try{
+        const connection = await pool.getConnection();
+        const success = await connection.query(`DELETE FROM EVENTS WHERE model_id="${modelID}"`)
+        connection.end();
+    } catch( exception:unknown ){
+        console.log(exception);
+    }
+}
+
+export async function deleteEventByMarkerID( markerID ) {
+    try{
+        const connection = await pool.getConnection();
+        const success = await connection.query(`DELETE FROM EVENTS WHERE marker_id="${markerID}"`)
+        connection.end();
+    } catch( exception:unknown ){
+        console.log(exception);
+    }
+}
+
 
 
 export async function getAllMarkers() {
@@ -256,10 +276,21 @@ export async function updateModel(data: modelData) {
     }
 }
 
-export async function deleteModel(data: modelData) {
+export async function deleteModel( modelID: string) {
     try {
         const connection = await pool.getConnection();
-        await connection.query(`DELETE FROM MODELS HERE model_id = ${data.modelID}`);
+        await connection.query(`DELETE FROM MODELS WHERE model_id = "${modelID}"`);
+        connection.end();
+        return true;
+    } catch( exception: unknown) {
+        console.log(exception);
+    }
+}
+
+export async function deleteMarker( markerID: string) {
+    try {
+        const connection = await pool.getConnection();
+        await connection.query(`DELETE FROM MARKERS WHERE marker_id = "${markerID}"`);
         connection.end();
         return true;
     } catch( exception: unknown) {

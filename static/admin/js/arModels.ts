@@ -31,9 +31,29 @@ function makeModelTableEntry(data) : void {
     const tableEntryHeader : HTMLElement = document.createElement("div");
     const tableEntryHeaderLink : HTMLElement = document.createElement("a");
     const tableEntryThumbnail : HTMLElement = document.createElement("img");
+    const tableEntryDelete : HTMLElement = document.createElement("span");
 
     tableEntryHeaderLink.textContent += data.name
+
+    tableEntryDelete.innerHTML += "X";
+    tableEntryDelete.addEventListener("click", async (e)=>{
+        e.stopPropagation();
+        if(! confirm("Are you sure you want to delete this marker?") ) {
+            return;
+        }
+        await fetch('./api/deleteModel', {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body:JSON.stringify({
+                modelID : data.model_id,
+            })
+        })
+    });
+
     tableEntryHeader.appendChild(tableEntryHeaderLink);
+    tableEntryHeader.appendChild(tableEntryDelete);
     tableEntryHeader.setAttribute("class", "boxHeading");
     tableEntry.appendChild(tableEntryHeader);
 
