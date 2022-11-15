@@ -101,7 +101,7 @@ function formInit() {
     document.querySelector("#addMarkerButton").addEventListener("click", ()=>{
         document.querySelector("#marker-modal").classList.add("show");
         document.querySelector("#newMarkerForm").classList.remove("hide");
-        document.querySelector("#new_markerForm").classList.add("hide");
+        document.querySelector("#markerForm").classList.add("hide");
         (document.querySelector('#new_markerName') as HTMLInputElement).value = "";
         (document.querySelector('#new_markerID') as HTMLInputElement).value = "";
         (document.querySelector('#new_newModelToAssociate') as HTMLSelectElement).innerHTML = "";
