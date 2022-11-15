@@ -63,6 +63,11 @@ function makeObjectTableEntry(data) : void {
         document.querySelector("#markerForm").classList.remove("hide");
         (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
         (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
+        for (let i = 0; i < data.models.length; i++) {
+            let modelName = data.models[i].name;
+            // let modelSeason = data.models[i].season;
+            (document.querySelector('#currentlyAssociatedModels') as HTMLElement).innerText += modelName + '\n'; // TODO
+        }
         (document.querySelector('#newModelToAssociate') as HTMLSelectElement).innerHTML = "";
         (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
         for (let i = 0; i < modelDataJson.length; i++) {
