@@ -1,3 +1,5 @@
+var modelDataJson;
+
 window.addEventListener("DOMContentLoaded", async ()=>{
     const response = await fetch("./api/getMarkers");
     
@@ -24,6 +26,17 @@ window.addEventListener("DOMContentLoaded", async ()=>{
         makeObjectTableEntry(data[i]);
     }
 
+    const modelResponse = await fetch("./api/getModels");
+    if (!response.ok) {
+        alert("The server was unable to load the model list. Please refresh the page.");
+        return;
+    }
+    var modelData = await response.json();
+    if (!modelData) {
+        alert("The model list may be malformed. Please refresh the page.");
+        return;
+    }
+    modelDataJson = modelData;
 
 
 });
@@ -50,6 +63,12 @@ function makeObjectTableEntry(data) : void {
         document.querySelector("#markerForm").classList.remove("hide");
         (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
         (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
+        for (let i = 0; i < modelDataJson.length; i++) {
+            let modelName = modelDataJson[i].name;
+            let modelId = modelDataJson[i].model_id;
+            (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option(modelName, modelId));
+        }
+        (document.querySelector('#newModelTimePeriod') as HTMLInputElement).value = "";
     });
     tableEntryList.appendChild(tableEntry);
 }
