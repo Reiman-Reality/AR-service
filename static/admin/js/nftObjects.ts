@@ -27,11 +27,11 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     }
 
     const modelResponse = await fetch("./api/getModels");
-    if (!response.ok) {
+    if (!modelResponse.ok) {
         alert("The server was unable to load the model list. Please refresh the page.");
         return;
     }
-    var modelData = await response.json();
+    var modelData = await modelResponse.json();
     if (!modelData) {
         alert("The model list may be malformed. Please refresh the page.");
         return;
