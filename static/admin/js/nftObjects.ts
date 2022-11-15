@@ -63,6 +63,7 @@ function makeObjectTableEntry(data) : void {
         document.querySelector("#markerForm").classList.remove("hide");
         (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
         (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
+        (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
         for (let i = 0; i < modelDataJson.length; i++) {
             let modelName = modelDataJson[i].name;
             let modelId = modelDataJson[i].model_id;
@@ -102,6 +103,13 @@ function formInit() {
         document.querySelector("#markerForm").classList.add("hide");
         (document.querySelector('#markerName') as HTMLInputElement).value = "";
         (document.querySelector('#markerID') as HTMLInputElement).value = "";
+        (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
+        for (let i = 0; i < modelDataJson.length; i++) {
+            let modelName = modelDataJson[i].name;
+            let modelId = modelDataJson[i].model_id;
+            (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option(modelName, modelId));
+        }
+        (document.querySelector('#newModelTimePeriod') as HTMLInputElement).value = "";
     })
 
     document.querySelector("#newMarkerForm").addEventListener("submit", async (event)=>{
