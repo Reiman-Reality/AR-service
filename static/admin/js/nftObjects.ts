@@ -99,7 +99,7 @@ function formInit() {
     });
 
     document.querySelector("#addMarkerButton").addEventListener("click", ()=>{
-        document.querySelector("#new_marker-modal").classList.add("show");
+        document.querySelector("#marker-modal").classList.add("show");
         document.querySelector("#new_newMarkerForm").classList.remove("hide");
         document.querySelector("#new_markerForm").classList.add("hide");
         (document.querySelector('#new_markerName') as HTMLInputElement).value = "";
