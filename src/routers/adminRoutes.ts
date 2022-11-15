@@ -96,7 +96,26 @@ adminRouter.get("/api/getMarkers", async (ctx) =>{
 });
 
 adminRouter.post('/api/updateMarker', body, async (ctx)=>{
-	console.log(ctx.request.files);
+	const models = ctx.body.models;
+	const marker = ctx.body.marker;
+	if( !models || typeof(model) != "object" || ! marker ) {
+		ctx.status = 400;
+		return;
+	}
+
+	for( const model of models ) {
+		database.addEvent({
+			insertedOn: new Date(),
+			marker_id: marker,
+			model_id: model.id,
+			x_pos: model.x,
+			y_pos: model.y,
+			z_pos: model.z,	
+		} as eventData)
+	}
+
+	ctx.status = 200;
+
 });
 
 adminRouter.get('/map', body, async (ctx) => {
