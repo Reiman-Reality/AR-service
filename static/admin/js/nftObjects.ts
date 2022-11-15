@@ -49,7 +49,10 @@ function makeObjectTableEntry(data) : void {
         document.querySelector("#newMarkerForm").classList.add("hide");
         document.querySelector("#markerForm").classList.remove("hide");
         (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
-        (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
+        (document.querySelector('#markerID') as HTMLInputElement).value = data.marker_id;
+        (document.querySelector('#marker1') as HTMLInputElement).value = data.file_path_one;
+        (document.querySelector('#marker2') as HTMLInputElement).value = data.file_path_two;
+        (document.querySelector('#marker3') as HTMLInputElement).value = data.file_path_three;
     });
     tableEntryList.appendChild(tableEntry);
 }
