@@ -63,6 +63,7 @@ function makeObjectTableEntry(data) : void {
         document.querySelector("#markerForm").classList.remove("hide");
         (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
         (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
+        (document.querySelector('#newModelToAssociate') as HTMLSelectElement).innerHTML = "";
         (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
         for (let i = 0; i < modelDataJson.length; i++) {
             let modelName = modelDataJson[i].name;
@@ -98,18 +99,19 @@ function formInit() {
     });
 
     document.querySelector("#addMarkerButton").addEventListener("click", ()=>{
-        document.querySelector("#marker-modal").classList.add("show");
-        document.querySelector("#newMarkerForm").classList.remove("hide");
-        document.querySelector("#markerForm").classList.add("hide");
-        (document.querySelector('#markerName') as HTMLInputElement).value = "Test";
-        (document.querySelector('#markerID') as HTMLInputElement).value = "";
-        (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
+        document.querySelector("#new_marker-modal").classList.add("show");
+        document.querySelector("#new_newMarkerForm").classList.remove("hide");
+        document.querySelector("#new_markerForm").classList.add("hide");
+        (document.querySelector('#new_markerName') as HTMLInputElement).value = "";
+        (document.querySelector('#new_markerID') as HTMLInputElement).value = "";
+        (document.querySelector('#new_newModelToAssociate') as HTMLSelectElement).innerHTML = "";
+        (document.querySelector('#new_newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
         for (let i = 0; i < modelDataJson.length; i++) {
             let modelName = modelDataJson[i].name;
             let modelId = modelDataJson[i].model_id;
-            (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option(modelName, modelId));
+            (document.querySelector('#new_newModelToAssociate') as HTMLSelectElement).add(new Option(modelName, modelId));
         }
-        (document.querySelector('#newModelTimePeriod') as HTMLInputElement).value = "";
+        (document.querySelector('#new_newModelTimePeriod') as HTMLInputElement).value = "";
     })
 
     document.querySelector("#newMarkerForm").addEventListener("submit", async (event)=>{
