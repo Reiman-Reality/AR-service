@@ -88,9 +88,9 @@ adminRouter.get("/api/getMarkers", async (ctx) =>{
 		ctx.body({'message': "Server error please try again later"});
 		return;
 	}
-	markers.forEach( async (marker)=>{
+	for( const marker of markers) {
 		marker.models = await database.getModelsByMarkerID(marker.marker_id);
-	})
+	}
 	ctx.status=200;
 	ctx.body = markers;
 });
