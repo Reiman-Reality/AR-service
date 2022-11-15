@@ -103,7 +103,6 @@ function formInit() {
         document.querySelector("#newMarkerForm").classList.remove("hide");
         document.querySelector("#markerForm").classList.add("hide");
         (document.querySelector('#new_markerName') as HTMLInputElement).value = "";
-        (document.querySelector('#new_markerID') as HTMLInputElement).value = "";
         (document.querySelector('#new_newModelToAssociate') as HTMLSelectElement).innerHTML = "";
         (document.querySelector('#new_newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
         for (let i = 0; i < modelDataJson.length; i++) {
