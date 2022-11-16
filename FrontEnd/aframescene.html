@@ -40,7 +40,7 @@
     <!-- a-frame scene -->
     <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
         arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;" id="arjsScene">
-        <!-- <script>addModelFunction()</script> -->
+        <script>addModelFunction()</script>
         <!-- a-nft is the anchor that defines an Image Tracking entity -->
         <!-- on 'url' use the path to the Image Descriptors created before. -->
         <!-- the path should end with the name without the extension e.g. if file is 'pinball.fset' the path should end with 'pinball' -->
@@ -65,13 +65,13 @@
                 scale="10 10 10" position="0 100 0" rotation="90 0 0">
             </a-entity>
         </a-nft>-->
-        <a-nft type="nft" url="./Elwood" smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
+        <!-- <a-nft type="nft" url="./Elwood" smooth="true" smoothCount="10" smoothTolerance=".01" smoothThreshold="5">
             <a-entity 
                 obj-model=" obj: url(./flower.obj);
                 mtl: url(./flower.mtl)"
                 scale="10 10 10" position="0 100 0" rotation="90 0 0">
             </a-entity>
-        </a-nft> 
+        </a-nft>  -->
         <!-- static camera that moves according to the device movemenents -->
         <a-entity camera></a-entity>
     </a-scene>
