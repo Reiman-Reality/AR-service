@@ -17,7 +17,11 @@ function addCamera(){
 }
 
 function addModelFunction() {
+    console.log("Attempting to load")
     let arjsScene = document.getElementById("arjsScene")
+    console.log(arjsScene.innerHTML)
+    console.log("found elem")
+    // arjsScene.innerHTML = ""
 
     if (modelsPresent) {
         return;
@@ -42,4 +46,5 @@ function addModelFunction() {
         });
 
     // arjsScene.innerHtml = arjsScene.innerHTML + addCamera();
+    // console.log("added camera")
 }
