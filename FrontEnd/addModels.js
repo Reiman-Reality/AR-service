@@ -19,17 +19,14 @@ function addCamera() {
 async function addModelFunction() {
     console.log("Attempting to load")
     let arjsScene = document.getElementById("arjsScene")
-    console.log(arjsScene.innerHTML)
-    console.log("found elem")
-    arjsScene.innerHTML = ""
-    console.log(arjsScene.innerHTML)
+    // arjsScene.innerHTML = ""
 
     if (modelsPresent) {
         return;
     }
     modelsPresent = true;
 
-    const request = await fetch("./filnames", requestOptions);
+    const request = await fetch("./filnames");
     if (!request.ok) {
         console.log("error")
     }
@@ -49,7 +46,5 @@ async function addModelFunction() {
     }
 
     arjsScene.innerHTML = arjsScene.innerHTML + addCamera();
-    arjsScene.innerHTML += "<canvas class=\"a-canvas\" data-aframe-canvas=\"true\" width=\"600\" height=\"300\"></canvas><div class=\"a-loader-title\" style=\"display: none;\"></div>"
-    console.log(arjsScene.innerHTML)
     // console.log("added camera")
 }
