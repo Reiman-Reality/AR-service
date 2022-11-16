@@ -21,7 +21,8 @@ function addModelFunction() {
     let arjsScene = document.getElementById("arjsScene")
     console.log(arjsScene.innerHTML)
     console.log("found elem")
-    // arjsScene.innerHTML = ""
+    arjsScene.innerHTML = ""
+    console.log(arjsScene.innerHTML)
 
     if (modelsPresent) {
         return;
@@ -46,5 +47,7 @@ function addModelFunction() {
         });
 
     // arjsScene.innerHtml = arjsScene.innerHTML + addCamera();
+    arjsScene.innerHTML += "<canvas class=\"a-canvas\" data-aframe-canvas=\"true\" width=\"600\" height=\"300\"></canvas><div class=\"a-loader-title\" style=\"display: none;\"></div>"
+    console.log(arjsScene.innerHTML)
     // console.log("added camera")
 }
