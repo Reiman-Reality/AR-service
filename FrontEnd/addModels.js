@@ -26,7 +26,7 @@ async function addModelFunction() {
     }
     modelsPresent = true;
 
-    const request = await fetch("./filnames");
+    const request = await fetch("./filenames");
     if (!request.ok) {
         console.log("error")
     }
