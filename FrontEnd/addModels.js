@@ -52,9 +52,9 @@ async function addModelFunction() {
     }
 
     console.log(arjsScene);
-    arjsScene += '</a-scene>';
 
-    arjsScene.innerHTML = arjsScene.innerHTML + addCamera();
+    arjsScene += arjsScene.innerHTML + addCamera();
+    arjsScene += '</a-scene>';
     body.innerHTML += arjsScene;
     // console.log("added camera")
 }
