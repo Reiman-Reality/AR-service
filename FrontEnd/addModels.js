@@ -1,6 +1,8 @@
 let modelsPresent = false;
 
 function beforeEntity(markerUrl) {
+    const nft = document.createElement("a-nft");
+    console.log(nft);
     return `<a-nft type=\"nft\" url=\"./${markerUrl}\" smooth=\"true\" smoothCount=\"10\" smoothTolerance=\".01\" smoothThreshold=\"5\">`
 }
 
@@ -18,7 +20,11 @@ function addCamera() {
 
 async function addModelFunction() {
     console.log("Attempting to load")
-    let arjsScene = document.getElementById("arjsScene")
+    const body = document.querySelector("#sceneBody");
+    //let arjsScene = document.getElementById("arjsScene");
+    let arjsScene = `    <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
+    arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;" id="arjsScene">`
+    console.log(arjsScene);
     // arjsScene.innerHTML = ""
 
     if (modelsPresent) {
@@ -41,10 +47,14 @@ async function addModelFunction() {
         markerUrl = markerUrl.split(".")[0]
         modelUrl = modelUrl.split(".")[0]
 
-        arjsScene.innerHTML += beforeEntity(markerUrl) + objEntity(modelUrl) + afterEntity();
+        arjsScene += ( beforeEntity(markerUrl) + objEntity(modelUrl) + afterEntity());
         console.log("Added: " + markerUrl + " " + modelUrl)
     }
 
+    console.log(arjsScene);
+    arjsScene += '</a-scene>';
+
     arjsScene.innerHTML = arjsScene.innerHTML + addCamera();
+    body.innerHTML += arjsScene;
     // console.log("added camera")
 }
