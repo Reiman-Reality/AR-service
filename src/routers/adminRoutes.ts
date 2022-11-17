@@ -108,6 +108,15 @@ adminRouter.get('/map', body, async (ctx) => {
 	ctx.redirect('/home');
 });
 
+adminRouter.get('/getMap', body, async (ctx) => {
+	if(verifyLogin(ctx.cookies.get('log'))){
+		ctx.type = 'jpg';
+		ctx.body = fs.createReadStream(path.join(__dirname,'map.jpg'));
+		return;
+	}
+});
+
+
 
 adminRouter.post('/api/addMap', body, async (ctx)=>{
     //TODO verification
