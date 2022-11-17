@@ -112,10 +112,15 @@ adminRouter.get('/map', body, async (ctx) => {
 adminRouter.post('/api/addMap', body, async (ctx)=>{
     //TODO verification
     const map = ctx.request.files.map; // get the map;
-	console.log(map.originalFilename);
 	const newMapName =  path.join(__dirname, '/', "map.jpg");
 	console.log(newMapName);
+
+	try{
 	await fsPromise.unlink(newMapName);
+	}
+	catch{
+
+	}
 	
     try{
     	await fsPromise.rename(map.filepath, newMapName);
