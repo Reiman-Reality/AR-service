@@ -226,42 +226,6 @@ adminRouter.post('/api/updatemodel', body, async (ctx)=>{
     ctx.status = 200;
 });
 
-/**
- * Same as above for this endpoint all data must be submitted as formdata :)
- */
-adminRouter.post('/api/addmodel', body, async (ctx)=>{
-	if( ! await verifyLogin(ctx.cookies.get('log'))){
-		ctx.status= 500;
-		return;
-	}
-
-    const model = ctx.request.files?.model; // get the model;
-	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
-	
-    try{
-    	await fsPromise.rename(model.filepath, newModelPath);
-    } catch (err:unknown) {
-		console.log(err);
-		fs.unlink(model.filepath, (err) => console.log(err));
-		ctx.status(500);
-		ctx.body('failed to upload marker please try again');
-		return;
-    }
-	const cleanedData = verifyModelData(ctx.request.body, newModelPath);
-	if(!cleanedData) {
-		ctx.status=400;
-		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
-		return;
-	}
-	if( ! await database.insertModel(cleanedData) ){
-		ctx.status = 500;
-		ctx.body = {message:"something went wrong on our end please try again later"};
-		return;
-	}
-
-    ctx.status = 200;
-});
-
 adminRouter.get('/login', body, async (ctx) => {
 	if( ! await verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'html';
