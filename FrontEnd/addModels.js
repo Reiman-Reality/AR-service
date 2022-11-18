@@ -1,3 +1,7 @@
+document.addEventListener("DOMContentLoaded", ()=>{
+    addModelFunction();
+})
+
 let modelsPresent = false;
 
 function beforeEntity(markerUrl) {
