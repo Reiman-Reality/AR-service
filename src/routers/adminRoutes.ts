@@ -31,7 +31,6 @@ const body = koaBody({
 		return;
 	}
 	const id = await database.addEvent(cleanedData);
-	console.log(id);
 	if(!id) {
 		ctx.status = 500;
 		ctx.body = {"message" : "there was a error inserting this event into our database please try again later"};

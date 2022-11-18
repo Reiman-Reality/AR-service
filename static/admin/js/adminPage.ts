@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
 })
 
 function changeFrame(): void {
-    console.log("hi");
     switch ((selectBox as HTMLInputElement).value) {
         case "0":
             objectsFrame?.removeAttribute("hidden");
