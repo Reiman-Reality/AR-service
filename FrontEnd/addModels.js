@@ -11,7 +11,8 @@ function beforeEntity(markerUrl) {
 }
 
 function objEntity(objName) {
-    return `<a-entity obj-model="obj: url(./${objName}.obj); mtl: url(./${objName}.mtl)"
+    return `<a-entity
+    obj-model="obj: url(/${objName}.obj); mtl: url(/${objName}.mtl)"
     scale="5 5 5"
     position="50 150 0"
     ></a-entity>`
