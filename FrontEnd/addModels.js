@@ -11,7 +11,10 @@ function beforeEntity(markerUrl) {
 }
 
 function objEntity(objName) {
-    return `<a-entity obj-model="url(./models/${objName}.obj); mtl: url(./textures/${objName}.mtl)"></a-entity>`
+    return `<a-entity obj-model="url(./models/${objName}.obj); mtl: url(./textures/${objName}.mtl)"
+    scale="5 5 5"
+    position="50 150 0"
+    ></a-entity>`
 }
 
 function afterEntity() {
@@ -25,11 +28,8 @@ function addCamera() {
 async function addModelFunction() {
     console.log("Attempting to load")
     const body = document.querySelector("#sceneBody");
-    //let arjsScene = document.getElementById("arjsScene");
     let arjsScene = `    <a-scene vr-mode-ui="enabled: false;" renderer="logarithmicDepthBuffer: true;" embedded
     arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;" id="arjsScene">`
-    console.log(arjsScene);
-    // arjsScene.innerHTML = ""
 
     if (modelsPresent) {
         return;
