@@ -52,6 +52,13 @@
         border-radius: 10rem;
         position: absolute;
     }
+
+    #modal-exit{
+        cursor: pointer; 
+        width: 100%;
+        text-align: right;
+        height: 0;
+    }
     </style>
 </head>
 
@@ -63,13 +70,16 @@
     </div>
     <div id="marker-modal" class="modal">
         <div class="modal-content">
+            <div id="modal-exit">X</div>
             <form id="markerForm" class="hide">
                 <h2> Name </h2>
                 <input type="text" id="markerName" name="name">
-                <h2> Marker Files</h2>
-                <input type="file" id="marker1" name="marker1">
-                <input type ="file" id="marker2" name="marker2">
-                <input type = "file" id="marker3" name="marker3">
+                <div id="edit_marker_files">
+                    <h2> Marker Files</h2>
+                    <input type="file" id="marker1" name="marker1" disabled>
+                    <input type ="file" id="marker2" name="marker2" disabled>
+                    <input type = "file" id="marker3" name="marker3" disabled>
+                </div>
                 <input type="hidden" id="markerID" name="markerID">
                 <input type ="submit" id="markerSubmit">
             </form>

@@ -13,8 +13,10 @@ window.addEventListener("DOMContentLoaded", async ()=>{
         return;
     }
 
+    formInit();
+
     if (data.length < 1) {
-        document.body.textContent += "The object list is empty. Please add a new object.";
+        document.querySelector(".boxes").innerHTML = "The object list is empty, please add some nft objects";
         return;
     }
 
@@ -22,6 +24,40 @@ window.addEventListener("DOMContentLoaded", async ()=>{
         makeObjectTableEntry(data[i]);
     }
 
+
+
+});
+
+function makeObjectTableEntry(data) : void {
+    const tableEntryList : HTMLElement = document.getElementById("boxList");
+    const tableEntry : HTMLElement = document.createElement("li");
+    tableEntry.classList.add("nft");
+    const tableEntryHeader : HTMLElement = document.createElement("div");
+    const tableEntryHeaderLink : HTMLElement = document.createElement("a");
+    const tableEntryThumbnail : HTMLElement = document.createElement("img");
+
+    // tableEntryHeaderLink.setAttribute("href", data.websiteLink); // TODO Get edit link
+    tableEntryHeaderLink.textContent += data.name
+    tableEntryHeader.appendChild(tableEntryHeaderLink);
+    tableEntryHeader.setAttribute("class", "boxHeading");
+    tableEntry.appendChild(tableEntryHeader);
+
+    //tableEntryThumbnail.setAttribute("src", data.file_path);
+    tableEntry.appendChild(tableEntryThumbnail);
+    tableEntry.addEventListener('click', () =>{
+        document.querySelector("#marker-modal").classList.add("show");
+        document.querySelector("#newMarkerForm").classList.add("hide");
+        document.querySelector("#markerForm").classList.remove("hide");
+        (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
+        (document.querySelector('#markerID') as HTMLInputElement).value = data.marker_id;
+        (document.querySelector('#marker1') as HTMLInputElement).value = data.file_path_one;
+        (document.querySelector('#marker2') as HTMLInputElement).value = data.file_path_two;
+        (document.querySelector('#marker3') as HTMLInputElement).value = data.file_path_three;
+    });
+    tableEntryList.appendChild(tableEntry);
+}
+
+function formInit() {
     document.querySelector("#markerForm").addEventListener("submit", async (event)=>{
         event.preventDefault();
         event.stopPropagation();
@@ -72,30 +108,9 @@ window.addEventListener("DOMContentLoaded", async ()=>{
 
         request.open("POST", "./api/addMarker");
         request.send(data);
-    })
-});
-
-function makeObjectTableEntry(data) : void {
-    const tableEntryList : HTMLElement = document.getElementById("boxList");
-    const tableEntry : HTMLElement = document.createElement("li");
-    const tableEntryHeader : HTMLElement = document.createElement("div");
-    const tableEntryHeaderLink : HTMLElement = document.createElement("a");
-    const tableEntryThumbnail : HTMLElement = document.createElement("img");
-
-    // tableEntryHeaderLink.setAttribute("href", data.websiteLink); // TODO Get edit link
-    tableEntryHeaderLink.textContent += data.name
-    tableEntryHeader.appendChild(tableEntryHeaderLink);
-    tableEntryHeader.setAttribute("class", "boxHeading");
-    tableEntry.appendChild(tableEntryHeader);
-
-    //tableEntryThumbnail.setAttribute("src", data.file_path);
-    tableEntry.appendChild(tableEntryThumbnail);
-    tableEntry.addEventListener('click', () =>{
-        document.querySelector("#marker-modal").classList.add("show");
-        document.querySelector("#newMarkerForm").classList.add("hide");
-        document.querySelector("#markerForm").classList.remove("hide");
-        (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
-        (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
     });
-    tableEntryList.appendChild(tableEntry);
+
+    document.querySelector("#modal-exit").addEventListener("click", ()=>{
+        document.querySelector("#marker-modal").classList.remove("show");
+    })
 }

@@ -76,7 +76,7 @@ const body = koaBody({
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	const cleanedData = verifyMarkerData(ctx.request.body, newMarkerPath1, newMarkerPath2, newMarkerPath3);
+	const cleanedData = verifyMarkerData(ctx.request.body,  marker1.originalFilename, marker2.originalFilename, marker3.originalFilename);
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
@@ -114,6 +114,52 @@ adminRouter.post('/api/updateMarker', body, async (ctx)=>{
 	console.log(ctx.request.files);
 });
 
+adminRouter.get('/map', body, async (ctx) => {
+	if(verifyLogin(ctx.cookies.get('log'))){
+		ctx.type = 'html';
+		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/addMap.html'));
+		return;
+	}
+	ctx.redirect('/home');
+});
+
+adminRouter.get('/getMap', body, async (ctx) => {
+	if(verifyLogin(ctx.cookies.get('log'))){
+		ctx.type = 'jpg';
+		ctx.body = fs.createReadStream(path.join(__dirname,'map.jpg'));
+		return;
+	}
+});
+
+
+
+adminRouter.post('/api/addMap', body, async (ctx)=>{
+    //TODO verification
+    const map = ctx.request.files.map; // get the map;
+	const newMapName =  path.join(__dirname, '/', "map.jpg");
+	console.log(newMapName);
+
+	try{
+	await fsPromise.unlink(newMapName);
+	}
+	catch{
+
+	}
+	
+    try{
+    	await fsPromise.rename(map.filepath, newMapName);
+    } catch (err:unknown) {
+		console.log(err);
+		fs.unlink(map.filepath, (err) => console.log(err));
+		ctx.status =500;
+		ctx.body('failed to upload marker please try again');
+		return;
+    }
+    ctx.status = 200;
+});
+
+
+
 /**
  * Same as above for this endpoint all data must be submitted as formdata :)
  */
@@ -124,10 +170,13 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 	}
 
     const model = ctx.request.files.model; // get the model;
+	const texture = ctx.request.files?.texture; // get the texture
 	const newModelPath =  path.join(__dirname, '/models/', model.originalFilename);
+	const newTexturePath =  path.join(__dirname, '/textures/', texture.originalFilename);
 	
     try{
     	await fsPromise.rename(model.filepath, newModelPath);
+		await fsPromise.rename(texture.filepath, newTexturePath);
     } catch (err:unknown) {
 		console.log(err);
 		fs.unlink(model.filepath, (err) => console.log(err));
@@ -135,7 +184,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 		ctx.body('failed to upload marker please try again');
 		return;
     }
-	const cleanedData = verifyModelData(ctx.request.body, newModelPath);
+	const cleanedData = verifyModelData(ctx.request.body, model.originalFilename, texture.originalFilename);
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
@@ -146,7 +195,6 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 		ctx.body = {message:"something went wrong on our end please try again later"};
 		return;
 	}
-
     ctx.status = 200;
 });
 
@@ -162,7 +210,7 @@ adminRouter.post('/api/updatemodel', body, async (ctx)=>{
 	const model = ctx.request.files.model_file_path;
 	const newModelPath =  path.join(__dirname, '/static/models/', model.originalFilename);
     
-	const cleanedData = verifyEDITModelData(ctx.request.body, newModelPath);
+	const cleanedData = verifyEDITModelData(ctx.request.body, model.originalFilename);
 	
 	
 	if(!cleanedData) {
@@ -214,7 +262,6 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 
     ctx.status = 200;
 });
-
 
 adminRouter.get('/login', body, async (ctx) => {
 	if( ! await verifyLogin(ctx.cookies.get('log'))){
@@ -373,7 +420,7 @@ function verifyLogin(cookie : string){
 	return loggedInUsers[cookie];
 }
 
-function verifyMarkerData( formData:any, newFilePath:string, two: string, three: string ){
+function verifyMarkerData( formData:any, name:string, two: string, three: string ){
 	if( !formData.name || formData.name.length > 50 ) {
 		return null;
 	}
@@ -381,7 +428,7 @@ function verifyMarkerData( formData:any, newFilePath:string, two: string, three:
 		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
 		name: formData.name,
 		markerID: null,
-		filepathOne: newFilePath,
+		filepathOne: name,
 		filepathTwo: two,
 		filepathThree: three,
 	} as markerData;
@@ -398,7 +445,10 @@ function verifyEventData( data:any ) {
 		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
 		eventName: data.name,
 		marker_id: data.marker_id,
-		model_id: data.model_id
+		model_id: data.model_id,
+		x_pos:data.x_pos,
+		y_pos:data.y_pos,
+		z_pos:data.z_pos
 	} as eventData;
 
 }
@@ -441,7 +491,7 @@ function createCookie( user ) {
 }
 	
 
-function verifyModelData( formModel:any, newFilePath:string ){
+function verifyModelData( formModel:any, newFilePath:string, textureName: string){
 	
 	if( !formModel.name || formModel.name.length > 50 ) {
 		return null;
@@ -452,6 +502,7 @@ function verifyModelData( formModel:any, newFilePath:string ){
 		name: formModel.name,
 		modelID: null,
 		filepath: newFilePath,
+		texture: textureName
 	} as modelData;
 }
 

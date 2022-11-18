@@ -95,12 +95,34 @@ export async function getModelsByMarkerID(input: string) {
     }
 }
 
+export async function getModelAndMarkerNames() {
+    try {
+        const connection = await pool.getConnection();
+        const data = await connection.query("select MARKERS.file_path_one, MODELS.file_path FROM EVENTS LEFT JOIN MARKERS ON MARKERS.marker_id = EVENTS.marker_id LEFT JOIN MODELS ON MODELS.model_id = EVENTS.model_id;");
+        const keys = Object.keys(data);
+        const returnData = [];
+        for( const key of keys ) {
+            if(key === 'meta') {
+                break;
+            }
+            console.log(data[key]);
+            returnData.push( data[key] );
+        }
+        connection.end();
+        return returnData;
+    }
+    catch(exception: unknown) {
+        console.log(exception);
+        return [];
+    }
+}
+
 export async function addEvent(event: eventData) {
     try{
         const connection = await pool.getConnection();
         const id = v4();
-        const success = await connection.query(`INSERT INTO EVENTS (marker_id, model_id)
-        VALUES ( "${event.marker_id}", "${event.model_id}");`);
+        const success = await connection.query(`INSERT INTO EVENTS (marker_id, model_id, x_pos, y_pos,z_pos)
+        VALUES ( "${event.marker_id}", "${event.model_id}", "${event.x_pos}", "${event.y_pos}", "${event.z_pos}");`);
         connection.end();
         return id;
     } catch( exception:unknown ){
@@ -238,8 +260,8 @@ export async function getModelsByEvent(eventID: string) {
 export async function insertModel(data: modelData) {
     try {
         const connection = await pool.getConnection();
-        await connection.query(`INSERT INTO MODELS (model_id, name, file_path, inserted_on)
-        VALUES (uuid(), "${data.name}", "${data.filepath}", "${data.insertedOn}")`);
+        await connection.query(`INSERT INTO MODELS (model_id, name, file_path,texture_name, inserted_on)
+        VALUES (uuid(), "${data.name}", "${data.filepath}", "${data.texture}", "${data.insertedOn}")`);
         connection.end();
         return true;
     } catch( exception: unknown) {
