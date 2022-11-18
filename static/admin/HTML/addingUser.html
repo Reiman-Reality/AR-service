@@ -68,43 +68,61 @@ span.psw {
 </head>
 <body>
 
-<h2>Login </h2>
-
-
-
+<h2>Add User</h2>
   <div class="container">
     <label for="username"><b>Username</b></label>
     <input type="text" placeholder="Enter Username" name="username" id="username" required>
 
     <label for="password"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="password" id="password" required>
-    <button id="loginButton">Login</button>
+	<label for="password"><b>Confirm Password</b></label>
+    <input type="password" placeholder="Enter Password" name="confirm-password" id="confirm-password" required>
+	<label for="cars">Role:</label>
+	<select id="role" name="rolelist" form="roleform">
+	<option value="NONE">     </option>	
+	<option value="STAFF">STAFF</option>
+	</select>
+    <button id="addUserBotton">Add User</button>
   </div>
-  <script>
-    const submit = document.getElementById('loginButton');
+	<script>
+     const addButton = document.getElementById('addUserBotton');
     console.log(username);
-    async function makeRequest(username,password){
-        const  res = await fetch("http://localhost:8080/admin/getAccount",{
+    async function makeRequest(username,password,role){
+        const  res = await fetch("http://localhost:8080/admin/createUser",{
           method:"POST",
           headers:{"content-type": 'application/json'},
-          body:JSON.stringify({username, password})
+          body:JSON.stringify({username,password,role})
         });
-         const sucess = await res.status;
-         console.log(sucess);
-         if(sucess != 200){
-            alert("username or password is incorrect");
-         }
-          else{
-            location.replace("http://localhost:8080/admin/home");
-          }
+		const success = await res.status;
+        if(success != 200){
+			alert("Username already exist");
+		}
+		else{
+			alert("succesfully");
+		}
+    }
          
+         
+
+	addButton.onclick = function(){
+      	const username = document.getElementById('username').value;
+	  	const password= document.getElementById('password').value;
+	  	const confirmPassword= document.getElementById('confirm-password').value;
+	  	const role= document.getElementById('role').value;
+		console.log(role);
+		if(password!== confirmPassword){
+			alert("Please make sure your password match");
+		}
+		else if(role =="NONE"){
+			alert("Please select a role");
+		}
+		else{
+		makeRequest(username,password,role);
     }
-    submit.onclick = function(){
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      makeRequest(username, password);
-    }
-  </script>
+}
+    
+    </script>
+	</script>
 
 </body>
 </html>

@@ -26,5 +26,10 @@ export interface eventData {
     x_pos: number,
     y_pos: number,
     z_pos: number
+}
 
+export interface login {
+    username:string,
+    password:string
+    role:string
 }
