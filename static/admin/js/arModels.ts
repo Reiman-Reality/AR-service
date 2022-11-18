@@ -13,8 +13,10 @@ window.addEventListener("DOMContentLoaded", async ()=>{
         return;
     }
 
+    modelInit();
+
     if (data.length < 1) {
-        document.body.textContent += "The model list is empty. Please add a new model.";
+        document.querySelector(".boxes").innerHTML = "The model list is empty. Please add a new model.";
         return;
     }
 
@@ -63,6 +65,11 @@ var span_1 = document.getElementsByClassName("close")[0];
 span_1.addEventListener('click', ()=>   document.getElementById("editModel").style.display = "none"); 
 
 
+function modelInit() {
+    document.querySelector("#addModelButton").addEventListener("click", ()=>{
+        (document.querySelector("#editModel") as HTMLElement).style.display = "block";
+    })
+}
 
  
     
