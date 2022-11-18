@@ -56,5 +56,11 @@ async function addModelFunction() {
     arjsScene += addCamera();
     arjsScene += '</a-scene>';
     body.innerHTML += arjsScene;
+
+    const arjs = document.createElement('script');
+
+    arjs.setAttribute('src',"https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js");
+
+    document.head.appendChild(arjs);
     // console.log("added camera")
 }
