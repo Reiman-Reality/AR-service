@@ -88,7 +88,7 @@ span.psw {
      const addButton = document.getElementById('addUserBotton');
     console.log(username);
     async function makeRequest(username,password,role){
-        const  res = await fetch("http://localhost:8080/admin/createUser",{
+        const  res = await fetch("./admin/createUser",{
           method:"POST",
           headers:{"content-type": 'application/json'},
           body:JSON.stringify({username,password,role})
