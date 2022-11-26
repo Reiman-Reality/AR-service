@@ -6,6 +6,7 @@ import * as dotenv from 'dotenv';
 import { adminRouter } from './src/routers/adminRoutes.js';
 import process from 'node:process';
 import {publicRouter } from './src/routers/publicRouter.js';
+import { directoryCheck } from './src/directories.js';
 import cors from '@koa/cors'
 import fs from "node:fs";
 import * as https from 'https';
@@ -16,6 +17,8 @@ dotenv.config();
 const server = new Koa();
 const router = new Router();
 const port = process.env.PORT ?? 8080;
+
+await directoryCheck();
 
 function getServerRoutes(adminRouter, router) {
     router.use('/admin', adminRouter.routes(), adminRouter.allowedMethods());
