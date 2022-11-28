@@ -7,7 +7,9 @@ function MaximizeMinimizeFunction() {
 		document.querySelectorAll(".intro").forEach( element =>{element.classList.add('hide')});
 		document.querySelector("#footer").classList.add('hide');
 		let button = document.querySelector("#loadingButton")
+		let ribbon = document.querySelector("#FullScreenId")
 		button.value = "Minimize"
+		ribbon.innerHTML = "Minimize"
 
 		fullscreen = true
 	} else {
@@ -16,7 +18,10 @@ function MaximizeMinimizeFunction() {
 		document.querySelectorAll(".intro").forEach( element =>{element.classList.remove('hide')});
 		document.querySelector("#footer").classList.remove('hide');
 		let button = document.querySelector("#loadingButton")
+		let ribbon = document.querySelector("#FullScreenId")
+
 		button.value = "Maximize"
+		ribbon.innerHTML = "Fullscreen"
 
 		fullscreen = false
 	}

@@ -49,7 +49,7 @@
         <p class="intro">Utilize your camera to experience the garden in a way you <i>never</i> have before.</p>
 
         <!--Video-->
-        <div id="container">
+        <div id="container" onclick="MaximizeMinimizeFunction()">
           <center>
             <!-- a-frame scene -->
 
@@ -58,7 +58,7 @@
 
                   <!-- Top Navigation Menu -->
                   <div class="topnav">
-                    <a href="#home" class="active">Logo</a>
+                    <a href="#home" class="active" id="FullScreenId">Logo</a>
                     <div id="myLinks">
                       <center><Button>Season</Button></center>
                     </div>
@@ -69,7 +69,7 @@
 
 
             <!-- End smartphone / tablet look -->
-            <iframe allowfullscreen="yes" src="./aframescene.html" id="arIframe">
+            <iframe allowfullscreen="yes" src="./aframescene.html" id="arIframe" >
 
             </iframe>
 
