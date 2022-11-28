@@ -307,11 +307,15 @@ export async function updateModel(data: modelData) {
 export async function deleteModel( modelID: string) {
     try {
         const connection = await pool.getConnection();
+        const filenames = [];
+        const object = await connection.query(`SELECT * FROM MODELS WHERE model_id = "${modelID}"`);
+        filenames.push( object[0].file_path, object[0].texture_name);
         await connection.query(`DELETE FROM MODELS WHERE model_id = "${modelID}"`);
         connection.end();
-        return true;
+        return filenames;
     } catch( exception: unknown) {
         console.log(exception);
+        return null;
     }
 }
 
@@ -326,5 +330,6 @@ export async function deleteMarker( markerID: string) {
         return filenames;
     } catch( exception: unknown) {
         console.log(exception);
+        return null;
     }
 }

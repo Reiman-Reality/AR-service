@@ -127,7 +127,7 @@ adminRouter.post("/api/deleteMarker", body, async (ctx) => {
 	//Delete all DB events with this marker as a member
 	await database.deleteEventByMarkerID( ID );
 	const files = await database.deleteMarker( ID );
-	for( const filename of files) {
+	for( const filename in files) {
 		try{
 			await fsPromise.rm( __dirname + "/markers/" + filename );
 		} catch( e: unknown) {
@@ -323,8 +323,19 @@ adminRouter.post('/api/deleteModel', body, async (ctx) => {
 		ctx.status = 400;
 	}
 	//Delete all DB events with this model as a member
-	database.deleteEventByMarkerID( ID );
-	database.deleteMarker( ID );
+	await database.deleteEventByModelID( ID );
+	const files = await database.deleteModel( ID );
+	for( const file in files ) {
+		try{
+			if( file.split(".")[1] === "mtl" ) {
+				await fsPromise.rm(__dirname + "/textures/" + file);
+			}
+		}catch( e: unknown) {
+			console.log(e);
+			ctx.status = 500;
+		}
+	}
+	ctx.status = 200;
 });
 
 adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
@@ -414,7 +425,6 @@ adminRouter.get('/modelScripts', async(ctx)=>{
 });
 
 function verifyLogin(cookie : string){
-	console.log(loggedInUsers);
 	return loggedInUsers[cookie];
 }
 

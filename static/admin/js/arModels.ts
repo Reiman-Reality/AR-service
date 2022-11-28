@@ -38,7 +38,7 @@ function makeModelTableEntry(data) : void {
     tableEntryDelete.innerHTML += "X";
     tableEntryDelete.addEventListener("click", async (e)=>{
         e.stopPropagation();
-        if(! confirm("Are you sure you want to delete this marker?") ) {
+        if(! confirm("Are you sure you want to delete this model?") ) {
             return;
         }
         await fetch('./api/deleteModel', {
