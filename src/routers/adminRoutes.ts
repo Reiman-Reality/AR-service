@@ -104,7 +104,7 @@ adminRouter.get("/api/getMarkers", async (ctx) =>{
 		return;
 	}
 	for(const marker of markers) {
-		marker.models = database.getModelsByMarkerID(marker.marker_id);
+		marker.models = await database.getModelsByMarkerID(marker.marker_id);
 	}
 	ctx.status=200;
 	ctx.body = markers;
