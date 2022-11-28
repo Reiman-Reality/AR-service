@@ -65,8 +65,12 @@ function makeObjectTableEntry(data) : void {
         (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
         if (data.models) for (let i = 0; i < data.models.length; i++) {
             let modelName = data.models[i].name;
-            // let modelSeason = data.models[i].season;
-            (document.querySelector('#currentlyAssociatedModels') as HTMLElement).innerText += modelName + '\n'; // TODO
+            let modelInsertionDate = data.models[i].inserted_on;
+            let modelSeason = data.models[i].tag;
+            let modelX = data.models[i].x_pos;
+            let modelY = data.models[i].y_pos;
+            let modelZ = data.models[i].z_pos;
+            (document.querySelector('#currentlyAssociatedModels') as HTMLElement).innerText += modelName +' '+ modelInsertionDate +' '+ modelSeason +' '+ modelX +' '+ modelY +' '+ modelZ + '\n'; // TODO
         }
         (document.querySelector('#newModelToAssociate') as HTMLSelectElement).innerHTML = "";
         (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
