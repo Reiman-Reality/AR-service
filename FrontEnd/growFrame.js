@@ -1,5 +1,3 @@
-console.log("hihihihi");
-
 let fullscreen = false
 
 function MaximizeMinimizeFunction() {

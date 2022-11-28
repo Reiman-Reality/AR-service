@@ -1,3 +1,5 @@
+import internal from "node:stream";
+
 export interface markerData {
     insertedOn: Date,
     name: string,
@@ -21,4 +23,13 @@ export interface eventData {
     eventName: string,
     marker_id: string,
     model_id: string,
+    x_pos: number,
+    y_pos: number,
+    z_pos: number
+}
+
+export interface login {
+    username:string,
+    password:string
+    role:string
 }

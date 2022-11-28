@@ -44,7 +44,7 @@ server.use(serve(__dirname + '/static/markers'));
 
 server.use(cors());
 
-http.createServer(server.callback()).listen(8080);
+http.createServer(server.callback()).listen(80);
 https.createServer( {
     key: fs.readFileSync(__dirname + "/certs/self-signed.key"),
     cert: fs.readFileSync(__dirname + "/certs/self-signed.crt")

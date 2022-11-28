@@ -3,7 +3,7 @@ import * as mariadb from 'mariadb';
 import {v4} from 'uuid';
 import * as dotenv from 'dotenv';
 import process from 'node:process';
-import {markerData, modelData, eventData} from '../types/databaseTypes'
+import {markerData, modelData, eventData,login} from '../types/databaseTypes'
 
 dotenv.config();
 
@@ -43,6 +43,34 @@ export async function getAllEvents() {
         console.log(exception);
     }
 }
+
+export async function getAccountByUsername(username: string, password: string) {
+    try{
+        const connection = await pool.getConnection();
+        const data = await connection.query( `SELECT*FROM USER where username ="${username}" and password="${password}";`);
+        connection.end();
+        console.log(typeof( data ));
+        delete data['meta'];
+        console.log(data);
+        return data;
+    } catch( exception: unknown) {
+        console.log(exception);
+        return null;
+    }
+}
+
+export async function addUser(account: login) {
+    try{
+        const connection = await pool.getConnection();
+        const data = await connection.query( `INSERT INTO USER (username, password, role) values("${account.username}","${account.password}","${account.role}");`);
+        connection.end();
+        return true
+    } catch( exception: unknown) {
+        console.log(exception);
+        return false
+    }
+}
+
 
 
 export async function getModelsByMarkerID(input: string) {
@@ -93,8 +121,8 @@ export async function addEvent(event: eventData) {
     try{
         const connection = await pool.getConnection();
         const id = v4();
-        const success = await connection.query(`INSERT INTO EVENTS (marker_id, model_id)
-        VALUES ( "${event.marker_id}", "${event.model_id}");`);
+        const success = await connection.query(`INSERT INTO EVENTS (marker_id, model_id, x_pos, y_pos,z_pos)
+        VALUES ( "${event.marker_id}", "${event.model_id}", "${event.x_pos}", "${event.y_pos}", "${event.z_pos}");`);
         connection.end();
         return id;
     } catch( exception:unknown ){
