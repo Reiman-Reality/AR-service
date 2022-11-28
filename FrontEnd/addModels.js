@@ -7,12 +7,12 @@ let modelsPresent = false;
 function beforeEntity(markerUrl) {
     const nft = document.createElement("a-nft");
     console.log(nft);
-    return `<a-nft type=\"nft\" url=\"./${markerUrl}\" smooth=\"true\" smoothCount=\"10\" smoothTolerance=\".01\" smoothThreshold=\"5\">`
+    return `<a-nft type=\"nft\" url=(\"./${markerUrl}\") smooth=\"true\" smoothCount=\"10\" smoothTolerance=\".01\" smoothThreshold=\"5\">`
 }
 
 function objEntity(objName) {
     return `<a-entity
-    obj-model="obj: url(/${objName}.obj); mtl: url(/${objName}.mtl)"
+    obj-model="obj: url(./${objName}.obj); mtl: url(/${objName}.mtl)"
     scale="5 5 5"
     position="50 150 0"
     ></a-entity>`
