@@ -47,6 +47,7 @@ const body = koaBody({
 	ctx.status = 200;
  });
 
+// Marker code
 /**
  * Note for incoming requests to this endpoitn tehy must be encoded as 'multipart/form-data' otherwise request.files doesn't work.
  */
@@ -114,16 +115,30 @@ adminRouter.post('/api/updateMarker', body, async (ctx)=>{
 });
 
 adminRouter.post("/api/deleteMarker", body, async (ctx) => {
+	if( ! await verifyLogin(ctx.cookies.get('log'))){
+		ctx.status= 500;
+		return;
+	}
+
 	const ID = ctx.request.body.markerID;
 	if( ! ID ) {
 		ctx.status = 400;
 	}
 	//Delete all DB events with this marker as a member
 	await database.deleteEventByMarkerID( ID );
-	await database.deleteMarker( ID );
+	const files = await database.deleteMarker( ID );
+	for( const filename of files) {
+		try{
+			await fsPromise.rm( __dirname + "/markers/" + filename );
+		} catch( e: unknown) {
+			console.log(e);
+		}
+	}
 	ctx.status = 200;
 });
 
+
+//Map Code
 adminRouter.get('/map', body, async (ctx) => {
 	if(verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'html';
@@ -140,8 +155,6 @@ adminRouter.get('/getMap', body, async (ctx) => {
 		return;
 	}
 });
-
-
 
 adminRouter.post('/api/addMap', body, async (ctx)=>{
     //TODO verification
@@ -169,7 +182,7 @@ adminRouter.post('/api/addMap', body, async (ctx)=>{
 });
 
 
-
+//Model code
 /**
  * Same as above for this endpoint all data must be submitted as formdata :)
  */
@@ -251,7 +264,6 @@ adminRouter.post('/getAccount', body, async (ctx) => {
 		const verify = await database.getAccountByUsername(ctx.request.body.username, ctx.request.body.password);
 		if(verify.length >= 1){
 			ctx.status = 200;
-			createCookie(verify[0]);
 			ctx.cookies.set("log", createCookie(verify[0]), {httpOnly: false});
 		}
 		else{
@@ -295,6 +307,7 @@ adminRouter.post('/createUser', body, async (ctx)=>{
     ctx.status = 200;
 });
 
+//Getters for admin pages
 adminRouter.get('/api/getModels', async (ctx) => {
 	if( ! verifyLogin(ctx.cookies.get('log'))){
 		ctx.status= 500;
@@ -331,7 +344,7 @@ adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
 });
 
 
-
+// Routes for serving admin page pages
 adminRouter.get('/home',body,async (ctx) =>{
 	if( ! await verifyLogin(ctx.cookies.get('log'))){
 		ctx.redirect('/admin/login');
@@ -401,9 +414,12 @@ adminRouter.get('/modelScripts', async(ctx)=>{
 });
 
 function verifyLogin(cookie : string){
+	console.log(loggedInUsers);
 	return loggedInUsers[cookie];
 }
 
+
+//Helper functions for verifying requests
 function verifyMarkerData( formData:any, name:string, two: string, three: string ){
 	if( !formData.name || formData.name.length > 50 ) {
 		return null;
@@ -417,8 +433,6 @@ function verifyMarkerData( formData:any, name:string, two: string, three: string
 		filepathThree: three,
 	} as markerData;
 }
-
-
 
 function verifyEventData( data:any ) {
 	if( !data.name || data.name.length > 50 || data.marker_id == null || data.model_id == null) {
@@ -470,7 +484,7 @@ function createCookie( user ) {
 	loggedInUsers[loggedIn] = user;
 	setTimeout(  ()=>{
 		delete loggedInUsers[loggedIn];
-	}, 3600)
+	}, 3600000)
 	return loggedIn;
 }
 	

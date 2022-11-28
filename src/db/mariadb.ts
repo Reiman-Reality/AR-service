@@ -318,9 +318,12 @@ export async function deleteModel( modelID: string) {
 export async function deleteMarker( markerID: string) {
     try {
         const connection = await pool.getConnection();
+        const filenames = [];
+        const object = await connection.query(`SELECT * FROM MARKERS WHERE marker_id = "${markerID}"`);
+        filenames.push(object[0].file_path_one, object[0].file_path_two,object[0].file_path_three);
         await connection.query(`DELETE FROM MARKERS WHERE marker_id = "${markerID}"`);
         connection.end();
-        return true;
+        return filenames;
     } catch( exception: unknown) {
         console.log(exception);
     }
