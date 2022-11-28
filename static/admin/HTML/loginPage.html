@@ -84,7 +84,7 @@ span.psw {
     const submit = document.getElementById('loginButton');
     console.log(username);
     async function makeRequest(username,password){
-        const  res = await fetch("./admin/getAccount",{
+        const  res = await fetch("./getAccount",{
           method:"POST",
           headers:{"content-type": 'application/json'},
           body:JSON.stringify({username, password})
@@ -95,7 +95,7 @@ span.psw {
             alert("username or password is incorrect");
          }
           else{
-            location.replace("./admin/home");
+            location.replace("./home");
           }
          
     }

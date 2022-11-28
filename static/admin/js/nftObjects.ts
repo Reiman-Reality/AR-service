@@ -29,16 +29,37 @@ window.addEventListener("DOMContentLoaded", async ()=>{
 });
 
 function makeObjectTableEntry(data) : void {
+    console.log(data);
     const tableEntryList : HTMLElement = document.getElementById("boxList");
     const tableEntry : HTMLElement = document.createElement("li");
     tableEntry.classList.add("nft");
     const tableEntryHeader : HTMLElement = document.createElement("div");
+    const tableEntryDelete : HTMLElement = document.createElement("span");
     const tableEntryHeaderLink : HTMLElement = document.createElement("a");
     const tableEntryThumbnail : HTMLElement = document.createElement("img");
+
+
+    tableEntryDelete.innerHTML += "X";
+    tableEntryDelete.addEventListener("click", async (e)=>{
+        e.stopPropagation();
+        if(! confirm("Are you sure you want to delete this marker?") ) {
+            return;
+        }
+        await fetch("./api/deleteMarker", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            body:JSON.stringify({
+                markerID : data.marker_id,
+            })
+        })
+    });
 
     // tableEntryHeaderLink.setAttribute("href", data.websiteLink); // TODO Get edit link
     tableEntryHeaderLink.textContent += data.name
     tableEntryHeader.appendChild(tableEntryHeaderLink);
+    tableEntryHeader.appendChild(tableEntryDelete);
     tableEntryHeader.setAttribute("class", "boxHeading");
     tableEntry.appendChild(tableEntryHeader);
 
