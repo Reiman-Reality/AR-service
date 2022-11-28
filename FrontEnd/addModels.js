@@ -7,7 +7,7 @@ let modelsPresent = false;
 function beforeEntity(markerUrl) {
     const nft = document.createElement("a-nft");
     console.log(nft);
-    return `<a-nft type=\"nft\" url=(\"./${markerUrl}\") smooth=\"true\" smoothCount=\"10\" smoothTolerance=\".01\" smoothThreshold=\"5\">`
+    return `<a-nft type=\"nft\" url=(./${markerUrl}) smooth=\"true\" smoothCount=\"10\" smoothTolerance=\".01\" smoothThreshold=\"5\">`
 }
 
 function objEntity(objName) {
