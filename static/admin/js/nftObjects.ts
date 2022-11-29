@@ -15,17 +15,6 @@ window.addEventListener("DOMContentLoaded", async ()=>{
         return;
     }
 
-    formInit();
-
-    if (data.length < 1) {
-        document.querySelector(".boxes").innerHTML = "The object list is empty, please add some nft objects";
-        return;
-    }
-
-    for (let i = 0; i < data.length; i++) {
-        makeObjectTableEntry(data[i]);
-    }
-
     const modelResponse = await fetch("./api/getModels");
     if (!modelResponse.ok) {
         alert("The server was unable to load the model list. Please refresh the page.");
@@ -38,6 +27,16 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     }
     modelDataJson = modelData;
 
+    formInit();
+
+    if (data.length < 1) {
+        document.querySelector(".boxes").innerHTML = "The object list is empty, please add some natural feature tracking markers.";
+        return;
+    }
+
+    for (let i = 0; i < data.length; i++) {
+        makeObjectTableEntry(data[i]);
+    }
 
 });
 
@@ -193,6 +192,5 @@ function formInit() {
 }
 
 function editPreexistingValue(markerId, modelId, nameOfField, newValue) {
-    alert("" + markerId + " " + modelId + " " + nameOfField + " " + newValue);
     fetch("./api/editEvent", {"body": JSON.stringify({"marker_id": markerId, "model_id": modelId, "field": nameOfField, "value": newValue})});
 }
