@@ -118,8 +118,8 @@ function makeObjectTableEntry(data) : void {
             let eventDeleteCell : HTMLTableCellElement = document.createElement("td");
             let eventDelete : HTMLInputElement = document.createElement("input");
             eventDelete.setAttribute("type", "button");
-            eventDelete.innerText = "Remove";
-            eventDelete.addEventListener("change", async () => {removeModelFromMarker(data.marker_id, modelId)});
+            eventDelete.value = "Remove";
+            eventDelete.addEventListener("click", async () => {removeModelFromMarker(data.marker_id, modelId)});
             eventDeleteCell.append(eventDelete);
             tableRow.append(eventDeleteCell);
             
