@@ -99,6 +99,13 @@ function makeObjectTableEntry(data) : void {
             modelZ.innerText = data.eventData[i].z_pos;
             modelZcell.append(modelZ);
             tableRow.append(modelZcell);
+
+            let modelScaleCell : HTMLTableCellElement = document.createElement("td");
+            let modelScale : HTMLInputElement = document.createElement("input");
+            modelScale.setAttribute("type", "number");
+            modelScale.innerText = data.eventData[i].scale;
+            modelScaleCell.append(modelScale);
+            tableRow.append(modelScaleCell);
             
             //(document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).innerText += modelName +' '+ modelSeason +' '+ modelX +' '+ modelY +' '+ modelZ + '\n'; // TODO
             (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).append(tableRow); // TODO?
