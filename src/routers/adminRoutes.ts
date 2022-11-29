@@ -31,7 +31,6 @@ const body = koaBody({
 		return;
 	}
 	const id = await database.addEvent(cleanedData);
-	console.log(id);
 	if(!id) {
 		ctx.status = 500;
 		ctx.body = {"message" : "there was a error inserting this event into our database please try again later"};
@@ -43,9 +42,6 @@ const body = koaBody({
 
  adminRouter.post('/api/editEvent', body, async(ctx)=> {
 	const cleanedData = verifyEventEditData( JSON.parse(ctx.request.body) );
-
-	console.log(cleanedData);
-
 	if( !cleanedData ) {
 		ctx.status = 500;
 		return;
@@ -369,7 +365,6 @@ function verifyModelData( formModel:any, newFilePath:string, textureName: string
 }
 
 function verifyEventEditData( data: any) {
-	console.log(typeof data);
 	if( !data.marker_id || ! data.model_id) {
 		return null;
 	}
