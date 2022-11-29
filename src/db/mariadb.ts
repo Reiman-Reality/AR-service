@@ -93,8 +93,27 @@ export async function addEvent(event: eventData) {
     try{
         const connection = await pool.getConnection();
         const id = v4();
-        const success = await connection.query(`INSERT INTO EVENTS (marker_id, model_id, x_pos, y_pos,z_pos)
-        VALUES ( "${event.marker_id}", "${event.model_id}", "${event.x_pos}", "${event.y_pos}", "${event.z_pos}");`);
+        const success = await connection.query(`INSERT INTO EVENTS (marker_id, model_id, x_pos, y_pos,z_pos, scale, tag)
+        VALUES ( "${event.marker_id}", "${event.model_id}", "${event.x_pos}", "${event.y_pos}", "${event.z_pos}", "${event.scale}", "${event.tag}");`);
+        connection.end();
+        return id;
+    } catch( exception:unknown ){
+        console.log(exception);
+    }
+}
+
+export async function editEvent(event: any) {
+    try{
+        const connection = await pool.getConnection();
+        const id = v4();
+        const success = await connection.query(`UPDATE EVENTS 
+        SET
+            ${event.field} ="${event.value}"
+        WHERE 
+            marker_id= "${event.marker_id}"
+        AND
+            model_id = "${event.model_id}";`
+        );
         connection.end();
         return id;
     } catch( exception:unknown ){

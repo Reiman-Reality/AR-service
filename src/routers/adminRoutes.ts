@@ -41,6 +41,20 @@ const body = koaBody({
 	ctx.status = 200;
  });
 
+ adminRouter.post('/api/editEvent', body, async(ctx)=> {
+	const cleanedData = verifyEventEditData( JSON.parse(ctx.request.body) );
+
+	console.log(cleanedData);
+
+	if( !cleanedData ) {
+		ctx.status = 500;
+		return;
+	}
+
+	await database.editEvent(cleanedData);
+	ctx.status = 200;
+ })
+
 /**
  * Note for incoming requests to this endpoitn tehy must be encoded as 'multipart/form-data' otherwise request.files doesn't work.
  */
@@ -312,12 +326,13 @@ function verifyEventData( data:any ) {
 
 	return {
 		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
-		eventName: data.name,
 		marker_id: data.marker_id,
 		model_id: data.model_id,
 		x_pos:data.x_pos,
 		y_pos:data.y_pos,
-		z_pos:data.z_pos
+		z_pos:data.z_pos,
+		scale: data.scale,
+		tag: data.tag,
 	} as eventData;
 
 }
@@ -353,4 +368,17 @@ function verifyModelData( formModel:any, newFilePath:string, textureName: string
 	} as modelData;
 }
 
+function verifyEventEditData( data: any) {
+	console.log(typeof data);
+	if( !data.marker_id || ! data.model_id) {
+		return null;
+	}
+
+	return {
+		marker_id: data.marker_id,
+		model_id: data.model_id,
+		field: data.field,
+		value: data.value,
+	}
+}
 export {adminRouter};

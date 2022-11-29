@@ -86,7 +86,7 @@ function makeObjectTableEntry(data) : void {
             let modelX : HTMLInputElement = document.createElement("input");
             modelX.setAttribute("type", "number");
             modelX.value = data.eventData[i].x_pos;
-            modelX.addEventListener("onChange", async () => {editPreexistingValue(data.name, modelId, "x_pos", modelX.value);});
+            modelX.addEventListener("change", async () => {editPreexistingValue(data.name, modelId, "x_pos", modelX.value);});
             modelXcell.append(modelX);
             tableRow.append(modelX);
 
@@ -192,5 +192,8 @@ function formInit() {
 }
 
 function editPreexistingValue(markerId, modelId, nameOfField, newValue) {
-    fetch("./api/editEvent", {"body": JSON.stringify({"marker_id": markerId, "model_id": modelId, "field": nameOfField, "value": newValue})});
+    fetch("./api/editEvent", {
+        method: "POST",
+        body: JSON.stringify({"marker_id": markerId, "model_id": modelId, "field": nameOfField, "value": newValue})
+    });
 }
