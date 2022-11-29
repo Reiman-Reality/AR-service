@@ -214,4 +214,5 @@ function removeModelFromMarker(markerId, modelId) {
         method: "POST",
         body: JSON.stringify({"marker_id": markerId, "model_id": modelId})
     });
+    window.location.reload();
 }
