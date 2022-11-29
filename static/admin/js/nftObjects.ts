@@ -75,35 +75,38 @@ function makeObjectTableEntry(data) : void {
             }
             tableRow.append(modelName);
 
-            let modelSeason : HTMLTableCellElement = document.createElement("td");
-            modelSeason.innerText = data.eventData[i].tag;
-            tableRow.append(modelSeason);
+            let modelSeasonCell : HTMLTableCellElement = document.createElement("td");
+            let modelSeason : HTMLInputElement = document.createElement("input");
+            modelSeason.setAttribute("type", "text");
+            modelSeason.value = data.eventData[i].tag;
+            modelSeasonCell.append(modelSeason);
+            tableRow.append(modelSeasonCell);
 
             let modelXcell : HTMLTableCellElement = document.createElement("td");
             let modelX : HTMLInputElement = document.createElement("input");
             modelX.setAttribute("type", "number");
-            modelX.innerText = data.eventData[i].x_pos;
+            modelX.value = data.eventData[i].x_pos;
             modelXcell.append(modelX);
             tableRow.append(modelX);
 
             let modelYcell : HTMLTableCellElement = document.createElement("td");
             let modelY : HTMLInputElement = document.createElement("input");
             modelY.setAttribute("type", "number");
-            modelY.innerText = data.eventData[i].y_pos;
+            modelY.value = data.eventData[i].y_pos;
             modelYcell.append(modelY);
             tableRow.append(modelYcell);
 
             let modelZcell : HTMLTableCellElement = document.createElement("td");
             let modelZ : HTMLInputElement = document.createElement("input");
             modelZ.setAttribute("type", "number");
-            modelZ.innerText = data.eventData[i].z_pos;
+            modelZ.value = data.eventData[i].z_pos;
             modelZcell.append(modelZ);
             tableRow.append(modelZcell);
 
             let modelScaleCell : HTMLTableCellElement = document.createElement("td");
             let modelScale : HTMLInputElement = document.createElement("input");
             modelScale.setAttribute("type", "number");
-            modelScale.innerText = data.eventData[i].scale;
+            modelScale.value = data.eventData[i].scale;
             modelScaleCell.append(modelScale);
             tableRow.append(modelScaleCell);
             
