@@ -61,7 +61,7 @@ function makeObjectTableEntry(data) : void {
         document.querySelector("#newMarkerForm").classList.add("hide");
         document.querySelector("#markerForm").classList.remove("hide");
         (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
-        (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
+        (document.querySelector('#markerID') as HTMLInputElement).value = data.marker_id;
         (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).innerHTML = "<tr><th>Name</th><th>Tag</th><th>X Position</th><th>Y Postion</th><th>Z Position</th><th>Scale</th><!-- TODO Orientation? --></tr>";
         if (data.models) for (let i = 0; i < data.models.length; i++) {
             let tableRow : HTMLTableRowElement = document.createElement("tr");
