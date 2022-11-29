@@ -68,6 +68,7 @@ function makeObjectTableEntry(data) : void {
 
             let modelId = data.eventData[i].model_id;
             let modelName : HTMLTableCellElement = document.createElement("td");
+            modelName.innerText = "???";
             for (const model of data.models) if (model.model_id === modelId) {
                  modelName.innerText = model.name;
                  break;
