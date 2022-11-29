@@ -62,7 +62,7 @@ function makeObjectTableEntry(data) : void {
         document.querySelector("#markerForm").classList.remove("hide");
         (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
         (document.querySelector('#markerID') as HTMLInputElement).value = data.marker_id;
-        (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).innerHTML = "<tr><th>Name</th><th>Tag</th><th>X Position</th><th>Y Postion</th><th>Z Position</th><th>Scale</th><!-- TODO Orientation? --></tr>";
+        (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).innerHTML = "<tr><th>Name</th><th>Tag</th><th>X Position</th><th>Y Postion</th><th>Z Position</th><th>Scale</th><!-- TODO Orientation? --><th></th></tr>";
         if (data.models) for (let i = 0; i < data.models.length; i++) {
             let tableRow : HTMLTableRowElement = document.createElement("tr");
 
@@ -79,6 +79,7 @@ function makeObjectTableEntry(data) : void {
             let modelSeason : HTMLInputElement = document.createElement("input");
             modelSeason.setAttribute("type", "text");
             modelSeason.value = data.eventData[i].tag;
+            modelSeason.addEventListener("change", async () => {editPreexistingValue(data.marker_id, modelId, "tag", modelSeason.value);});
             modelSeasonCell.append(modelSeason);
             tableRow.append(modelSeasonCell);
 
@@ -94,6 +95,7 @@ function makeObjectTableEntry(data) : void {
             let modelY : HTMLInputElement = document.createElement("input");
             modelY.setAttribute("type", "number");
             modelY.value = data.eventData[i].y_pos;
+            modelY.addEventListener("change", async () => {editPreexistingValue(data.marker_id, modelId, "y_pos", modelY.value);});
             modelYcell.append(modelY);
             tableRow.append(modelYcell);
 
@@ -101,6 +103,7 @@ function makeObjectTableEntry(data) : void {
             let modelZ : HTMLInputElement = document.createElement("input");
             modelZ.setAttribute("type", "number");
             modelZ.value = data.eventData[i].z_pos;
+            modelZ.addEventListener("change", async () => {editPreexistingValue(data.marker_id, modelId, "z_pos", modelZ.value);});
             modelZcell.append(modelZ);
             tableRow.append(modelZcell);
 
@@ -108,11 +111,19 @@ function makeObjectTableEntry(data) : void {
             let modelScale : HTMLInputElement = document.createElement("input");
             modelScale.setAttribute("type", "number");
             modelScale.value = data.eventData[i].scale;
+            modelScale.addEventListener("change", async () => {editPreexistingValue(data.marker_id, modelId, "scale", modelScale.value);});
             modelScaleCell.append(modelScale);
             tableRow.append(modelScaleCell);
+
+            let eventDeleteCell : HTMLTableCellElement = document.createElement("td");
+            let eventDelete : HTMLInputElement = document.createElement("input");
+            eventDelete.setAttribute("type", "submit");
+            eventDelete.innerText = "Remove";
+            eventDelete.addEventListener("change", async () => {removeModelFromMarker(data.marker_id, modelId)});
+            eventDeleteCell.append(eventDelete);
+            tableRow.append(eventDeleteCell);
             
-            //(document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).innerText += modelName +' '+ modelSeason +' '+ modelX +' '+ modelY +' '+ modelZ + '\n'; // TODO
-            (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).append(tableRow); // TODO?
+            (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).append(tableRow);
         }
         (document.querySelector('#newModelToAssociate') as HTMLSelectElement).innerHTML = "";
         (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
@@ -195,5 +206,12 @@ function editPreexistingValue(markerId, modelId, nameOfField, newValue) {
     fetch("./api/editEvent", {
         method: "POST",
         body: JSON.stringify({"marker_id": markerId, "model_id": modelId, "field": nameOfField, "value": newValue})
+    });
+}
+
+function removeModelFromMarker(markerId, modelId) {
+    fetch("./api/deleteEvent", {
+        method: "POST",
+        body: JSON.stringify({"marker_id": markerId, "model_id": modelId})
     });
 }
