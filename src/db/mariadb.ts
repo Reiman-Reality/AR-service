@@ -102,7 +102,26 @@ export async function addEvent(event: eventData) {
     }
 }
 
-
+export async function getEventByMarkerID(markerID : string) {
+    try{
+        const connection = await pool.getConnection();
+        const data = await connection.query(`SELECT * FROM EVENTS WHERE marker_id="${markerID}";`);
+        connection.end();
+        const keys = Object.keys(data);
+        const returnData = [];
+        for( const key of keys ) {
+            if(key === 'meta') {
+                break;
+            }
+            console.log(data[key]);
+            returnData.push( data[key] );
+        }
+        return returnData;
+    } catch( exception:unknown ){
+        console.log(exception);
+        return null;
+    }
+}
 
 export async function getAllMarkers() {
     try {

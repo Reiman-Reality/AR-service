@@ -90,6 +90,7 @@ adminRouter.get("/api/getMarkers", async (ctx) =>{
 	}
 	for( const marker of markers) {
 		marker.models = await database.getModelsByMarkerID(marker.marker_id);
+		marker.eventData = await database.getEventByMarkerID( marker.marker_id );
 	}
 	ctx.status=200;
 	ctx.body = markers;
