@@ -64,14 +64,32 @@ function makeObjectTableEntry(data) : void {
         (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
         (document.querySelector('#markerID') as HTMLInputElement).value = data.name;
         if (data.models) for (let i = 0; i < data.models.length; i++) {
+            let tableRow : HTMLTableRowElement = document.createElement("tr");
+
             let modelId = data.eventData[i].model_id;
-            let modelName = "???";
-            for (const model of data.models) if (model.model_id === modelId) modelName = model.name;
-            let modelSeason = data.eventData[i].tag;
-            let modelX = data.eventData[i].x_pos;
-            let modelY = data.eventData[i].y_pos;
-            let modelZ = data.eventData[i].z_pos;
-            (document.querySelector('#currentlyAssociatedModels') as HTMLElement).innerText += modelName +' '+ modelSeason +' '+ modelX +' '+ modelY +' '+ modelZ + '\n'; // TODO
+            let modelName : HTMLTableCellElement = document.createElement("td");
+            for (const model of data.models) if (model.model_id === modelId) {
+                 modelName.innerText = model.name;
+                 break;
+            }
+            tableRow.append(modelName);
+
+            let modelSeason : HTMLTableCellElement = document.createElement("td");
+            modelSeason.innerText = data.eventData[i].tag;
+            tableRow.append(modelSeason);
+
+            let modelX : HTMLTableCellElement = document.createElement("td");
+            modelX.innerText = data.eventData[i].x_pos;
+            tableRow.append(modelX);
+            let modelY : HTMLTableCellElement = document.createElement("td");
+            modelY.innerText = data.eventData[i].y_pos;
+            tableRow.append(modelY);
+            let modelZ : HTMLTableCellElement = document.createElement("td");
+            modelZ.innerText = data.eventData[i].z_pos;
+            tableRow.append(modelZ);
+            
+            //(document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).innerText += modelName +' '+ modelSeason +' '+ modelX +' '+ modelY +' '+ modelZ + '\n'; // TODO
+            (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).append(tableRow); // TODO?
         }
         (document.querySelector('#newModelToAssociate') as HTMLSelectElement).innerHTML = "";
         (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
