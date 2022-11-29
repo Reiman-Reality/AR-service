@@ -86,7 +86,7 @@ function makeObjectTableEntry(data) : void {
             let modelX : HTMLInputElement = document.createElement("input");
             modelX.setAttribute("type", "number");
             modelX.value = data.eventData[i].x_pos;
-            modelX.addEventListener("change", async () => {editPreexistingValue(data.name, modelId, "x_pos", modelX.value);});
+            modelX.addEventListener("change", async () => {editPreexistingValue(data.marker_id, modelId, "x_pos", modelX.value);});
             modelXcell.append(modelX);
             tableRow.append(modelX);
 
