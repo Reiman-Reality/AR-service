@@ -79,15 +79,26 @@ function makeObjectTableEntry(data) : void {
             modelSeason.innerText = data.eventData[i].tag;
             tableRow.append(modelSeason);
 
-            let modelX : HTMLTableCellElement = document.createElement("td");
+            let modelXcell : HTMLTableCellElement = document.createElement("td");
+            let modelX : HTMLInputElement = document.createElement("input");
+            modelX.setAttribute("type", "number");
             modelX.innerText = data.eventData[i].x_pos;
+            modelXcell.append(modelX);
             tableRow.append(modelX);
-            let modelY : HTMLTableCellElement = document.createElement("td");
+
+            let modelYcell : HTMLTableCellElement = document.createElement("td");
+            let modelY : HTMLInputElement = document.createElement("input");
+            modelY.setAttribute("type", "number");
             modelY.innerText = data.eventData[i].y_pos;
-            tableRow.append(modelY);
-            let modelZ : HTMLTableCellElement = document.createElement("td");
+            modelYcell.append(modelY);
+            tableRow.append(modelYcell);
+
+            let modelZcell : HTMLTableCellElement = document.createElement("td");
+            let modelZ : HTMLInputElement = document.createElement("input");
+            modelZ.setAttribute("type", "number");
             modelZ.innerText = data.eventData[i].z_pos;
-            tableRow.append(modelZ);
+            modelZcell.append(modelZ);
+            tableRow.append(modelZcell);
             
             //(document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).innerText += modelName +' '+ modelSeason +' '+ modelX +' '+ modelY +' '+ modelZ + '\n'; // TODO
             (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).append(tableRow); // TODO?
