@@ -47,7 +47,19 @@ const body = koaBody({
 	ctx.status = 200;
  });
 
-// Marker code
+ adminRouter.post('/api/editEvent', body, async(ctx)=> {
+	const cleanedData = verifyEventEditData( JSON.parse(ctx.request.body) );
+	if( !cleanedData ) {
+		ctx.status = 500;
+		return;
+	}
+
+	await database.editEvent(cleanedData);
+	ctx.status = 200;
+ })
+
+
+ // Marker code
 /**
  * Note for incoming requests to this endpoitn tehy must be encoded as 'multipart/form-data' otherwise request.files doesn't work.
  */
@@ -103,15 +115,22 @@ adminRouter.get("/api/getMarkers", async (ctx) =>{
 		ctx.body({'message': "Server error please try again later"});
 		return;
 	}
-	for(const marker of markers) {
+	for( const marker of markers) {
 		marker.models = await database.getModelsByMarkerID(marker.marker_id);
+		marker.eventData = await database.getEventByMarkerID( marker.marker_id );
 	}
 	ctx.status=200;
 	ctx.body = markers;
 });
 
 adminRouter.post('/api/updateMarker', body, async (ctx)=>{
-	console.log(ctx.request.files);
+	const request = ctx.request.body;
+	if( request.modelID && request.modelID != 'null' ) {
+		await database.addEvent({marker_id: request.markerID, model_id: request.modelID, x_pos: 1, y_pos: 1, z_pos: 1, scale: 1, tag: request.tag} as eventData);
+	}
+
+	ctx.status = 200;
+
 });
 
 adminRouter.post("/api/deleteMarker", body, async (ctx) => {
@@ -451,12 +470,13 @@ function verifyEventData( data:any ) {
 
 	return {
 		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
-		eventName: data.name,
 		marker_id: data.marker_id,
 		model_id: data.model_id,
 		x_pos:data.x_pos,
 		y_pos:data.y_pos,
-		z_pos:data.z_pos
+		z_pos:data.z_pos,
+		scale: data.scale,
+		tag: data.tag,
 	} as eventData;
 
 }
@@ -514,4 +534,16 @@ function verifyModelData( formModel:any, newFilePath:string, textureName: string
 	} as modelData;
 }
 
+function verifyEventEditData( data: any) {
+	if( !data.marker_id || ! data.model_id) {
+		return null;
+	}
+
+	return {
+		marker_id: data.marker_id,
+		model_id: data.model_id,
+		field: data.field,
+		value: data.value,
+	}
+}
 export {adminRouter};

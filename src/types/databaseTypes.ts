@@ -20,12 +20,13 @@ export interface modelData {
 export interface eventData {
     insertedOn: Date,
     eventID: string|null,
-    eventName: string,
+    tag: string,
     marker_id: string,
     model_id: string,
     x_pos: number,
     y_pos: number,
-    z_pos: number
+    z_pos: number,
+    scale: number,
 }
 
 export interface login {
