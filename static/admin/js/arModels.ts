@@ -74,15 +74,14 @@ function makeModelTableEntry(data) : void {
         (id as HTMLInputElement).value = data.model_id;
     
         editModal.style.display = "block";
+        // Get the <span> element that closes the modal
+var span_1 = document.getElementsByClassName("close")[0];
+span_1.addEventListener('click', ()=>  editModal.style.display = "none"); 
     });
     tableEntryList.appendChild(tableEntry);
 }
 
-// Get the <span> element that closes the modal
-var span_1 = document.getElementsByClassName("close")[0];
 
-// When the user clicks on <span> (x), close the modal
-span_1.addEventListener('click', ()=>   document.getElementById("editModel").style.display = "none"); 
 
 
 function modelInit() {
