@@ -247,15 +247,15 @@ function formInit() {
     })
 }
 
-function editPreexistingValue(markerId, modelId, nameOfField, newValue) {
-    fetch("./api/editEvent", {
+async function editPreexistingValue(markerId, modelId, nameOfField, newValue) {
+    await fetch("./api/editEvent", {
         method: "POST",
         body: JSON.stringify({"marker_id": markerId, "model_id": modelId, "field": nameOfField, "value": newValue})
     });
 }
 
-function removeModelFromMarker(markerId, modelId) {
-    fetch("./api/deleteEvent", {
+async function removeModelFromMarker(markerId, modelId) {
+    await fetch("./api/deleteEvent", {
         method: "POST",
         body: JSON.stringify({"marker_id": markerId, "model_id": modelId})
     });
