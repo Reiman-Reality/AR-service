@@ -83,7 +83,7 @@ function makeObjectTableEntry(data) : void {
         document.querySelector("#markerForm").classList.remove("hide");
         (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
         (document.querySelector('#markerID') as HTMLInputElement).value = data.marker_id;
-        (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).innerHTML = "<tr><th>Name</th><th>Tag</th><th>X Position</th><th>Y Postion</th><th>Z Position</th><th>Scale</th><!-- TODO Orientation? --><th></th></tr>";
+        (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).innerHTML = "<tr><th>Name</th><th>Tag</th><th>X Position</th><th>Y Postion</th><th>Z Position</th><th>Scale</th><th>X Orientation</th><th>Y Orientation</th><th>Z Orientation</th><th></th></tr>";
         if (data.models) for (let i = 0; i < data.models.length; i++) {
             let tableRow : HTMLTableRowElement = document.createElement("tr");
 
@@ -136,6 +136,30 @@ function makeObjectTableEntry(data) : void {
             modelScaleCell.append(modelScale);
             tableRow.append(modelScaleCell);
 
+            let modelXrotCell : HTMLTableCellElement = document.createElement("td");
+            let modelXrot : HTMLInputElement = document.createElement("input");
+            modelXrot.setAttribute("type", "number");
+            modelXrot.value = data.eventData[i].x_rot;
+            modelXrot.addEventListener("change", async () => {editPreexistingValue(data.marker_id, modelId, "x_rot", modelXrot.value);});
+            modelXrotCell.append(modelXrot);
+            tableRow.append(modelXrotCell);
+
+            let modelYrotCell : HTMLTableCellElement = document.createElement("td");
+            let modelYrot : HTMLInputElement = document.createElement("input");
+            modelYrot.setAttribute("type", "number");
+            modelYrot.value = data.eventData[i].y_rot;
+            modelYrot.addEventListener("change", async () => {editPreexistingValue(data.marker_id, modelId, "y_rot", modelYrot.value);});
+            modelYrotCell.append(modelYrot);
+            tableRow.append(modelYrotCell);
+
+            let modelZrotCell : HTMLTableCellElement = document.createElement("td");
+            let modelZrot : HTMLInputElement = document.createElement("input");
+            modelZrot.setAttribute("type", "number");
+            modelZrot.value = data.eventData[i].z_rot;
+            modelZrot.addEventListener("change", async () => {editPreexistingValue(data.marker_id, modelId, "z_rot", modelZrot.value);});
+            modelZrotCell.append(modelZrot);
+            tableRow.append(modelZrotCell);
+
             let eventDeleteCell : HTMLTableCellElement = document.createElement("td");
             let eventDelete : HTMLInputElement = document.createElement("input");
             eventDelete.setAttribute("type", "button");
@@ -171,10 +195,10 @@ function formInit() {
         const request = new XMLHttpRequest();
 
         request.addEventListener("load", (event)=>{
-            alert("updated succesfully");
+            alert("Updated succesfully. Please refresh.");
         });
         request.addEventListener("error", (event)=>{
-            alert("failed to update try again later");
+            alert("Failed to update. Please refresh and try again. If this issues persists, you may need to return to the login screen.");
         });
 
         request.open("POST", "./api/updateMarker");
@@ -208,10 +232,10 @@ function formInit() {
         const request = new XMLHttpRequest();
 
         request.addEventListener("load", (event)=>{
-            alert("created succesfully");
+            alert("Created new marker succesfully.");
         });
         request.addEventListener("error", (event)=>{
-            alert("failed to create marker try again later");
+            alert("Failed to create marker. Please refresh and try again.");
         });
 
         request.open("POST", "./api/addMarker");
