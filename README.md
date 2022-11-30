@@ -9,3 +9,8 @@
 5. Run `npm run start`
 
 ## Tools and Frameworks Used
+
+- NODE js https://nodejs.org/en/
+- NPM https://www.npmjs.com/
+- TYPESCRIPT https://www.typescriptlang.org/
+- KOA js as a backend framework: https://koajs.com/
