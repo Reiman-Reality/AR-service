@@ -169,6 +169,17 @@ export async function deleteEventByMarkerID( markerID ) {
     }
 }
 
+export async function deleteEvent(marker: string, model: string) {
+    try {
+        const connection = await pool.getConnection();
+        await connection.query(`DELETE FROM EVENTS WHERE model_id="${model}" AND marker_id="${marker}"`);
+        connection.end();
+        return true;
+    } catch( exception: unknown) {
+        console.log(exception);
+    }
+    
+}
 
 export async function getEventByMarkerID(markerID : string) {
     try{
@@ -346,10 +357,14 @@ export async function updateModel(data: modelData) {
 export async function deleteModel( modelID: string) {
     try {
         const connection = await pool.getConnection();
+<<<<<<< Updated upstream
         const filenames = [];
         const object = await connection.query(`SELECT * FROM MODELS WHERE model_id = "${modelID}"`);
         filenames.push( object[0].file_path, object[0].texture_name);
         await connection.query(`DELETE FROM MODELS WHERE model_id = "${modelID}"`);
+=======
+        await connection.query(`DELETE FROM MODELS WHERE model_id = ${data.modelID}`);
+>>>>>>> Stashed changes
         connection.end();
         return filenames;
     } catch( exception: unknown) {

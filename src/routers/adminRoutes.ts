@@ -56,6 +56,18 @@ const body = koaBody({
 
 	await database.editEvent(cleanedData);
 	ctx.status = 200;
+ });
+
+ adminRouter.post('/api/deleteEvent', body, async(ctx)=>{
+	const data = JSON.parse(ctx.request.body);
+
+	if( !data.marker_id || ! data.model_id) {
+		ctx.status = 500;
+		return;
+	}
+
+	await database.deleteEvent( data.marker_id, data.model_id);
+	ctx.status = 200;
  })
 
 
