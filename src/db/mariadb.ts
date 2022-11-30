@@ -169,6 +169,17 @@ export async function deleteEventByMarkerID( markerID ) {
     }
 }
 
+export async function deleteEvent(marker: string, model: string) {
+    try {
+        const connection = await pool.getConnection();
+        await connection.query(`DELETE FROM EVENTS WHERE model_id="${model}" AND marker_id="${marker}"`);
+        connection.end();
+        return true;
+    } catch( exception: unknown) {
+        console.log(exception);
+    }
+    
+}
 
 export async function getEventByMarkerID(markerID : string) {
     try{
