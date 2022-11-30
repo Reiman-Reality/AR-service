@@ -28,3 +28,9 @@ export interface eventData {
     z_pos: number,
     scale: number,
 }
+
+export interface login {
+    username:string,
+    password:string
+    role:string
+}

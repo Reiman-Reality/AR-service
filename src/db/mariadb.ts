@@ -3,7 +3,7 @@ import * as mariadb from 'mariadb';
 import {v4} from 'uuid';
 import * as dotenv from 'dotenv';
 import process from 'node:process';
-import {markerData, modelData, eventData} from '../types/databaseTypes'
+import {markerData, modelData, eventData,login} from '../types/databaseTypes'
 
 dotenv.config();
 
@@ -43,6 +43,34 @@ export async function getAllEvents() {
         console.log(exception);
     }
 }
+
+export async function getAccountByUsername(username: string, password: string) {
+    try{
+        const connection = await pool.getConnection();
+        const data = await connection.query( `SELECT*FROM USER where username ="${username}" and password="${password}";`);
+        connection.end();
+        console.log(typeof( data ));
+        delete data['meta'];
+        console.log(data);
+        return data;
+    } catch( exception: unknown) {
+        console.log(exception);
+        return null;
+    }
+}
+
+export async function addUser(account: login) {
+    try{
+        const connection = await pool.getConnection();
+        const data = await connection.query( `INSERT INTO USER (username, password, role) values("${account.username}","${account.password}","${account.role}");`);
+        connection.end();
+        return true
+    } catch( exception: unknown) {
+        console.log(exception);
+        return false
+    }
+}
+
 
 
 export async function getModelsByMarkerID(input: string) {
@@ -120,6 +148,27 @@ export async function editEvent(event: any) {
         console.log(exception);
     }
 }
+
+export async function deleteEventByModelID( modelID ) {
+    try{
+        const connection = await pool.getConnection();
+        const success = await connection.query(`DELETE FROM EVENTS WHERE model_id="${modelID}"`)
+        connection.end();
+    } catch( exception:unknown ){
+        console.log(exception);
+    }
+}
+
+export async function deleteEventByMarkerID( markerID ) {
+    try{
+        const connection = await pool.getConnection();
+        const success = await connection.query(`DELETE FROM EVENTS WHERE marker_id="${markerID}"`)
+        connection.end();
+    } catch( exception:unknown ){
+        console.log(exception);
+    }
+}
+
 
 export async function getEventByMarkerID(markerID : string) {
     try{
@@ -294,13 +343,32 @@ export async function updateModel(data: modelData) {
     }
 }
 
-export async function deleteModel(data: modelData) {
+export async function deleteModel( modelID: string) {
     try {
         const connection = await pool.getConnection();
-        await connection.query(`DELETE FROM MODELS HERE model_id = ${data.modelID}`);
+        const filenames = [];
+        const object = await connection.query(`SELECT * FROM MODELS WHERE model_id = "${modelID}"`);
+        filenames.push( object[0].file_path, object[0].texture_name);
+        await connection.query(`DELETE FROM MODELS WHERE model_id = "${modelID}"`);
         connection.end();
-        return true;
+        return filenames;
     } catch( exception: unknown) {
         console.log(exception);
+        return null;
+    }
+}
+
+export async function deleteMarker( markerID: string) {
+    try {
+        const connection = await pool.getConnection();
+        const filenames = [];
+        const object = await connection.query(`SELECT * FROM MARKERS WHERE marker_id = "${markerID}"`);
+        filenames.push(object[0].file_path_one, object[0].file_path_two,object[0].file_path_three);
+        await connection.query(`DELETE FROM MARKERS WHERE marker_id = "${markerID}"`);
+        connection.end();
+        return filenames;
+    } catch( exception: unknown) {
+        console.log(exception);
+        return null;
     }
 }

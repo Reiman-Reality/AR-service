@@ -15,11 +15,20 @@ publicRouter.get('/home', async (ctx) =>{
 	ctx.body = fs.createReadStream(path.join(__dirname,'/FrontEnd/LandingPage.html'));
 });
 
+publicRouter.get('/map', async (ctx)=>{
+	ctx.type = 'html';
+	ctx.body = fs.createReadStream(path.join(__dirname, '/FrontEnd/Map.html'))
+});
+
+publicRouter.get('/about', async (ctx) =>{
+	ctx.type = 'html';
+	ctx.body = fs.createReadStream(path.join(__dirname, '/FrontEnd/About.html'))
+})
+
 publicRouter.get('/filenames', async (ctx) => {
 	const data = await getModelAndMarkerNames();
 	const cleanedData = [];
 	for(const event of data) {
-		console.log(event);
 		const names = {
 			markerName: path.basename(event.file_path_one),
 			modelFile: path.basename(event.file_path || '')
@@ -28,6 +37,13 @@ publicRouter.get('/filenames', async (ctx) => {
 	}
 	ctx.type = 'json';
 	ctx.body = cleanedData;
+});
+
+publicRouter.get('/mapImage', async (ctx) => {
+	ctx.type = 'jpg';
+	ctx.body = fs.createReadStream(path.join(__dirname,'map.jpg'));
+	return;
+
 });
 
 export {publicRouter};
