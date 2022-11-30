@@ -138,7 +138,7 @@ adminRouter.get("/api/getMarkers", async (ctx) =>{
 adminRouter.post('/api/updateMarker', body, async (ctx)=>{
 	const request = ctx.request.body;
 	if( request.modelID && request.modelID != 'null' ) {
-		await database.addEvent({marker_id: request.markerID, model_id: request.modelID, x_pos: 1, y_pos: 1, z_pos: 1, scale: 1, tag: request.tag} as eventData);
+		await database.addEvent({marker_id: request.markerID, model_id: request.modelID, x_pos: 0, y_pos: 0, z_pos: 0, scale: 1, tag: request.tag} as eventData);
 	}
 
 	ctx.status = 200;
