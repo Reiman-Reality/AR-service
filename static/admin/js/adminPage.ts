@@ -4,6 +4,7 @@ var modelsFrame: HTMLElement|null = document.getElementById("ar-models");
 var createUserFrame: HTMLElement|null = document.getElementById("create-user");
 
 
+
 document.addEventListener("DOMContentLoaded", ()=>{
     selectBox = document.getElementById("left-column");
     objectsFrame = document.getElementById("nft-objects");
@@ -11,6 +12,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
     createUserFrame = document.getElementById("create-user");
     selectBox?.addEventListener("change", changeFrame);
 })
+
+function logOut(){
+    location.href = "http://coms-402-sd-37.class.las.iastate.edu/admin/login";
+}
+
 
 function changeFrame(): void {
     switch ((selectBox as HTMLInputElement).value) {
