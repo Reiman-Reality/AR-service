@@ -62,6 +62,11 @@
         height: 0;
     }
     </style>
+    <style>
+        .overflowScroll {
+            overflow: scroll;
+        }
+    </style>
 </head>
 
 <body>
@@ -83,7 +88,7 @@
                     <input type = "file" id="marker3" name="marker3" disabled>
                 </div>
                 <h2>Associated Models</h2>
-                <div>
+                <div class="overflowScroll">
                     <table id="currentlyAssociatedModels">
                     <!-- TODO Dynamic content goes here "model_id", "name" -->
                     </table>
