@@ -31,7 +31,14 @@ publicRouter.get('/filenames', async (ctx) => {
 	for(const event of data) {
 		const names = {
 			markerName: path.basename(event.file_path_one),
-			modelFile: path.basename(event.file_path || '')
+			modelFile: path.basename(event.file_path || ''),
+			scale: event.scale,
+			xRot: event.x_rot,
+			yRot: event.y_rot,
+			zRot: event.z_rot,
+			xPos: event.x_pos,
+			yPos: event.y_pos,
+			zPost: event.z_pos
 		}
 		cleanedData.push(names);
 	}
