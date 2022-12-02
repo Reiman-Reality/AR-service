@@ -98,7 +98,7 @@ export async function getModelsByMarkerID(input: string) {
 export async function getModelAndMarkerNames() {
     try {
         const connection = await pool.getConnection();
-        const data = await connection.query("select MARKERS.file_path_one, MODELS.file_path FROM EVENTS LEFT JOIN MARKERS ON MARKERS.marker_id = EVENTS.marker_id LEFT JOIN MODELS ON MODELS.model_id = EVENTS.model_id;");
+        const data = await connection.query("select x_pos, y_pos, z_pos, scale, x_rot, y_rot, z_rot, MARKERS.file_path_one, MODELS.file_path FROM EVENTS LEFT JOIN MARKERS ON MARKERS.marker_id = EVENTS.marker_id LEFT JOIN MODELS ON MODELS.model_id = EVENTS.model_id;");
         const keys = Object.keys(data);
         const returnData = [];
         for( const key of keys ) {
