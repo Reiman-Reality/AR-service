@@ -30,7 +30,7 @@ function makeModelTableEntry(data) : void {
     const tableEntry : HTMLElement = document.createElement("li");
     const tableEntryHeader : HTMLElement = document.createElement("div");
     const tableEntryHeaderLink : HTMLElement = document.createElement("a");
-    const tableEntryThumbnail : HTMLElement = document.createElement("img");
+    //const tableEntryThumbnail : HTMLElement = document.createElement("img");
     const tableEntryDelete : HTMLElement = document.createElement("span");
 
     tableEntryHeaderLink.textContent += data.name
@@ -57,8 +57,8 @@ function makeModelTableEntry(data) : void {
     tableEntryHeader.setAttribute("class", "boxHeading");
     tableEntry.appendChild(tableEntryHeader);
 
-    tableEntryThumbnail.setAttribute("src", "null");
-    tableEntry.appendChild(tableEntryThumbnail);
+    //tableEntryThumbnail.setAttribute("src", "null");
+    //tableEntry.appendChild(tableEntryThumbnail);
     tableEntry.addEventListener('click', async (event) => {       
         const editModal = document.getElementById("editModel"); 
         var id = document.getElementById("edit_model_id");
