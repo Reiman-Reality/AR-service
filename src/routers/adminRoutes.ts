@@ -386,6 +386,14 @@ adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
 });
 
 
+adminRouter.get("/api/logout",(ctx)=>{
+	console.log(loggedInUsers);
+	delete loggedInUsers[ctx.cookies.get('log')];
+	console.log(loggedInUsers);
+	ctx.status = 200;
+});
+
+
 // Routes for serving admin page pages
 adminRouter.get('/home',body,async (ctx) =>{
 	if( ! await verifyLogin(ctx.cookies.get('log'))){

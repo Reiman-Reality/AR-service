@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
     selectBox?.addEventListener("change", changeFrame);
 })
 
-function logOut(){
-    location.href = "http://coms-402-sd-37.class.las.iastate.edu/admin/login";
+async function logOut(){
+    await fetch("./api/logout");
+    location.href = "./login";
 }
 
 
