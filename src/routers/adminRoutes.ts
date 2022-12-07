@@ -31,6 +31,7 @@ const body = koaBody({
 		ctx.status= 500;
 		return;
 	}
+	console.log(ctx.request.body);
 	const cleanedData = verifyEventData(ctx.request.body );
 	if(!cleanedData) {
 		ctx.status = 400;
@@ -80,7 +81,6 @@ const body = koaBody({
 		ctx.status= 500;
 		return;
 	}
-	//TODO verification
     const marker1 = ctx.request.files.marker1;
 	const marker2 = ctx.request.files.marker2;
 	const marker3 = ctx.request.files.marker3;
@@ -97,7 +97,7 @@ const body = koaBody({
 		fs.unlink(marker2.filepath, (err) => console.log(err));
 		fs.unlink(marker3.filepath, (err) => console.log(err));
 		ctx.status = 500;
-		ctx.body('failed to upload marker please try again');
+		ctx.body = 'failed to upload marker please try again';
 		return;
     }
 	const cleanedData = verifyMarkerData(ctx.request.body,  marker1.originalFilename, marker2.originalFilename, marker3.originalFilename);
@@ -106,10 +106,17 @@ const body = koaBody({
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
 		return;
 	}
-	if( ! await database.insertMarker(cleanedData) ){
+
+	const success = await database.insertMarker(cleanedData);
+
+	if( success ){
 		ctx.status = 500;
 		ctx.body = {message:"something went wrong on our end please try again later"};
 		return;
+	}
+
+	if( ctx.request.body.modelID ) {
+		await database.addEvent({marker_id: success, model_id: ctx.request.body.modelID, x_pos: 0, y_pos: 0, z_pos: 0, scale: 1, tag: ctx.request.body.tag} as eventData);
 	}
 
     ctx.status = 200;
@@ -492,11 +499,11 @@ function verifyEventData( data:any ) {
 		insertedOn: dateFormat( new Date(), "yyyy-mm-dd h:MM:ss"),
 		marker_id: data.marker_id,
 		model_id: data.model_id,
-		x_pos:data.x_pos,
-		y_pos:data.y_pos,
-		z_pos:data.z_pos,
-		scale: data.scale,
-		tag: data.tag,
+		x_pos:data.x_pos ?? 0,
+		y_pos:data.y_pos ?? 0,
+		z_pos:data.z_pos ?? 0,
+		scale: data.scale ?? 1,
+		tag: data.tag ?? "",
 	} as eventData;
 
 }
