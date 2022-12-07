@@ -91,10 +91,16 @@ span.psw {
     const submit = document.getElementById('loginButton');
     console.log(username);
     async function makeRequest(username,password){
+        // https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
+        const passwordBuffer = new TextEncoder().encode(password);
+        const hashBuffer = await crypto.subtle.digest("SHA-384", passwordBuffer); // 384 chosen due to strength against length extension attack + slightly better collision resistance compared with 256
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+
         const  res = await fetch("./getAccount",{
           method:"POST",
           headers:{"content-type": 'application/json'},
-          body:JSON.stringify({username, password})
+          body:JSON.stringify({username, hashHex})
         });
          const sucess = await res.status;
          console.log(sucess);
