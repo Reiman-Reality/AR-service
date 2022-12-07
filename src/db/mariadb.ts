@@ -260,8 +260,6 @@ export async function insertMarker( data: markerData) {
         const id = v4();
         await connection.query(`INSERT INTO MARKERS (marker_id, name, file_path_one, file_path_two, file_path_three, inserted_on)
         VALUES ("${id}", "${data.name}", "${data.filepathOne}","${data.filepathTwo}","${data.filepathThree}", "${data.insertedOn}")`);
-        await connection.query(`INSERT INTO EVENTS (marker_id)
-        VALUES ("${id}")`);
         connection.end();
         return id;
     } catch( exception: unknown) {
