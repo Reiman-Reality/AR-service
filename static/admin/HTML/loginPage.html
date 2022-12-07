@@ -81,6 +81,13 @@ span.psw {
     <button id="loginButton">Login</button>
   </div>
   <script>
+    document.addEventListener('keypress', (e) =>{
+      if(e.key === 'Enter') {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        makeRequest(username, password);
+      }
+    });
     const submit = document.getElementById('loginButton');
     console.log(username);
     async function makeRequest(username,password){
