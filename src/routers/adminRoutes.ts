@@ -298,8 +298,13 @@ adminRouter.get('/login', body, async (ctx) => {
 });
 
 adminRouter.post('/getAccount', body, async (ctx) => {
-		console.log(ctx.request.body);
-		const verify = await database.getAccountByUsername(ctx.request.body.username, ctx.request.body.password);
+		const account : login= {};
+		account.username = ctx.request.body.username;
+		account.password = ctx.request.body.password;
+		account.role = "";
+		const hashedAccount = verifyAccount(account);
+		// console.log(ctx.request.body);
+		const verify = await database.getAccountByUsername(hashedAccount.username, hashedAccount.password);
 		if(verify.length >= 1){
 			ctx.status = 200;
 			ctx.cookies.set("log", createCookie(verify[0]), {httpOnly: false});
@@ -528,11 +533,18 @@ function verifyAccount( account:any){
 		return null;
 	}
 
-		return{
-			username:account.username,
-			password:account.password,
-			role: account.role
-		} as login
+	// https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
+	const passwordBuffer = new TextEncoder().encode(account.password);
+	const hashBuffer = await crypto.subtle.digest("SHA-384", passwordBuffer); // 384 chosen due to strength against length extension attack + slightly better collision resistance compared with 256
+	const hashArray = Array.from(new Uint8Array(hashBuffer));
+	const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+
+
+	return{
+		username:account.username,
+		password:hashHex,
+		role: account.role
+	} as login
 	
 }
 
