@@ -263,7 +263,7 @@ export async function insertMarker( data: markerData) {
         await connection.query(`INSERT INTO EVENTS (marker_id)
         VALUES ("${id}")`);
         connection.end();
-        return true;
+        return id;
     } catch( exception: unknown) {
         console.log(exception);
         return false;

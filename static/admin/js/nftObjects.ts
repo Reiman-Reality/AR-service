@@ -223,7 +223,6 @@ function formInit() {
     document.querySelector("#newMarkerForm").addEventListener("submit", async (event)=>{
         event.preventDefault();
         event.stopPropagation();
-        console.log(event.target);
         const data = new FormData(event.target as HTMLFormElement);
         for (const [key, value] of data) {
             console.log( `${key}: ${value}\n`);
@@ -231,14 +230,18 @@ function formInit() {
 
         const request = new XMLHttpRequest();
 
-        request.addEventListener("load", (event)=>{
+        request.addEventListener("load", ()=>{
+            if( request.status > 200) {
+                alert(`failed to create the event with ${request.responseText}`);
+                return;
+            }
             alert("Created new marker succesfully.");
         });
         request.addEventListener("error", (event)=>{
             alert("Failed to create marker. Please refresh and try again.");
         });
 
-        request.open("POST", "./api/addMarker");
+        request.open("POST", "./api/addMarker", false);
         request.send(data);
     });
 
