@@ -10,6 +10,10 @@ import { fileURLToPath } from 'url';
 import { parseIsolatedEntityName } from 'typescript';
 import { eventData, login, markerData, modelData } from '../types/databaseTypes';
 import {v4} from 'uuid'
+import * as nodeCrypto from "node:crypto"
+
+
+const crypto = nodeCrypto.webcrypto;
 
 
 const loggedInUsers = {};
@@ -298,12 +302,13 @@ adminRouter.get('/login', body, async (ctx) => {
 });
 
 adminRouter.post('/getAccount', body, async (ctx) => {
-		const account : login= {username:ctx.request.body.username, password:ctx.body.request.password, role:""};
+	console.log(ctx.request.body);
+		const account : login= {username: ctx.request.body.username, password:ctx.request.body.hashHex, role:""};
 		/*account.username = ctx.request.body.username;
 		account.password = ctx.request.body.password;
 		account.role = "";*/
-		const hashedAccount = verifyAccount(account);
-		// console.log(ctx.request.body);
+		const hashedAccount = await verifyAccount(account);
+		console.log(hashedAccount);
 		const verify = await database.getAccountByUsername(hashedAccount.username, hashedAccount.password);
 		if(verify.length >= 1){
 			ctx.status = 200;
@@ -336,7 +341,7 @@ adminRouter.post('/createUser', body, async (ctx)=>{
 		return;
 	}
 
-	const cleanedData = verifyAccount(ctx.request.body);
+	const cleanedData = await verifyAccount(ctx.request.body);
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
@@ -528,14 +533,14 @@ function verifyEDITModelData( formModel:any, newFilePath:string ){
 	
 }
 
-function verifyAccount( account:any){
+async function verifyAccount( account:any ){
 	if( !account.username|| !account.password ) {
 		return null;
 	}
 
 	// https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
 	const passwordBuffer = new TextEncoder().encode(account.password);
-	const hashBuffer = await globalThis.crypto.subtle.digest("SHA-384", passwordBuffer); // 384 chosen due to strength against length extension attack + slightly better collision resistance compared with 256
+	const hashBuffer = await crypto.subtle.digest("SHA-384", passwordBuffer); // 384 chosen due to strength against length extension attack + slightly better collision resistance compared with 256
 	const hashArray = Array.from(new Uint8Array(hashBuffer));
 	const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
 
