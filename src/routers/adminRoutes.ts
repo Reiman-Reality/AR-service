@@ -315,12 +315,9 @@ adminRouter.get('/addUser', body, async (ctx) => {
 		ctx.status= 500;
 		return;
 	}
-
-	if(! await verifyLogin(ctx.cookies.get('log'))){
-		ctx.type = 'html';
-		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/addingUser.html'));
-		return;
-	}
+	ctx.type = 'html';
+	ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/addingUser.html'));
+	return;
 	//ctx.redirect('/home');
 });
 
