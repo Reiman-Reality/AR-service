@@ -109,7 +109,7 @@ const body = koaBody({
 
 	const success = await database.insertMarker(cleanedData);
 
-	if( success ){
+	if( ! success ){
 		ctx.status = 500;
 		ctx.body = {message:"something went wrong on our end please try again later"};
 		return;

@@ -241,7 +241,7 @@ function formInit() {
             alert("Failed to create marker. Please refresh and try again.");
         });
 
-        request.open("POST", "./api/addMarker", false);
+        request.open("POST", "./api/addMarker");
         request.send(data);
     });
 
