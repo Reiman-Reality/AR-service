@@ -31,7 +31,6 @@ const body = koaBody({
 		ctx.status= 500;
 		return;
 	}
-	console.log(ctx.request.body);
 	const cleanedData = verifyEventData(ctx.request.body );
 	if(!cleanedData) {
 		ctx.status = 400;
@@ -198,8 +197,6 @@ adminRouter.post('/api/addMap', body, async (ctx)=>{
     //TODO verification
     const map = ctx.request.files.map; // get the map;
 	const newMapName =  path.join(__dirname, '/', "map.jpg");
-	console.log(newMapName);
-
 	try{
 	await fsPromise.unlink(newMapName);
 	}
@@ -298,7 +295,6 @@ adminRouter.get('/login', body, async (ctx) => {
 });
 
 adminRouter.post('/getAccount', body, async (ctx) => {
-		console.log(ctx.request.body);
 		const verify = await database.getAccountByUsername(ctx.request.body.username, ctx.request.body.password);
 		if(verify.length >= 1){
 			ctx.status = 200;
@@ -394,9 +390,7 @@ adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
 
 
 adminRouter.get("/api/logout",(ctx)=>{
-	console.log(loggedInUsers);
 	delete loggedInUsers[ctx.cookies.get('log')];
-	console.log(loggedInUsers);
 	ctx.status = 200;
 });
 
