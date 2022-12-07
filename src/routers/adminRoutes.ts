@@ -302,12 +302,7 @@ adminRouter.get('/login', body, async (ctx) => {
 });
 
 adminRouter.post('/getAccount', body, async (ctx) => {
-		/*account.username = ctx.request.body.username;
-		account.password = ctx.request.body.password;
-		account.role = "";*/
-		console.log(ctx.request.body);
 		const hashedAccount = await verifyAccount(ctx.request.body);
-		console.log(hashedAccount);
 		const verify = await database.getAccountByUsername(hashedAccount.username, hashedAccount.password);
 		if(verify.length >= 1){
 			ctx.status = 200;
