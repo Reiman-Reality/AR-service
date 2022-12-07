@@ -38,7 +38,7 @@ publicRouter.get('/filenames', async (ctx) => {
 			zRot: event.z_rot,
 			xPos: event.x_pos,
 			yPos: event.y_pos,
-			zPost: event.z_pos
+			zPos: event.z_pos
 		}
 		cleanedData.push(names);
 	}
