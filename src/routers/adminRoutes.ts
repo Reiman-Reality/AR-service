@@ -303,7 +303,7 @@ adminRouter.get('/login', body, async (ctx) => {
 });
 
 adminRouter.post('/getAccount', body, async (ctx) => {
-		const hashedAccount = await verifyAccount(ctx.request.body);
+		const hashedAccount = await verifyAccount(ctx.request.body); // Hash password
 		const verify = await database.getAccountByUsername(hashedAccount.username, hashedAccount.password);
 		if(verify.length >= 1){
 			ctx.status = 200;
@@ -335,7 +335,7 @@ adminRouter.post('/createUser', body, async (ctx)=>{
 		return;
 	}
 
-	const cleanedData = await verifyAccount(ctx.request.body);
+	const cleanedData = await verifyAccount(ctx.request.body); // Hash password and make sure data is well-formed
 	if(!cleanedData) {
 		ctx.status=400;
 		ctx.body = {message:"Failed to verify all form data please make sure all data is filled out and try again"};
