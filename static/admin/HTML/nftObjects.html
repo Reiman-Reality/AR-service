@@ -78,6 +78,7 @@
     <div id="marker-modal" class="modal">
         <div class="modal-content">
             <div id="modal-exit">X</div>
+            <!-- Edit marker form -->
             <form id="markerForm" class="hide">
                 <h2> Name </h2>
                 <input type="text" id="markerName" name="name">
@@ -90,7 +91,7 @@
                 <h2>Associated Models</h2>
                 <div class="overflowScroll">
                     <table id="currentlyAssociatedModels">
-                    <!-- TODO Dynamic content goes here "model_id", "name" -->
+                    <!-- Dynamic content goes here "model_id", "name" -->
                     </table>
                 </div>
                 <h3>Add a new Model</h3>
@@ -99,6 +100,7 @@
                 <input type="hidden" id="markerID" name="markerID">
                 <input type ="submit" id="markerSubmit">
             </form>
+            <!-- Form for new markers -->
             <form id="newMarkerForm" class="hide">
                 <h2> Name </h2>
                 <input type="text" id="new_markerName" name="name">
