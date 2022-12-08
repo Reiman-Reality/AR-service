@@ -311,7 +311,8 @@ adminRouter.post('/getAccount', body, async (ctx) => {
 });
 
 adminRouter.get('/addUser', body, async (ctx) => {
-	if( ! await verifyLogin(ctx.cookies.get('log'))){
+	const user = await verifyLogin(ctx.cookies.get('log'));
+	if( ! user || user.role != 'ADMIN' ){
 		ctx.status= 500;
 		return;
 	}
