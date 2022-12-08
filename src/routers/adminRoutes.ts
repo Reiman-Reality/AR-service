@@ -186,7 +186,7 @@ adminRouter.get('/map', body, async (ctx) => {
 		ctx.body = fs.createReadStream(path.join(__dirname,'static/admin/HTML/addMap.html'));
 		return;
 	}
-	ctx.redirect('/home');
+	ctx.redirect('./login');
 });
 
 adminRouter.get('/getMap', body, async (ctx) => {
@@ -198,7 +198,11 @@ adminRouter.get('/getMap', body, async (ctx) => {
 });
 
 adminRouter.post('/api/addMap', body, async (ctx)=>{
-    //TODO verification
+	if( ! verifyLogin(ctx.cookies.get('log') ) ) {
+		ctx.status = 400;
+		return;
+	}
+
     const map = ctx.request.files.map; // get the map;
 	const newMapName =  path.join(__dirname, '/', "map.jpg");
 	try{

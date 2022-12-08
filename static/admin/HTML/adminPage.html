@@ -15,13 +15,15 @@
 			<select size="2" id="left-column" style="overflow:auto;">
 				<option value="0" selected="selected">Natural Feature Tracking Objects</option>
 				<option value="1">AR Models</option>
-				<option value="2" id="create-user-tab">Add Users</option>
+				<option value="2">Map</option>
+				<option value="3" id="create-user-tab">Add Users</option>
 			</select>
 			<button onclick="logOut()">Log out</button>
 		</div>
 		<div class="columnB" style="display: flex; height: 90vh">
 			<iframe id="nft-objects" src="./markersPage" class="framed"></iframe>
 			<iframe id="ar-models" src="./modelsPage" class="framed" hidden></iframe>
+			<iframe id="map" src="./map" class="framed" hidden></iframe>
 			<iframe id="create-user" src="./addUser" class="framed" hidden></iframe>
 		</div>
 	</div>
