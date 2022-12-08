@@ -68,6 +68,7 @@ function makeObjectTableEntry(data) : void {
         })
     });
 
+    // Create the box for each marker
     // tableEntryHeaderLink.setAttribute("href", data.websiteLink); // TODO Get edit link
     tableEntryHeaderLink.textContent += data.name
     tableEntryHeader.appendChild(tableEntryHeaderLink);
@@ -78,15 +79,19 @@ function makeObjectTableEntry(data) : void {
     //tableEntryThumbnail.setAttribute("src", data.file_path);
     tableEntry.appendChild(tableEntryThumbnail);
     tableEntry.addEventListener('click', () =>{
+        // Display the appropriate form
         document.querySelector("#marker-modal").classList.add("show");
         document.querySelector("#newMarkerForm").classList.add("hide");
         document.querySelector("#markerForm").classList.remove("hide");
         (document.querySelector('#markerName') as HTMLInputElement).value = data.name;
         (document.querySelector('#markerID') as HTMLInputElement).value = data.marker_id;
+        // Create the header row of the table
         (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).innerHTML = "<tr><th>Name</th><th>Tag</th><th>X Position</th><th>Y Postion</th><th>Z Position</th><th>Scale</th><th>X Orientation</th><th>Y Orientation</th><th>Z Orientation</th><th></th></tr>";
         if (data.models) for (let i = 0; i < data.models.length; i++) {
             let tableRow : HTMLTableRowElement = document.createElement("tr");
 
+
+            // Get the model name and tag - if the model is not found, use "???" as the default name
             let modelId = data.eventData[i].model_id;
             let modelName : HTMLTableCellElement = document.createElement("td");
             modelName.innerText = "???";
@@ -95,6 +100,14 @@ function makeObjectTableEntry(data) : void {
                  break;
             }
             tableRow.append(modelName);
+
+            // For every column in the table:
+            // Create a cell
+            // Create an input element
+            // Assign that input element the value currently in the database
+            // Add an event listener to the input element that will report changes to the database
+            // Insert the input element into the cell
+            // Insert the cell into the current row of the table
 
             let modelSeasonCell : HTMLTableCellElement = document.createElement("td");
             let modelSeason : HTMLInputElement = document.createElement("input");
@@ -170,6 +183,7 @@ function makeObjectTableEntry(data) : void {
             
             (document.querySelector('#currentlyAssociatedModels') as HTMLTableElement).append(tableRow);
         }
+        // Reset the select element (in case the marker is opened and closed multiple times)
         (document.querySelector('#newModelToAssociate') as HTMLSelectElement).innerHTML = "";
         (document.querySelector('#newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
         for (let i = 0; i < modelDataJson.length; i++) {
@@ -209,7 +223,9 @@ function formInit() {
         document.querySelector("#marker-modal").classList.add("show");
         document.querySelector("#newMarkerForm").classList.remove("hide");
         document.querySelector("#markerForm").classList.add("hide");
+        // Setup input elements for data to be inserted into the database
         (document.querySelector('#new_markerName') as HTMLInputElement).value = "";
+        // Reset the select element to prevent multiple insertions of options
         (document.querySelector('#new_newModelToAssociate') as HTMLSelectElement).innerHTML = "";
         (document.querySelector('#new_newModelToAssociate') as HTMLSelectElement).add(new Option("No model selected", "null"));
         for (let i = 0; i < modelDataJson.length; i++) {
