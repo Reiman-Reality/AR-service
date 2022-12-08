@@ -304,6 +304,7 @@ adminRouter.post('/getAccount', body, async (ctx) => {
 		if(verify.length >= 1){
 			ctx.status = 200;
 			ctx.cookies.set("log", createCookie(verify[0]), {httpOnly: false});
+			ctx.cookies.set("perms", verify[0].role, {httpOnly: false});
 		}
 		else{
 			ctx.status = 401;

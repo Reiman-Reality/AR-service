@@ -11,6 +11,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
     modelsFrame = document.getElementById("ar-models");
     createUserFrame = document.getElementById("create-user");
     selectBox?.addEventListener("change", changeFrame);
+    if( getCookie("perms") != 'ADMIN' ) {
+        createUserFrame.remove();
+        document.querySelector('#create-user-tab').remove();
+    }
 })
 
 async function logOut(){
@@ -39,3 +43,20 @@ function changeFrame(): void {
     }
     
 }
+
+
+function getCookie(cookie :string ) {
+    let name = cookie + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
