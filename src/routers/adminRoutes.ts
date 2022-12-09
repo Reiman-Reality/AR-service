@@ -30,6 +30,9 @@ const body = koaBody({
     }
  });
 
+ /**
+  * Creates a new event for the code.
+  */
  adminRouter.post('/api/addEvent',body, async(ctx) =>{
 	if( ! verifyLogin(ctx.cookies.get('log'))){
 		ctx.status= 500;
@@ -51,7 +54,14 @@ const body = koaBody({
 	ctx.status = 200;
  });
 
+ /**
+  * Lets a admin user change parameters for an event 
+  */
  adminRouter.post('/api/editEvent', body, async(ctx)=> {
+	if( ! verifyLogin(ctx.cookies.get('log'))){
+		ctx.status= 500;
+		return;
+	}
 	const cleanedData = verifyEventEditData( JSON.parse(ctx.request.body) );
 	if( !cleanedData ) {
 		ctx.status = 500;
@@ -62,6 +72,9 @@ const body = koaBody({
 	ctx.status = 200;
  });
 
+ /**
+  * Deletes an event from the database
+  */
  adminRouter.post('/api/deleteEvent', body, async(ctx)=>{
 	const data = JSON.parse(ctx.request.body);
 
@@ -76,6 +89,7 @@ const body = koaBody({
 
 
  // Marker code
+
 /**
  * Note for incoming requests to this endpoitn tehy must be encoded as 'multipart/form-data' otherwise request.files doesn't work.
  */
@@ -125,6 +139,9 @@ const body = koaBody({
     ctx.status = 200;
 });
 
+/**
+ * Gets all markers stored in the database and attaches the events they are linked with and the models they are linked with by the join table.
+ */
 adminRouter.get("/api/getMarkers", async (ctx) =>{
 	if( ! await verifyLogin(ctx.cookies.get('log'))){
 		ctx.status= 500;
@@ -145,6 +162,9 @@ adminRouter.get("/api/getMarkers", async (ctx) =>{
 	ctx.body = markers;
 });
 
+/**
+ * Lets a user update a marker with a new event.
+ */
 adminRouter.post('/api/updateMarker', body, async (ctx)=>{
 	const request = ctx.request.body;
 	if( request.modelID && request.modelID != 'null' ) {
@@ -155,6 +175,9 @@ adminRouter.post('/api/updateMarker', body, async (ctx)=>{
 
 });
 
+/**
+ * Deletes a marker from the database and removes it's files from the server.
+ */
 adminRouter.post("/api/deleteMarker", body, async (ctx) => {
 	if( ! await verifyLogin(ctx.cookies.get('log'))){
 		ctx.status= 500;
@@ -180,6 +203,10 @@ adminRouter.post("/api/deleteMarker", body, async (ctx) => {
 
 
 //Map Code
+
+/**
+ * A route for showing the upload new map page.
+ */
 adminRouter.get('/map', body, async (ctx) => {
 	if(verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'html';
@@ -189,6 +216,9 @@ adminRouter.get('/map', body, async (ctx) => {
 	ctx.redirect('./login');
 });
 
+/**
+ * A route for returning the current map to the front end
+ */
 adminRouter.get('/getMap', body, async (ctx) => {
 	if(verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'jpg';
@@ -197,6 +227,9 @@ adminRouter.get('/getMap', body, async (ctx) => {
 	}
 });
 
+/**
+ * Api route for uploading a new map. We try to enforce the map is a jpg for easy storage.
+ */
 adminRouter.post('/api/addMap', body, async (ctx)=>{
 	if( ! verifyLogin(ctx.cookies.get('log') ) ) {
 		ctx.status = 400;
@@ -227,7 +260,8 @@ adminRouter.post('/api/addMap', body, async (ctx)=>{
 
 //Model code
 /**
- * Same as above for this endpoint all data must be submitted as formdata :)
+ * All data to this endpoint must be submitted as multipart/formdata just because how our body parser works.
+ * This route handles uploading a new 3d model to the database/server.
  */
 adminRouter.post('/api/addmodel', body, async (ctx)=>{
 	if( ! await verifyLogin(ctx.cookies.get('log'))){
@@ -237,6 +271,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 
     const model = ctx.request.files.model; // get the model;
 	const texture = ctx.request.files?.texture; // get the texture
+	// models do not have their original file names like markers so we give them their original name and put them in our models folder.
 	const newModelPath =  path.join(__dirname, '/models/', model.originalFilename);
 	const newTexturePath =  path.join(__dirname, '/textures/', texture.originalFilename);
 	
@@ -265,7 +300,7 @@ adminRouter.post('/api/addmodel', body, async (ctx)=>{
 });
 
 /**
- * updating models
+ * allows an admin to update a model with new files.
  */
 adminRouter.post('/api/updatemodel', body, async (ctx)=>{
 	if( ! await verifyLogin(ctx.cookies.get('log'))){
@@ -293,6 +328,9 @@ adminRouter.post('/api/updatemodel', body, async (ctx)=>{
     ctx.status = 200;
 });
 
+/**
+ * This route returns the login page so users can login
+ */
 adminRouter.get('/login', body, async (ctx) => {
 	if( ! await verifyLogin(ctx.cookies.get('log'))){
 		ctx.type = 'html';
@@ -302,6 +340,10 @@ adminRouter.get('/login', body, async (ctx) => {
 	ctx.redirect('/admin/home');
 });
 
+/**
+ * This is an api route for verifying that the username and password provided is correct. If so then we create a UUID for the user with createCookie function and 
+ * set the cookie to the uuid value so we don't expose anything. Also sets a role cookie so that if they are a role they can see certain ui elements.
+ */
 adminRouter.post('/getAccount', body, async (ctx) => {
 		const hashedAccount = await verifyAccount(ctx.request.body); // Hash password
 		const verify = await database.getAccountByUsername(hashedAccount.username, hashedAccount.password);
@@ -315,6 +357,9 @@ adminRouter.post('/getAccount', body, async (ctx) => {
 		}
 });
 
+/**
+ * Allows a super user to view the add user page. Has extra verification for who can actually get to the endpoint.
+ */
 adminRouter.get('/addUser', body, async (ctx) => {
 	const user = await verifyLogin(ctx.cookies.get('log'));
 	if( ! user || user.role != 'ADMIN' ){
@@ -327,6 +372,9 @@ adminRouter.get('/addUser', body, async (ctx) => {
 	//ctx.redirect('/home');
 });
 
+/**
+ * Allows a super user to add new users who can edit models/markers/ and the map.
+ */
 adminRouter.post('/createUser', body, async (ctx)=>{
 	const user = verifyLogin( ctx.cookies.get('log') );
 	if( !user || user.role != "ADMIN" ) {
@@ -359,6 +407,9 @@ adminRouter.get('/api/getModels', async (ctx) => {
 	ctx.body = await database.getAllModels();
 });
 
+/**
+ * api route for deleting a model from the database and removing the files off the server.
+ */
 adminRouter.post('/api/deleteModel', body, async (ctx) => {
 	const ID = ctx.request.body.modelID;
 	if( ! ID ) {
@@ -380,6 +431,9 @@ adminRouter.post('/api/deleteModel', body, async (ctx) => {
 	ctx.status = 200;
 });
 
+/**
+ * Returns all models paired with a marker.
+ */
 adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
 	if( ! verifyLogin(ctx.cookies.get('log'))){
 		ctx.status= 500;
@@ -396,7 +450,9 @@ adminRouter.post('/api/getmodelsbymarker', body, async (ctx) => {
 	ctx.body = markers;
 });
 
-
+/**
+ * Logs a user out of the session and deletes their UUID from logged in users object.
+ */
 adminRouter.get("/api/logout",(ctx)=>{
 	delete loggedInUsers[ctx.cookies.get('log')];
 	ctx.status = 200;
@@ -418,6 +474,9 @@ adminRouter.get('/home',body,async (ctx) =>{
 	}
 });
 
+/**
+ * Serves the front end for the markers page.
+ */
 adminRouter.get('/markersPage', async(ctx)=>{
 	if( ! await verifyLogin(ctx.cookies.get('log'))){
 		ctx.redirect('/admin/login');
@@ -432,6 +491,9 @@ adminRouter.get('/markersPage', async(ctx)=>{
 	}
 });
 
+/**
+ * Serves the front end for the models page.
+ */
 adminRouter.get('/modelsPage', async(ctx)=>{
 	if( ! await verifyLogin(ctx.cookies.get('log'))){
 		ctx.redirect('/admin/login');
@@ -445,6 +507,9 @@ adminRouter.get('/modelsPage', async(ctx)=>{
 	}
 });
 
+/**
+ * Serves the scripts we have for the marker page.
+ */
 adminRouter.get('/markerScripts', async(ctx)=>{
 	try{
 		ctx.type = 'text/javascript';
@@ -454,6 +519,9 @@ adminRouter.get('/markerScripts', async(ctx)=>{
 	}
 });
 
+/**
+ * Serves the scripts for the overall admin page since the other pages are encapsulated by it with iframes.
+ */
 adminRouter.get('/adminPageScripts', async(ctx)=>{
 	try{
 		ctx.type = 'text/javascript';
@@ -463,6 +531,9 @@ adminRouter.get('/adminPageScripts', async(ctx)=>{
 	}
 });
 
+/**
+ * Serves the scripts for the model front end page.
+ */
 adminRouter.get('/modelScripts', async(ctx)=>{
 	try{
 		ctx.type = 'text/javascript';
@@ -472,12 +543,24 @@ adminRouter.get('/modelScripts', async(ctx)=>{
 	}
 });
 
+/**
+ * 
+ * @param cookie a string which value is a uuid to check if it's in the loggedInUsers object
+ * @returns if there is a logged in users returns that users information, else null
+ */
 function verifyLogin(cookie : string){
 	return loggedInUsers[cookie];
 }
 
 
-//Helper functions for verifying requests
+/**
+ * Helps verify that we have all the data we need to cretea a marker.
+ * @param formData the data we were passed from the request
+ * @param name the first file name
+ * @param two the second file name
+ * @param three the third file name
+ * @returns markerData JSON object
+ */
 function verifyMarkerData( formData:any, name:string, two: string, three: string ){
 	if( !formData.name || formData.name.length > 50 ) {
 		return null;
@@ -492,6 +575,11 @@ function verifyMarkerData( formData:any, name:string, two: string, three: string
 	} as markerData;
 }
 
+/**
+ * Helps verify we have all the data to make an event.
+ * @param data 
+ * @returns JSON object that contains all the important eventData
+ */
 function verifyEventData( data:any ) {
 	if( !data.name || data.name.length > 50 || data.marker_id == null || data.model_id == null) {
 		return null;
@@ -525,6 +613,11 @@ function verifyEDITModelData( formModel:any, newFilePath:string ){
 	
 }
 
+/**
+ * Checks if a user exists in the database. for login.
+ * @param account the username password combination as a JSON object
+ * @returns if user login Object else NULL
+ */
 async function verifyAccount( account:any ){
 	if( !account.username|| !account.password ) {
 		return null;
@@ -545,6 +638,11 @@ async function verifyAccount( account:any ){
 	
 }
 
+/**
+ * creates a cookie if someone is logging in and verified. Puts them into the loggedInUsers JSON object.
+ * @param user login JSON object
+ * @returns a uuid v4 that will be deleted in one hour so a user isn't logged in forever.
+ */
 function createCookie( user ) {
 	const loggedIn = v4();
 	loggedInUsers[loggedIn] = user;
@@ -554,7 +652,13 @@ function createCookie( user ) {
 	return loggedIn;
 }
 	
-
+/**
+ * verifies that proper information exists to create a new model.
+ * @param formModel the extra information passed with a model like it's name
+ * @param newFilePath the obj file name
+ * @param textureName the mtl texture name
+ * @returns 
+ */
 function verifyModelData( formModel:any, newFilePath:string, textureName: string){
 	
 	if( !formModel.name || formModel.name.length > 50 ) {
@@ -570,6 +674,11 @@ function verifyModelData( formModel:any, newFilePath:string, textureName: string
 	} as modelData;
 }
 
+/**
+ * Verifies that proper data is present to edit an event.
+ * @param data Event data
+ * @returns a JSON object with the data.
+ */
 function verifyEventEditData( data: any) {
 	if( !data.marker_id || ! data.model_id) {
 		return null;
