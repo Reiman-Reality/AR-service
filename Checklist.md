@@ -1,0 +1,8 @@
+- [ ] finish documenation
+- [ ] create public github repo
+- [ ] give Nathan owner status to the repo
+- [ ] download Node JS on the EC2 instance
+- [ ] download Maria DB on the EC2 instance
+- [ ] setup database on EC2 instance
+- [ ] deploy server live and setup basic information
+- [ ] give nathan IAM user information for continued developement along with any other pertinent files / passwords
