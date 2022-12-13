@@ -1,0 +1,14 @@
+[Unit]
+Description=Node JS server to host AR at Reiman
+After=network.target
+After=mysqld.ervice
+
+[Service]
+User=ubuntu
+Restart=always
+RestartSec=5
+EnvironmentFile=path_to_the_env_file
+ExecStart=/usr/bin/node /home/ubuntu/Reiman_Garden/server/dist/index.js
+
+[Install]
+WantedBy=multi-user.target
