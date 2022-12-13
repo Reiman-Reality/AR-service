@@ -10,6 +10,10 @@ const __dirname = process.cwd();
 
 const publicRouter = new Router();
 
+publicRouter.get('/', async (ctx) =>{
+	ctx.redirect('/home');
+})
+
 publicRouter.get('/home', async (ctx) =>{
 	ctx.type = 'html';
 	ctx.body = fs.createReadStream(path.join(__dirname,'/FrontEnd/LandingPage.html'));
