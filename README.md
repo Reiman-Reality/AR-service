@@ -23,7 +23,7 @@ The code is split up into a few seperate places
 5. Copy `.env-example` to a new file called `.env` and modify with appropriate database information
 6. Install Node.js and npm
 7. Run included in the package.json is a script so you can use `npm run start` to start the server ( NOTE: if npm run start fails to use port 80 and 443 on linux try npm run build and sudo node dist/index.js instead )
-8. If wanting to run this as a service you can use the service file provided with some updates to get the service running. ( see https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units )
+8. If wanting to run this as a service you can use the service file provided with some updates to arserver-example.service to get the service running. ( see https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units )
 
 ## Tools and Frameworks Used
 
