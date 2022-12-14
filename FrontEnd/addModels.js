@@ -32,9 +32,9 @@ function beforeEntity(markerUrl) {
  * @param {number} zR The z rotation of the model
  * @returns {string} Returns a string reprentation of the a-entity element that will then be added to the bodies innerHtml in the calling method
  */
-function objEntity(objName, scale, xP, yP, zP, xR, yR, zR) {
+function objEntity(objName, textureName, scale, xP, yP, zP, xR, yR, zR) {
     return `<a-entity
-    obj-model="obj: url(/${objName}.obj); mtl: url(/${objName}.mtl)"
+    obj-model="obj: url(/${objName}); mtl: url(/${textureName})"
     scale="${scale} ${scale} ${scale}"
     position="${xP} ${yP} ${zP}"
     orientation="${xR} ${xR} ${xR}"
@@ -107,10 +107,10 @@ async function addModelFunction() {
         let zRot = obj["zRot"];
 
         // Remove file extension from the filenames of the marker and model
-        modelUrl = modelUrl.split(".")[0]
+        markerUrl = markerUrl.split(".")[0]
 
         // Add the fully created a-nft type to the new scene body
-        arjsScene += ( beforeEntity(markerUrl) + objEntity(textureUrl, scale, xPos, yPos, zPos, xRot, yRot, zRot) + afterEntity());
+        arjsScene += ( beforeEntity(markerUrl) + objEntity(modelURL,textureUrl, scale, xPos, yPos, zPos, xRot, yRot, zRot) + afterEntity());
         console.log("Added: " + markerUrl + " " + modelUrl)
     }
 
