@@ -36,6 +36,7 @@ publicRouter.get('/filenames', async (ctx) => {
 		const names = {
 			markerName: path.basename(event.file_path_one),
 			modelFile: path.basename(event.file_path || ''),
+			textureFile: path.basename(event.texture_name),
 			scale: event.scale,
 			xRot: event.x_rot,
 			yRot: event.y_rot,
