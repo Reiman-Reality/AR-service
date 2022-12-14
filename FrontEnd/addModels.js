@@ -94,6 +94,7 @@ async function addModelFunction() {
 
         // For each pair, extract the marker and model filenames
         let markerUrl = obj["markerName"];
+        let textureUrl = obj['textureFile'];
         let modelUrl = obj["modelFile"];
 
         // For each pair, extract all parameter data for the model being added to the scene
@@ -106,11 +107,10 @@ async function addModelFunction() {
         let zRot = obj["zRot"];
 
         // Remove file extension from the filenames of the marker and model
-        markerUrl = markerUrl.split(".")[0]
         modelUrl = modelUrl.split(".")[0]
 
         // Add the fully created a-nft type to the new scene body
-        arjsScene += ( beforeEntity(markerUrl) + objEntity(modelUrl, scale, xPos, yPos, zPos, xRot, yRot, zRot) + afterEntity());
+        arjsScene += ( beforeEntity(markerUrl) + objEntity(textureUrl, scale, xPos, yPos, zPos, xRot, yRot, zRot) + afterEntity());
         console.log("Added: " + markerUrl + " " + modelUrl)
     }
 
