@@ -110,7 +110,7 @@ async function addModelFunction() {
         markerUrl = markerUrl.split(".")[0]
 
         // Add the fully created a-nft type to the new scene body
-        arjsScene += ( beforeEntity(markerUrl) + objEntity(modelURL,textureUrl, scale, xPos, yPos, zPos, xRot, yRot, zRot) + afterEntity());
+        arjsScene += ( beforeEntity(markerUrl) + objEntity(modelUrl,textureUrl, scale, xPos, yPos, zPos, xRot, yRot, zRot) + afterEntity());
         console.log("Added: " + markerUrl + " " + modelUrl)
     }
 
