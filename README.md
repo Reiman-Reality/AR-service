@@ -31,3 +31,9 @@ The code is split up into a few seperate places
 - NPM https://www.npmjs.com/
 - TYPESCRIPT https://www.typescriptlang.org/
 - KOA js as a backend framework: https://koajs.com/
+
+## adding new markers
+Instructions are included for a faster node js version 
+here: https://ar-js-org.github.io/NFT-Marker-Creator/
+and the web version is 
+here: https://carnaux.github.io/NFT-Marker-Creator/#/
