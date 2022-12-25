@@ -28,7 +28,7 @@ mysql -uroot -p${pass}  -e "CREATE TABLE $dbName.MODELS (
 
 mysql -uroot -p${pass}  -e "CREATE TABLE $dbName.USER (
   username varchar(36) DEFAULT NULL,
-  password varchar(36) DEFAULT NULL,
+  password varchar(100) DEFAULT NULL,
   role varchar(36) DEFAULT NULL,
   UNIQUE KEY username (username) );"
 
